@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Operations · Stargate</title>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<header class="site-nav"><div class="nav-wrap">
+<a class="brand" href="index.html"><span class="logo-dot"></span>Stargate<span class="tag">Agentic Ops</span></a>
+<nav class="primary">
+<a href="index.html">Overview</a>
+<a href="founders.html">Founders</a>
+<a href="marketing.html">Marketing</a>
+<a href="engineering.html">Engineering</a>
+<a href="design.html">Design</a>
+<a href="product.html">Product</a>
+<a href="finance.html">Finance</a>
+<a href="support.html">Support</a>
+<a href="operations.html" class="active">Operations</a>
+<a href="sales.html">Sales</a>
+<a href="data.html">Data</a>
+<a href="legal.html">Legal</a>
+</nav></div></header>
+
+<main>
+  <div class="page-header">
+    <div class="kicker">// OPERATIONS</div>
+    <h1>The invisible work that kills velocity — now automated</h1>
+    <p>Ops is every task that falls on "whoever has bandwidth" — hiring, onboarding, vendor management, compliance, IT. None of it grows the business; all of it will kill you if ignored. A small operations agent stack handles the drudgery and flags the exceptions for humans.</p>
+  </div>
+
+  <div class="tags">
+    <span class="tag cyan">hiring</span>
+    <span class="tag cyan">onboarding</span>
+    <span class="tag cyan">SOC2</span>
+    <span class="tag cyan">vendor mgmt</span>
+    <span class="tag cyan">IT</span>
+  </div>
+
+  <div class="steps">
+
+    <div class="step">
+      <div class="step-num">01</div>
+      <div class="step-body">
+        <h3>Recruiting pipeline agent</h3>
+        <p>From JD to offer, the agent handles the plumbing.</p>
+        <ul>
+          <li><strong>JD generator</strong> — writes role descriptions from a 1-line ask + the company context pack.</li>
+          <li><strong>Sourcing agent</strong> — screens LinkedIn/GitHub matches against the JD rubric, produces a shortlist with evidence per candidate.</li>
+          <li><strong>Scheduling agent</strong> — handles the 4-email back-and-forth to book screens.</li>
+          <li><strong>Interview-kit generator</strong> — creates a tailored rubric + 5 questions per interviewer based on the candidate's background.</li>
+        </ul>
+        <div class="callout warn"><strong>Never let the agent make the hire/no-hire call or auto-reject.</strong> Screening bias, fair-hiring laws, and reputational risk all say: humans decide.</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">02</div>
+      <div class="step-body">
+        <h3>Interview debrief synthesizer</h3>
+        <p>After each interview, the agent consumes the scorecard, pulls quotes, and produces a hire-committee packet.</p>
+        <ul>
+          <li>Structured summary against the rubric.</li>
+          <li>Highlighted disagreements between interviewers (the most useful thing to surface).</li>
+          <li>Flags any evidence gaps before the decision meeting.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">03</div>
+      <div class="step-body">
+        <h3>Onboarding conductor</h3>
+        <p>Day 1 through Day 30 should run itself.</p>
+        <ul>
+          <li>Pre-start: orders laptop, creates accounts (Google, Slack, GitHub, 1Password), sends welcome email, schedules intros.</li>
+          <li>Day 1: a personalized Notion page with their first-week plan, owner assignments, reading list.</li>
+          <li>Weekly: check-in survey; if sentiment dips, escalates to the manager.</li>
+          <li>Day 30: generates a structured "here's what they've learned, here's where they're stuck" doc for the manager to review.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">04</div>
+      <div class="step-body">
+        <h3>Compliance &amp; evidence agent (SOC2, ISO, HIPAA)</h3>
+        <p>Most early-stage companies procrastinate on compliance until a customer blocks a deal. Instead, start collecting evidence from day one with an agent.</p>
+        <ul>
+          <li>Connects to Drata/Vanta/Secureframe via API; pulls failing control list weekly.</li>
+          <li>For each failure, it drafts the remediation: a ticket, a policy doc, or a process change.</li>
+          <li>Runs quarterly access reviews: lists who has access to what, who shouldn't, and drafts the revocation PRs.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">05</div>
+      <div class="step-body">
+        <h3>Vendor &amp; SaaS agent</h3>
+        <p>Startups accumulate 40+ SaaS subscriptions by Series A. An agent keeps them sane.</p>
+        <ul>
+          <li>Pulls the SaaS list from your finance system + SSO logs.</li>
+          <li>Flags: unused seats, overlapping tools, auto-renewals &lt;30 days out, MSAs that haven't had a security review.</li>
+          <li>Drafts cancellation emails, negotiation asks, and consolidation proposals.</li>
+        </ul>
+        <pre class="code"><span class="c-com"># Negotiation draft (renewal)</span>
+Our current plan is $X for Y seats; we use Z seats actively (60% utilization).
+We'd like to renew at Z seats at a 15% discount given the utilization gap,
+with a 12-month term. If that's not possible, we're exploring &lt;alt tool&gt;.</pre>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">06</div>
+      <div class="step-body">
+        <h3>IT &amp; device agent</h3>
+        <p>MDM events are the ops equivalent of a monitoring alert. Treat them that way.</p>
+        <ul>
+          <li>New device enrolled → checks against the hiring roster (was this expected?).</li>
+          <li>Disk unencrypted, OS out of date, suspicious app installed → drafts remediation steps.</li>
+          <li>Offboarding: a single command revokes SSO, wipes device, forwards email, transfers Drive ownership.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">07</div>
+      <div class="step-body">
+        <h3>Policy &amp; playbook library</h3>
+        <p>Every repeated ops decision should have a policy. Every policy should be readable by agents.</p>
+        <ul>
+          <li>One markdown file per policy: expense, travel, remote work, PTO, paternity, on-call.</li>
+          <li>An "HR assistant" agent answers teammate questions by citing the policy.</li>
+          <li>If no policy exists, it says so and routes to a human to author one — which is the whole point.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">08</div>
+      <div class="step-body">
+        <h3>Ritual: the weekly ops sweep</h3>
+        <p>30 minutes, every Friday. The agent dumps its working memory into one doc and you decide what matters.</p>
+        <ul>
+          <li>Hiring: open roles, aging candidates, offers out.</li>
+          <li>Onboarding: people in flight, sentiment flags.</li>
+          <li>Compliance: failing controls, upcoming audits.</li>
+          <li>Vendors: renewals this month, unused seats.</li>
+          <li>People: 1:1s missed, tenure anniversaries, birthdays.</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="callout tip"><strong>Principle:</strong> automate the clerical, not the judgmental. Agents route, draft, remind, and summarize. Hiring decisions, firing decisions, comp decisions, policy decisions — humans.</div>
+</main>
+<footer><span>Stargate · Operations</span><span class="mono">/operations</span></footer>
+</body></html>

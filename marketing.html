@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Marketing · Stargate</title>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<header class="site-nav"><div class="nav-wrap">
+<a class="brand" href="index.html"><span class="logo-dot"></span>Stargate<span class="tag">Agentic Ops</span></a>
+<nav class="primary">
+<a href="index.html">Overview</a>
+<a href="founders.html">Founders</a>
+<a href="marketing.html" class="active">Marketing</a>
+<a href="engineering.html">Engineering</a>
+<a href="design.html">Design</a>
+<a href="product.html">Product</a>
+<a href="finance.html">Finance</a>
+<a href="support.html">Support</a>
+<a href="operations.html">Operations</a>
+<a href="sales.html">Sales</a>
+<a href="data.html">Data</a>
+<a href="legal.html">Legal</a>
+</nav></div></header>
+
+<main>
+  <div class="page-header">
+    <div class="kicker">// MARKETING</div>
+    <h1>Punch above your weight on a zero-dollar budget</h1>
+    <p>You have no marketing team, maybe $2k/month, and need to generate pipeline. The goal isn't to drown the internet in AI slop — it's to build a small system of agents that amplify <em>your</em> voice, find real demand signals, and ship campaigns faster than any 10-person marketing team.</p>
+  </div>
+
+  <div class="tags">
+    <span class="tag cyan">content engine</span>
+    <span class="tag cyan">SEO</span>
+    <span class="tag cyan">brand voice</span>
+    <span class="tag cyan">social</span>
+    <span class="tag cyan">SEM</span>
+  </div>
+
+  <h2 class="section-title">Build the brand-voice brain first</h2>
+  <p>Every agent below is useless without a tight brand layer. Nail this and your AI content stops sounding like everyone else's AI content.</p>
+
+  <div class="steps">
+
+    <div class="step">
+      <div class="step-num">01</div>
+      <div class="step-body">
+        <h3>Author a Brand Voice spec (the single most leveraged doc)</h3>
+        <p>A one-pager that defines how your company sounds. Load it into every marketing prompt.</p>
+        <ul>
+          <li><strong>Voice attributes</strong> — 3 adjectives + 1 anti-adjective (e.g. "plainspoken, technical, slightly irreverent; <em>never</em> corporate").</li>
+          <li><strong>Signature moves</strong> — e.g. "we use numbers, not adjectives"; "we name the competitor."</li>
+          <li><strong>Banned phrases</strong> — "in today's fast-paced world", "delve", "leverage", "solution".</li>
+          <li><strong>Golden examples</strong> — 5 paragraphs of copy you wish you'd written. This matters more than rules.</li>
+        </ul>
+        <div class="callout tip">Feed this in as a <strong>system prompt preamble</strong> to every content agent. Store it in <code class="inline">/brand/voice.md</code> and version it.</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">02</div>
+      <div class="step-body">
+        <h3>SEO Opportunity Scout</h3>
+        <p>A research agent that finds queries you can actually rank for — not the head terms you never will.</p>
+        <ul>
+          <li>Tool: Ahrefs or DataForSEO MCP + WebFetch for SERP inspection.</li>
+          <li>Weekly job: pull queries with KD&lt;20, volume&gt;50, and no strong answer in top-10.</li>
+          <li>Scores opportunity = (volume × intent) / (competitor authority + SERP saturation).</li>
+          <li>Drops the top 10 into a "write queue" with a recommended angle for each.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">03</div>
+      <div class="step-body">
+        <h3>Content Engine (with a human spine)</h3>
+        <p>Three sub-agents working against the write queue. Human writes the spine, AI fills the scaffolding.</p>
+        <ul>
+          <li><strong>Research sub-agent</strong> — gathers primary sources, stats, quotes. Outputs a structured brief.</li>
+          <li><strong>Draft sub-agent</strong> — writes the article using brand voice + the research brief + a founder-authored thesis paragraph.</li>
+          <li><strong>Editor sub-agent</strong> — checks banned phrases, reading level (~grade 9), internal link density, and one "earned insight" per 500 words.</li>
+        </ul>
+        <div class="callout warn"><strong>Don't skip the thesis paragraph.</strong> The piece of the article that has to come from a human is the 3-5 sentence point of view. Everything else can be generated.</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">04</div>
+      <div class="step-body">
+        <h3>Distribution Fan-out Agent</h3>
+        <p>One article → 6 distribution assets, each re-written for the platform (not just truncated).</p>
+        <ul>
+          <li>LinkedIn post (founder voice, 1 hook + 3 beats + CTA).</li>
+          <li>X thread (6-9 tweets, punchier).</li>
+          <li>Email newsletter section.</li>
+          <li>YouTube script skeleton + thumbnail copy.</li>
+          <li>2 slide-style graphics for Instagram/LinkedIn carousel.</li>
+          <li>A 30-second founder video teleprompter script.</li>
+        </ul>
+        <pre class="code"><span class="c-com"># Platform rewrite prompt (LinkedIn)</span>
+Transform this article into a LinkedIn post.
+Constraints:
+  - Start with a 1-line hook that works even without the "see more".
+  - No hashtag soup. Max 2 hashtags.
+  - End with a question, not a CTA.
+  - Preserve the founder's voice from &lt;voice&gt; above.</pre>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">05</div>
+      <div class="step-body">
+        <h3>Demand-signal Listener</h3>
+        <p>A scheduled agent that watches Reddit, HN, X, and niche Slack/Discord communities for people asking questions your product solves.</p>
+        <ul>
+          <li>Scrapes with WebFetch (or Apify MCP) + classifies intent (<em>question, complaint, recommendation-seeking</em>).</li>
+          <li>Drops high-intent posts into Slack with a drafted, <strong>non-salesy</strong> reply for a human to review before posting.</li>
+          <li>Builds a weekly "voice of customer" digest the whole team reads.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">06</div>
+      <div class="step-body">
+        <h3>Ad Creative &amp; Landing Page Generator</h3>
+        <p>For paid: use AI to produce 30 ad variants a week and let performance pick winners. For landing pages: generate variants off a single source-of-truth page-config.</p>
+        <ul>
+          <li><strong>Creative agent</strong> — generates 3 hooks × 3 value props × 3 CTAs = 27 ads against a single brief, then deduplicates semantically.</li>
+          <li><strong>LP agent</strong> — consumes your page-config.yaml, emits React/Next components that match the design system (see <a href="design.html">Design</a>).</li>
+          <li><strong>Performance loop</strong> — once winners emerge, feed them back as "what's working" examples into the creative agent's next round.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">07</div>
+      <div class="step-body">
+        <h3>Measurement: what to actually track</h3>
+        <p>You'll generate 10x the output. That doesn't matter unless the right numbers move.</p>
+        <ul>
+          <li>Organic: qualified signups from content (not pageviews).</li>
+          <li>Social: reply rate &amp; profile visits (not likes).</li>
+          <li>Paid: CAC payback within 12 months (not CPC).</li>
+          <li>AI-specific: ratio of human edits to AI draft length — if editors rewrite &gt;50%, your voice spec is weak.</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="two-col">
+    <div class="mini-card">
+      <h4>// weekly cadence</h4>
+      <ul>
+        <li>Mon — SEO scout delivers write queue</li>
+        <li>Tue — 2 long-form drafts land for human edit</li>
+        <li>Wed — publish + fan-out</li>
+        <li>Thu — ad variant refresh + LP experiment</li>
+        <li>Fri — demand-signal digest + retro</li>
+      </ul>
+    </div>
+    <div class="mini-card">
+      <h4>// red flags</h4>
+      <ul>
+        <li>Articles ranking but no signups — wrong queries, fix the scout's scoring</li>
+        <li>Editors rewriting &gt;50% — your voice spec is thin</li>
+        <li>Declining reply rate on social — over-automation, add more founder-written posts</li>
+      </ul>
+    </div>
+  </div>
+</main>
+<footer><span>Stargate · Marketing</span><span class="mono">/marketing</span></footer>
+</body></html>

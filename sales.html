@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Sales · Stargate</title>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<header class="site-nav"><div class="nav-wrap">
+<a class="brand" href="index.html"><span class="logo-dot"></span>Stargate<span class="tag">Agentic Ops</span></a>
+<nav class="primary">
+<a href="index.html">Overview</a>
+<a href="founders.html">Founders</a>
+<a href="marketing.html">Marketing</a>
+<a href="engineering.html">Engineering</a>
+<a href="design.html">Design</a>
+<a href="product.html">Product</a>
+<a href="finance.html">Finance</a>
+<a href="support.html">Support</a>
+<a href="operations.html">Operations</a>
+<a href="sales.html" class="active">Sales</a>
+<a href="data.html">Data</a>
+<a href="legal.html">Legal</a>
+</nav></div></header>
+
+<main>
+  <div class="page-header">
+    <div class="kicker">// SALES</div>
+    <h1>Shorten the cycle from weeks to days</h1>
+    <p>Founder-led sales is the best kind of sales — and the hardest to scale. Agents let the founder spend all their time on the 3 conversations that matter, while everything upstream (research, outreach, follow-up) runs in the background with human voice and human gates.</p>
+  </div>
+
+  <div class="tags">
+    <span class="tag cyan">prospecting</span>
+    <span class="tag cyan">outbound</span>
+    <span class="tag cyan">call coaching</span>
+    <span class="tag cyan">deal desk</span>
+  </div>
+
+  <div class="steps">
+
+    <div class="step">
+      <div class="step-num">01</div>
+      <div class="step-body">
+        <h3>Define your ICP as a scoring rubric (not a paragraph)</h3>
+        <p>An agent can't act on "enterprise SaaS, mid-market". Give it scores.</p>
+        <ul>
+          <li>Firmographics: company size, vertical, tech stack, growth stage — each weighted.</li>
+          <li>Trigger events: new funding, new VP Eng, stack migration, specific job posting.</li>
+          <li>Disqualifiers: regulated industry you can't serve, cloud you don't support.</li>
+        </ul>
+        <pre class="code"><span class="c-com"># icp.yaml</span>
+firmographics:
+  employees: { range: [50, 500], weight: 2 }
+  stack_has: [<span class="c-str">postgres</span>, <span class="c-str">vercel</span>], weight: 3
+triggers:
+  funding_announced_last_90_days: 4
+  hiring_head_of_data: 5
+disqualify:
+  vertical: [<span class="c-str">defense</span>, <span class="c-str">adult</span>]</pre>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">02</div>
+      <div class="step-body">
+        <h3>Prospect research agent</h3>
+        <p>Takes an account + contact and returns a one-pager before every outbound message or call.</p>
+        <ul>
+          <li>Public data: company news, funding, recent content by the contact, stack signals.</li>
+          <li>Internal data: prior touches, existing users at the company, NPS of those users.</li>
+          <li>Output: a "why this company now" angle in 1-2 sentences. If it can't produce one, skip the account.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">03</div>
+      <div class="step-body">
+        <h3>Outbound drafting agent (never auto-send)</h3>
+        <p>Drafts one-to-one outbound off the research brief. The word "personalized" means something here.</p>
+        <ul>
+          <li>Opens with a specific, recent fact about the prospect (not "I've been following your work").</li>
+          <li>Ties that fact to your wedge in one sentence.</li>
+          <li>Asks one small question; no meeting ask in the first message.</li>
+          <li>Every draft stays in the SDR's inbox as a draft. Human sends.</li>
+        </ul>
+        <div class="callout warn">Auto-sent AI outbound is burning the brand of every startup using it. Don't. Draft + human-in-the-loop is the only acceptable pattern.</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">04</div>
+      <div class="step-body">
+        <h3>Meeting prep agent</h3>
+        <p>30 minutes before every call, Slack DM from the agent:</p>
+        <ul>
+          <li>Who's on the call + their LinkedIn highlights.</li>
+          <li>Deal context: stage, amount, last exchange, commitments open.</li>
+          <li>Three goals for this call + three objections likely to surface.</li>
+          <li>One fresh data point that wasn't in the last call.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">05</div>
+      <div class="step-body">
+        <h3>Call-coaching agent</h3>
+        <p>Post-call, the agent transcribes, extracts MEDDIC/SPICED signals, and scores the rep against the playbook.</p>
+        <ul>
+          <li>Did we identify the economic buyer?</li>
+          <li>Did we quantify the pain (dollars, hours, %)?</li>
+          <li>Did we get a specific next step with a date?</li>
+          <li>Weekly: the agent produces a rep-level coaching digest — strengths + one concrete thing to work on.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">06</div>
+      <div class="step-body">
+        <h3>Deal-desk &amp; proposal agent</h3>
+        <p>Generates customized proposals, redlines back, and tracks every pricing exception.</p>
+        <ul>
+          <li>Pulls the template + account data; produces a draft in Google Docs.</li>
+          <li>When the prospect redlines, the agent summarizes the changes and flags non-standard terms for legal (see <a href="legal.html">Legal</a>).</li>
+          <li>Every pricing discount is logged with reason; used later to detect drift ("we gave away 30% on every Q4 deal").</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">07</div>
+      <div class="step-body">
+        <h3>Pipeline hygiene agent</h3>
+        <p>The most boring, highest-ROI agent. Keeps your CRM honest.</p>
+        <ul>
+          <li>Stale-deal sweep: any opportunity with no activity in 14 days gets a pinged-rep reminder + a suggested next step.</li>
+          <li>Auto-logs: email threads, call summaries, doc views. No one types into the CRM.</li>
+          <li>Forecast call: Wed afternoon the agent produces a draft pipeline report. Rep adjusts. No more Friday panic.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">08</div>
+      <div class="step-body">
+        <h3>Customer-lifecycle continuity</h3>
+        <p>Sales → onboarding → support should feel like one company. Shared agents across stages.</p>
+        <ul>
+          <li>Win-to-onboarding handoff doc is agent-generated from call transcripts + contract.</li>
+          <li>CSM sees the full history without having to read 40 emails.</li>
+          <li>QBR prep pulls from the data warehouse (usage, feature adoption, support volume) — no manual slides.</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+  <table class="stack-table">
+    <thead><tr><th>Task</th><th>AI time</th><th>Human time saved</th></tr></thead>
+    <tbody>
+      <tr><td>Research 20 accounts</td><td>10 min</td><td>~2.5 hrs</td></tr>
+      <tr><td>Draft 20 one-to-one emails</td><td>15 min</td><td>~3 hrs</td></tr>
+      <tr><td>Meeting prep per call</td><td>1 min</td><td>15 min</td></tr>
+      <tr><td>Post-call notes + next steps</td><td>2 min</td><td>20 min</td></tr>
+      <tr><td>Weekly forecast prep</td><td>5 min</td><td>~1 hr</td></tr>
+    </tbody>
+  </table>
+</main>
+<footer><span>Stargate · Sales</span><span class="mono">/sales</span></footer>
+</body></html>

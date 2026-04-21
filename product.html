@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Product Management · Stargate</title>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<header class="site-nav"><div class="nav-wrap">
+<a class="brand" href="index.html"><span class="logo-dot"></span>Stargate<span class="tag">Agentic Ops</span></a>
+<nav class="primary">
+<a href="index.html">Overview</a>
+<a href="founders.html">Founders</a>
+<a href="marketing.html">Marketing</a>
+<a href="engineering.html">Engineering</a>
+<a href="design.html">Design</a>
+<a href="product.html" class="active">Product</a>
+<a href="finance.html">Finance</a>
+<a href="support.html">Support</a>
+<a href="operations.html">Operations</a>
+<a href="sales.html">Sales</a>
+<a href="data.html">Data</a>
+<a href="legal.html">Legal</a>
+</nav></div></header>
+
+<main>
+  <div class="page-header">
+    <div class="kicker">// PRODUCT MANAGEMENT</div>
+    <h1>From customer signal to executable spec, without the middle layer</h1>
+    <p>Early-stage PM is mostly listening, pattern-matching, and writing. An agentic PM stack compresses the "listen → synthesize → prioritize → spec" loop from weeks to days, and produces specs the engineering planner can execute without ambiguity.</p>
+  </div>
+
+  <div class="tags">
+    <span class="tag cyan">user research</span>
+    <span class="tag cyan">roadmap</span>
+    <span class="tag cyan">spec writing</span>
+    <span class="tag cyan">discovery</span>
+  </div>
+
+  <div class="steps">
+
+    <div class="step">
+      <div class="step-num">01</div>
+      <div class="step-body">
+        <h3>Research synthesis agent</h3>
+        <p>Record every customer call. Feed transcripts to a synthesis agent that clusters pain points, quotes, and feature asks.</p>
+        <ul>
+          <li>Sources: Fireflies/Granola (calls), Intercom/email, in-product feedback widget.</li>
+          <li>Every 2 weeks, the agent produces a "voice-of-customer" doc with clustered themes, frequency, and direct quotes.</li>
+          <li>It links each theme to the underlying calls so the PM can drill in.</li>
+        </ul>
+        <div class="callout tip">Force the agent to include direct quotes, not summaries. Quotes survive the pattern-match; summaries decay.</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">02</div>
+      <div class="step-body">
+        <h3>Opportunity scoring agent</h3>
+        <p>A scoring function that combines research signal, revenue exposure, and engineering cost estimate.</p>
+        <ul>
+          <li>Pulls account data (ARR, stage) from the CRM for each opportunity.</li>
+          <li>Asks the engineering planner agent for a rough-order-of-magnitude estimate.</li>
+          <li>Emits a ranked list into a Notion database that the team reviews weekly.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">03</div>
+      <div class="step-body">
+        <h3>Spec-writing agent with a hard template</h3>
+        <p>Specs are the handshake between PM and the engineering planner. Enforce a tight template and an agent that checks specs conform to it.</p>
+        <pre class="code"><span class="c-com"># Spec template (enforced)</span>
+1. Problem (3 sentences, cite customer quotes)
+2. Who (persona + pain frequency)
+3. Outcome (what becomes true when shipped)
+4. Acceptance criteria (list, testable)
+5. Non-goals (bulleted, explicit)
+6. Open questions (flag risks early)
+7. Success metric (one, measurable, with baseline)</pre>
+        <ul>
+          <li>The agent refuses to publish a spec missing any section.</li>
+          <li>It cross-links the spec to the VoC doc and the roadmap item.</li>
+          <li>It runs the spec through the planner agent to preview the task DAG.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">04</div>
+      <div class="step-body">
+        <h3>Competitive intelligence (that isn't just copying)</h3>
+        <p>Track competitor changelogs, pricing, and positioning — but use the agent to extract <em>gaps</em>, not just diffs.</p>
+        <ul>
+          <li>Weekly scraper of competitor docs, changelog, pricing pages.</li>
+          <li>Agent compares their stated customer outcomes to ours and produces a 3-bullet "where they're ahead / where we're ahead / where nobody is".</li>
+          <li>The third bullet is the interesting one. Route it to the roadmap review.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">05</div>
+      <div class="step-body">
+        <h3>Release notes &amp; in-app changelog</h3>
+        <p>When an engineering PR merges, an agent drafts customer-facing release notes from the PR description + diff.</p>
+        <ul>
+          <li>Batched weekly into a single changelog post — not spammed per merge.</li>
+          <li>Copy matches the brand voice spec from <a href="marketing.html">Marketing</a>.</li>
+          <li>Humans review + add "why we built this" context before publish.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">06</div>
+      <div class="step-body">
+        <h3>Experiment designer</h3>
+        <p>For any new feature shipped behind a flag, an agent proposes the experiment: hypothesis, metric, guardrails, sample size.</p>
+        <ul>
+          <li>Pulls historical metric baselines from the data warehouse (see <a href="data.html">Data</a>).</li>
+          <li>Computes required sample size for detectable effect.</li>
+          <li>Writes the experiment doc in the same template, ships it to LaunchDarkly/Flagsmith.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">07</div>
+      <div class="step-body">
+        <h3>Roadmap storyteller</h3>
+        <p>An agent that can generate three audiences of the same roadmap off one source file:</p>
+        <ul>
+          <li><strong>Internal</strong> — honest, with risks and unknowns.</li>
+          <li><strong>Customer-facing</strong> — outcome-led, soft dates.</li>
+          <li><strong>Investor-facing</strong> — thesis-aligned, metric-forward.</li>
+        </ul>
+        <div class="callout warn"><strong>Source of truth is the internal roadmap.</strong> The others are <em>projections</em>, regenerated weekly. Don't let them drift.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <h2 class="section-title">How PM hands off to engineering</h2>
+  <p>A clean handoff is the highest ROI workflow on this page.</p>
+  <table class="stack-table">
+    <thead><tr><th>Step</th><th>Artifact</th><th>Owner</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>VoC cluster doc</td><td>Research agent</td></tr>
+      <tr><td>2</td><td>Scored opportunity</td><td>PM + scoring agent</td></tr>
+      <tr><td>3</td><td>Spec.md (template-enforced)</td><td>PM + spec agent</td></tr>
+      <tr><td>4</td><td>Planner-reviewed DAG</td><td>Engineering planner</td></tr>
+      <tr><td>5</td><td>Design review (components)</td><td>Design agent</td></tr>
+      <tr><td>6</td><td>Experiment design</td><td>Experiment agent</td></tr>
+      <tr><td>7</td><td>Release notes</td><td>Release-notes agent</td></tr>
+    </tbody>
+  </table>
+</main>
+<footer><span>Stargate · Product</span><span class="mono">/product</span></footer>
+</body></html>

@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Data &amp; Analytics · Stargate</title>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<header class="site-nav"><div class="nav-wrap">
+<a class="brand" href="index.html"><span class="logo-dot"></span>Stargate<span class="tag">Agentic Ops</span></a>
+<nav class="primary">
+<a href="index.html">Overview</a>
+<a href="founders.html">Founders</a>
+<a href="marketing.html">Marketing</a>
+<a href="engineering.html">Engineering</a>
+<a href="design.html">Design</a>
+<a href="product.html">Product</a>
+<a href="finance.html">Finance</a>
+<a href="support.html">Support</a>
+<a href="operations.html">Operations</a>
+<a href="sales.html">Sales</a>
+<a href="data.html" class="active">Data</a>
+<a href="legal.html">Legal</a>
+</nav></div></header>
+
+<main>
+  <div class="page-header">
+    <div class="kicker">// DATA &amp; ANALYTICS</div>
+    <h1>A text-to-SQL analyst every teammate can ask</h1>
+    <p>Early-stage companies don't need a data team. They need one clean warehouse, a semantic layer, and an agent that answers questions in plain English — with the SQL shown so humans can verify. This stack scales from 3 people to 50 without rewriting the analytics tier.</p>
+  </div>
+
+  <div class="tags">
+    <span class="tag cyan">text-to-SQL</span>
+    <span class="tag cyan">semantic layer</span>
+    <span class="tag cyan">dbt</span>
+    <span class="tag cyan">warehouse</span>
+  </div>
+
+  <div class="steps">
+
+    <div class="step">
+      <div class="step-num">01</div>
+      <div class="step-body">
+        <h3>One warehouse. Pick it and commit.</h3>
+        <p>Do not run analytics off your prod DB. Get a warehouse with a free tier on day one.</p>
+        <ul>
+          <li>BigQuery, Snowflake, or Motherduck — all fine. BigQuery is easiest if you're Google-shop.</li>
+          <li>Use Fivetran/Airbyte/dltHub to pipe in: prod DB replicas, Stripe, Segment, Salesforce, Intercom.</li>
+          <li>Dated partitioning on every fact table. Pay-per-query means you want pruning.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">02</div>
+      <div class="step-body">
+        <h3>Build the semantic layer before building dashboards</h3>
+        <p>The semantic layer is <em>the</em> unlock for agentic data. It's how agents know what "active user" means.</p>
+        <ul>
+          <li>dbt + a metrics/semantic config (dbt Metrics, Cube, or MetricFlow).</li>
+          <li>Every metric has: definition, grain, owner, filters, and the approved SQL.</li>
+          <li>This is the same <code class="inline">metric dictionary</code> referenced in <a href="finance.html">Finance</a>. One file. Two consumers.</li>
+        </ul>
+        <pre class="code"><span class="c-com"># metrics.yml</span>
+metrics:
+  - name: active_users_7d
+    description: Distinct users who performed a core action in the last 7 days.
+    grain: user
+    sql: <span class="c-str">SELECT COUNT(DISTINCT user_id) FROM events WHERE action IN (...) AND ts &gt; NOW() - INTERVAL 7 DAY</span>
+    owner: product</pre>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">03</div>
+      <div class="step-body">
+        <h3>The analyst agent (text-to-SQL, done right)</h3>
+        <p>The difference between a fun demo and a trusted tool is how you wire context.</p>
+        <ul>
+          <li>Agent has read access to: the semantic layer, dbt model docs, past queries (successful ones), a few "gold" annotated queries.</li>
+          <li>For every question it: (a) proposes the SQL, (b) runs it against a sample, (c) shows the SQL + result, (d) asks if you want the full run.</li>
+          <li>Never phrases the answer as a fact without citing the SQL.</li>
+        </ul>
+        <div class="callout warn"><strong>Guardrail:</strong> read-only role for the agent. No DELETE, no DROP, no cross-dataset joins without explicit grant.</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">04</div>
+      <div class="step-body">
+        <h3>Self-serve dashboards, generated from metrics</h3>
+        <p>Skip Tableau at this stage. Let the analyst agent emit Lightdash/Metabase configs from the semantic layer.</p>
+        <ul>
+          <li>One dashboard per role: founder KPI, sales, CS, finance, engineering SLIs.</li>
+          <li>The agent generates the first pass; humans adjust layout.</li>
+          <li>Every widget traces back to a named metric — no duplicate definitions floating around.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">05</div>
+      <div class="step-body">
+        <h3>Anomaly detection (the alert you actually want)</h3>
+        <p>Forget static thresholds. A nightly agent checks every top-line metric for shifts.</p>
+        <ul>
+          <li>Simple model: 14-day moving baseline + 3σ envelope.</li>
+          <li>When it fires, the agent attempts to <em>explain</em>: segments that moved, correlated deploys, ticket volume shifts.</li>
+          <li>Posts a "here's what changed and why I think so" to Slack, with the SQL.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">06</div>
+      <div class="step-body">
+        <h3>Feature-adoption agent</h3>
+        <p>Per feature shipped behind a flag, the agent owns the measurement loop.</p>
+        <ul>
+          <li>Defines the adoption funnel from the spec.</li>
+          <li>Produces a weekly cohort-retention curve.</li>
+          <li>Compares to the pre-registered hypothesis and reports success/fail with confidence interval.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">07</div>
+      <div class="step-body">
+        <h3>Data-quality watchdog</h3>
+        <p>Trust in the warehouse is everything. Treat schema changes as incidents.</p>
+        <ul>
+          <li>dbt tests on every model: not-null on primary keys, unique on join keys, accepted-values on enums.</li>
+          <li>Freshness checks: every source table updated within its SLA.</li>
+          <li>When a test fails, the agent opens a ticket, identifies the upstream schema change (if any), and suggests the fix.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">08</div>
+      <div class="step-body">
+        <h3>Scale path</h3>
+        <p>At 20 people you'll want:</p>
+        <ul>
+          <li>A reverse-ETL back into Salesforce/HubSpot/Intercom (Hightouch/Census).</li>
+          <li>A lightweight experimentation platform (Statsig/GrowthBook).</li>
+          <li>Row-level permissions on sensitive tables; the agent respects them.</li>
+        </ul>
+        <p>At 50+ people, hire a real data lead. The agent becomes their lever.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <h2 class="section-title">Pitfalls</h2>
+  <div class="two-col">
+    <div class="mini-card">
+      <h4>// don't</h4>
+      <ul>
+        <li>Let the agent run against prod DB</li>
+        <li>Have multiple definitions of ARR</li>
+        <li>Ship dashboards before the semantic layer</li>
+        <li>Trust SQL you can't read</li>
+      </ul>
+    </div>
+    <div class="mini-card">
+      <h4>// do</h4>
+      <ul>
+        <li>Start with 10 metrics, not 200</li>
+        <li>Show the SQL, always</li>
+        <li>Version-control everything</li>
+        <li>Sample-run before full-run on large queries</li>
+      </ul>
+    </div>
+  </div>
+</main>
+<footer><span>Stargate · Data</span><span class="mono">/data</span></footer>
+</body></html>

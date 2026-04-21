@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Stargate — Agentic AI Playbook for Startups</title>
+<meta name="description" content="A step-by-step playbook for setting up agentic AI across every function of a startup — founders, engineering, design, marketing, finance, support, ops, sales, data, and legal." />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<header class="site-nav">
+  <div class="nav-wrap">
+    <a class="brand" href="index.html"><span class="logo-dot"></span>Stargate<span class="tag">Agentic Ops</span></a>
+    <nav class="primary">
+      <a href="index.html" class="active">Overview</a>
+      <a href="founders.html">Founders</a>
+      <a href="marketing.html">Marketing</a>
+      <a href="engineering.html">Engineering</a>
+      <a href="design.html">Design</a>
+      <a href="product.html">Product</a>
+      <a href="finance.html">Finance</a>
+      <a href="support.html">Support</a>
+      <a href="operations.html">Operations</a>
+      <a href="sales.html">Sales</a>
+      <a href="data.html">Data</a>
+      <a href="legal.html">Legal</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <h1 class="brand-title">Stargate</h1>
+    <p class="tagline">Agentic AI Playbooks for Startups</p>
+    <p class="lede">A practical, role-by-role guide to wiring autonomous AI agents into every part of your company — from the first pitch deck to your first enterprise customer. Each section is a set of concrete steps, tool choices, and prompts you can copy today.</p>
+  </section>
+
+  <h2 class="section-title">Core principles</h2>
+  <p>Before you spin up a single agent, commit to these five rules. They are the difference between a team that is 10x leveraged and one drowning in hallucinated slop.</p>
+
+  <div class="two-col">
+    <div class="mini-card">
+      <h4>// 01 · humans in the loop at write boundaries</h4>
+      <ul>
+        <li>Agents read freely. Writes to customers, repos, money, and prod require human approval.</li>
+        <li>Define your approval gates up front, per role.</li>
+      </ul>
+    </div>
+    <div class="mini-card">
+      <h4>// 02 · own your context layer</h4>
+      <ul>
+        <li>A shared knowledge base (Notion/MDX repo) every agent reads from beats per-tool prompts.</li>
+        <li>Version it. Treat prompts as code.</li>
+      </ul>
+    </div>
+    <div class="mini-card">
+      <h4>// 03 · narrow, composable agents</h4>
+      <ul>
+        <li>One agent per job. Orchestrate with planners, not mega-prompts.</li>
+        <li>Subagents beat monoliths once tasks exceed ~5 steps.</li>
+      </ul>
+    </div>
+    <div class="mini-card">
+      <h4>// 04 · evaluate before you trust</h4>
+      <ul>
+        <li>Every agent ships with evals (golden examples + auto-graders).</li>
+        <li>No evals, no prod. No exceptions.</li>
+      </ul>
+    </div>
+    <div class="mini-card">
+      <h4>// 05 · cost + latency are product features</h4>
+      <ul>
+        <li>Route by task: Haiku/small models for classify & extract, Opus/large for plan & write.</li>
+        <li>Cache aggressively. Stream everywhere.</li>
+      </ul>
+    </div>
+    <div class="mini-card">
+      <h4>// 06 · security first, not later</h4>
+      <ul>
+        <li>No prod credentials in agent memory. Use scoped tokens, least privilege.</li>
+        <li>Log every tool call. Replay is your audit trail.</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2 class="section-title">Pick a role to set up</h2>
+  <p>Each page is a self-contained runbook: tools, agent designs, example prompts, and the order to roll them out in.</p>
+
+  <div class="role-grid">
+    <a href="founders.html" class="role-card">
+      <span class="icon">// FOUNDER</span>
+      <h3>Founders</h3>
+      <p>Pitch decks, fundraising, investor research, market sizing, lease negotiation — use AI as your co-founder before you can afford one.</p>
+      <div class="arrow">→ open playbook</div>
+    </a>
+    <a href="marketing.html" class="role-card">
+      <span class="icon">// GTM</span>
+      <h3>Marketing</h3>
+      <p>Punch above your weight with agentic content engines, SEO scouts, and brand-consistent campaign generators on a shoestring budget.</p>
+      <div class="arrow">→ open playbook</div>
+    </a>
+    <a href="engineering.html" class="role-card">
+      <span class="icon">// ENG</span>
+      <h3>Software Engineering</h3>
+      <p>A full agentic SDLC — from spec to PR to production — that gets you to MVP in weeks without sacrificing enterprise-readiness.</p>
+      <div class="arrow">→ open playbook</div>
+    </a>
+    <a href="design.html" class="role-card">
+      <span class="icon">// DESIGN</span>
+      <h3>Product Design</h3>
+      <p>A design-system agent engineers can call into — so every feature ships with consistent components, brand, and accessibility.</p>
+      <div class="arrow">→ open playbook</div>
+    </a>
+    <a href="product.html" class="role-card">
+      <span class="icon">// PM</span>
+      <h3>Product Management</h3>
+      <p>Synthesize user interviews, prioritize roadmaps, and generate specs that engineering agents can execute without ambiguity.</p>
+      <div class="arrow">→ open playbook</div>
+    </a>
+    <a href="finance.html" class="role-card">
+      <span class="icon">// FIN</span>
+      <h3>Finance</h3>
+      <p>Auto-updating financial models, scenario planning, and investor-ready metrics dashboards — the ones VCs actually care about.</p>
+      <div class="arrow">→ open playbook</div>
+    </a>
+    <a href="support.html" class="role-card">
+      <span class="icon">// CX</span>
+      <h3>Customer Support</h3>
+      <p>AI that triages tickets, drafts responses, summarizes calls, and flags product bugs — so two humans feel like twenty.</p>
+      <div class="arrow">→ open playbook</div>
+    </a>
+    <a href="operations.html" class="role-card">
+      <span class="icon">// OPS</span>
+      <h3>Operations</h3>
+      <p>Hiring pipelines, onboarding, compliance trackers, vendor reviews — the invisible work that kills velocity, now automated.</p>
+      <div class="arrow">→ open playbook</div>
+    </a>
+    <a href="sales.html" class="role-card">
+      <span class="icon">// SALES</span>
+      <h3>Sales</h3>
+      <p>Prospect research, personalized outbound, call coaching, and deal-desk agents that shorten your cycle from weeks to days.</p>
+      <div class="arrow">→ open playbook</div>
+    </a>
+    <a href="data.html" class="role-card">
+      <span class="icon">// DATA</span>
+      <h3>Data &amp; Analytics</h3>
+      <p>A text-to-SQL analyst every teammate can ask questions of, plus pipelines that keep your single source of truth honest.</p>
+      <div class="arrow">→ open playbook</div>
+    </a>
+    <a href="legal.html" class="role-card">
+      <span class="icon">// LEGAL</span>
+      <h3>Legal &amp; Compliance</h3>
+      <p>Contract review, DPAs, SOC2 evidence collection, and a policy library agents cite from — fractional GC for ~$0.</p>
+      <div class="arrow">→ open playbook</div>
+    </a>
+    <a href="#stack" class="role-card">
+      <span class="icon">// STACK</span>
+      <h3>Reference Stack</h3>
+      <p>The opinionated tool list we recommend for a 3-10 person team getting started this quarter.</p>
+      <div class="arrow">↓ jump to stack</div>
+    </a>
+  </div>
+
+  <h2 class="section-title" id="stack">Reference stack</h2>
+  <p>Start here. Swap later when you have real constraints.</p>
+
+  <table class="stack-table">
+    <thead><tr><th>Layer</th><th>Default Pick</th><th>Why</th></tr></thead>
+    <tbody>
+      <tr><td>Frontier model (reasoning)</td><td>Claude Opus 4.7</td><td>Best-in-class planning &amp; long-horizon agents. 1M context.</td></tr>
+      <tr><td>Frontier model (volume)</td><td>Claude Sonnet 4.6</td><td>Cheap + fast for most agent loops.</td></tr>
+      <tr><td>Classify / extract</td><td>Claude Haiku 4.5</td><td>Sub-cent per call, still instruction-following.</td></tr>
+      <tr><td>Coding agent IDE</td><td>Claude Code</td><td>Terminal-native, tool-use first, MCP ecosystem.</td></tr>
+      <tr><td>Agent framework</td><td>Claude Agent SDK</td><td>Official, production-grade, streams + caching built in.</td></tr>
+      <tr><td>Orchestration</td><td>Temporal or Inngest</td><td>Durable execution. Agents crash; workflows shouldn't.</td></tr>
+      <tr><td>Vector store</td><td>pgvector</td><td>Already have Postgres. Don't add a new DB yet.</td></tr>
+      <tr><td>Observability</td><td>Langfuse / Braintrust</td><td>Traces, evals, and prompt versioning in one place.</td></tr>
+      <tr><td>Internal knowledge</td><td>Notion + MDX repo</td><td>Human-editable, machine-readable, git-backed.</td></tr>
+      <tr><td>Tool protocol</td><td>MCP servers</td><td>Build tools once, every agent can call them.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout tip"><strong>Rollout order:</strong> Engineering → Design → Product → Support → Marketing → Sales → Finance → Ops → Data → Legal. Code &amp; design agents pay back first because every other agent eventually needs a tool, a form, or a landing page built.</div>
+</main>
+
+<footer>
+  <span>Stargate · Agentic Ops Playbook</span>
+  <span class="mono">v1.0 · last updated 2026-04-21</span>
+</footer>
+
+</body>
+</html>

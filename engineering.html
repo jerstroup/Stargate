@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Software Engineering · Stargate</title>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<header class="site-nav"><div class="nav-wrap">
+<a class="brand" href="index.html"><span class="logo-dot"></span>Stargate<span class="tag">Agentic Ops</span></a>
+<nav class="primary">
+<a href="index.html">Overview</a>
+<a href="founders.html">Founders</a>
+<a href="marketing.html">Marketing</a>
+<a href="engineering.html" class="active">Engineering</a>
+<a href="design.html">Design</a>
+<a href="product.html">Product</a>
+<a href="finance.html">Finance</a>
+<a href="support.html">Support</a>
+<a href="operations.html">Operations</a>
+<a href="sales.html">Sales</a>
+<a href="data.html">Data</a>
+<a href="legal.html">Legal</a>
+</nav></div></header>
+
+<main>
+  <div class="page-header">
+    <div class="kicker">// SOFTWARE ENGINEERING</div>
+    <h1>An agentic SDLC: MVP in weeks, enterprise-ready from day one</h1>
+    <p>Most AI coding setups get you to a demo and then collapse under the weight of a real codebase. This is the opposite: a layered agentic system — planner, coder, reviewer, test, deploy, and oncall — that can take a three-person team from prototype to SOC2-ready production without rewriting everything at Series A.</p>
+  </div>
+
+  <div class="tags">
+    <span class="tag cyan">Claude Code</span>
+    <span class="tag cyan">Agent SDK</span>
+    <span class="tag cyan">MCP</span>
+    <span class="tag cyan">CI evals</span>
+    <span class="tag cyan">monorepo</span>
+  </div>
+
+  <h2 class="section-title">The target architecture</h2>
+  <p>Six agents, one orchestrator, one eval harness. You won't build all of them day one — you'll build them in the order below.</p>
+
+  <div class="two-col">
+    <div class="mini-card">
+      <h4>// agents</h4>
+      <ul>
+        <li><strong>Planner</strong> — turns a spec into a task DAG</li>
+        <li><strong>Coder</strong> — implements one node at a time</li>
+        <li><strong>Reviewer</strong> — critical PR feedback</li>
+        <li><strong>Test author</strong> — writes + maintains tests</li>
+        <li><strong>Release</strong> — runs migrations, canaries, rollback</li>
+        <li><strong>Oncall</strong> — triages alerts, drafts incident notes</li>
+      </ul>
+    </div>
+    <div class="mini-card">
+      <h4>// shared substrate</h4>
+      <ul>
+        <li>Single monorepo (Turbo/Nx)</li>
+        <li>MCP servers for: db, search, logs, Linear, Figma</li>
+        <li><code class="inline">/CLAUDE.md</code> + <code class="inline">/skills/*.md</code> in repo root</li>
+        <li>Eval suite in <code class="inline">/evals</code></li>
+        <li>Trace store (Langfuse)</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2 class="section-title">The rollout</h2>
+  <p>Ten steps. Roughly 6-10 weeks elapsed for a 2-3 person team.</p>
+
+  <div class="steps">
+
+    <div class="step">
+      <div class="step-num">01</div>
+      <div class="step-body">
+        <h3>Make the repo agent-legible</h3>
+        <p>Before any agent, invest 1 day writing a great <code class="inline">CLAUDE.md</code>. It is the single highest-leverage artifact in your codebase.</p>
+        <ul>
+          <li>Architecture overview (5-10 bullets, not an essay).</li>
+          <li>"How we do X": testing, migrations, deploys, adding a new endpoint.</li>
+          <li>Non-obvious invariants ("we never mutate req.ctx after middleware").</li>
+          <li>Command cheatsheet: <code class="inline">pnpm dev</code>, <code class="inline">pnpm test</code>, <code class="inline">pnpm db:migrate</code>.</li>
+          <li>Links to the style guide, the design-system agent, and the data dictionary.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">02</div>
+      <div class="step-body">
+        <h3>Pick one coding IDE &amp; standardize</h3>
+        <p>Heterogeneity costs you. Pick <strong>Claude Code</strong> as the default terminal agent — team installs, shares hooks, shares subagents. Everyone gets the same capabilities on day one.</p>
+        <ul>
+          <li>Commit <code class="inline">.claude/settings.json</code> to the repo (permissions, hooks).</li>
+          <li>Commit <code class="inline">.claude/agents/*.md</code> — shared subagents like <em>reviewer</em>, <em>test-writer</em>, <em>explorer</em>.</li>
+          <li>Commit <code class="inline">.claude/skills/*/SKILL.md</code> — opinionated workflows (e.g. <em>add-feature-flag</em>, <em>new-migration</em>).</li>
+        </ul>
+        <div class="callout tip">Team skills = institutional knowledge that compounds. Every time you solve a tricky workflow twice, skillify it.</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">03</div>
+      <div class="step-body">
+        <h3>Wire your MCP tool surface</h3>
+        <p>The capabilities your agents <em>share</em> live here. Build five servers in this order:</p>
+        <ol>
+          <li><strong>db</strong> — read-only SQL against staging. Never prod.</li>
+          <li><strong>logs</strong> — structured search over the last 7 days.</li>
+          <li><strong>linear</strong> (or similar) — tickets in, tickets out.</li>
+          <li><strong>figma</strong> — pull frame specs for UI tasks.</li>
+          <li><strong>docs</strong> — semantic search over <code class="inline">/docs</code> + Notion.</li>
+        </ol>
+        <div class="callout warn"><strong>Credential hygiene:</strong> every MCP server runs with least-privilege tokens issued per-developer and rotated weekly. Agents never see prod write credentials.</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">04</div>
+      <div class="step-body">
+        <h3>Build the Planner agent</h3>
+        <p>The Planner turns a spec (markdown from PM or founder) into a task DAG with acceptance criteria per node. It does <em>not</em> write code.</p>
+        <ul>
+          <li>Input: a spec file + the repo context + the design tokens.</li>
+          <li>Output: <code class="inline">plan.md</code> with a numbered tree, each node having <code class="inline">file_touched</code>, <code class="inline">acceptance</code>, and <code class="inline">rollback</code>.</li>
+          <li>Why separate: planning and coding benefit from different prompts + different models (Opus for planning, Sonnet for coding).</li>
+        </ul>
+        <pre class="code"><span class="c-com"># Planner prompt core</span>
+Break this spec into atomic tasks &lt;=150 LOC each.
+For each task:
+  1. file(s) touched
+  2. public interface (if any)
+  3. acceptance test (one sentence, executable)
+  4. rollback strategy
+Emit as markdown, no code.</pre>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">05</div>
+      <div class="step-body">
+        <h3>The Coder loop: feature branches are cheap</h3>
+        <p>One task per branch. One branch per PR. One PR per review cycle. Agents get lost in big changes — humans too.</p>
+        <ul>
+          <li>Agent reads the task from <code class="inline">plan.md</code>.</li>
+          <li>Writes code + tests together (TDD preferred — tests constrain hallucination).</li>
+          <li>Runs <code class="inline">pnpm typecheck</code>, <code class="inline">pnpm test</code>, <code class="inline">pnpm lint</code> locally before opening the PR.</li>
+          <li>PR description is auto-generated from the task node.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">06</div>
+      <div class="step-body">
+        <h3>Reviewer agent in CI (the quality floor)</h3>
+        <p>A GitHub Action that runs a reviewer subagent on every PR. Not a gate — a signal amplifier.</p>
+        <ul>
+          <li>Loads the diff, the touched files' full contents, the spec, and the eval suite.</li>
+          <li>Checks: missing error paths, unbounded loops, N+1 queries, security smells (SSRF, injection), test coverage of new branches.</li>
+          <li>Posts inline comments prefixed <code class="inline">🤖</code> so they're easy to filter.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">07</div>
+      <div class="step-body">
+        <h3>Evals: the part nobody skips and lives</h3>
+        <p>Evals are for <em>your agents</em>, not just your product. Without them, every prompt tweak is a vibe.</p>
+        <ul>
+          <li><strong>Regression set</strong> — 20-50 real tasks with human-graded outcomes. Run nightly.</li>
+          <li><strong>LLM-as-judge</strong> — a separate judge agent scores PR quality against a rubric.</li>
+          <li><strong>Red-team suite</strong> — prompt-injection attempts, malicious diffs, tool-abuse scenarios.</li>
+          <li>Publish eval scores to a dashboard the whole team sees every Monday.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">08</div>
+      <div class="step-body">
+        <h3>Release &amp; Oncall agents (enterprise-ready path)</h3>
+        <p>This is where you move from "AI-assisted shop" to "agentic org".</p>
+        <ul>
+          <li><strong>Release agent</strong> runs migrations in staging, smoke tests, canary deploys, watches SLOs, rolls back automatically on error-rate regressions.</li>
+          <li><strong>Oncall agent</strong> receives PagerDuty, queries logs + traces, drafts an incident summary within 5 minutes, and suggests the three most likely causes with test commands.</li>
+          <li>Humans approve production writes. Always.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">09</div>
+      <div class="step-body">
+        <h3>Security hardening for enterprise buyers</h3>
+        <p>If your agents will touch production code or customer data, expect questions from procurement.</p>
+        <ul>
+          <li>Prompt-injection defense: strip tool-use responses of instruction-like content; deny-list risky tokens; sandbox all code execution.</li>
+          <li>Data residency: pin model provider region; no cross-border training opt-ins.</li>
+          <li>Logging: every agent action logged with actor, input hash, tool invocation, output hash. 1-year retention.</li>
+          <li>Policy: a one-pager titled "AI in the SDLC" you can hand to a CISO. Cover data flow, human gates, incident response.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">10</div>
+      <div class="step-body">
+        <h3>Team rituals that make it stick</h3>
+        <ul>
+          <li><strong>Prompt review</strong> — 30 min weekly; we read changes to agent prompts like we read code reviews.</li>
+          <li><strong>Skill drop</strong> — every eng who solves a tricky workflow skillifies it before end of week.</li>
+          <li><strong>Eval review</strong> — Monday standup opens with eval deltas.</li>
+          <li><strong>Trace of the week</strong> — pick one weird agent trace, read it together. Best learning tool we have.</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+  <h2 class="section-title">Agile, evolved: Scrum &amp; Kanban for agentic teams</h2>
+  <p>Scrum and Kanban were designed for humans-as-the-bottleneck. Once half your "team" is agents running in parallel loops, most of the ceremonies break — and a few become radically more valuable. Here's how to evolve the frameworks instead of throwing them out.</p>
+
+  <div class="tags">
+    <span class="tag accent">scrum</span>
+    <span class="tag accent">kanban</span>
+    <span class="tag accent">WIP limits</span>
+    <span class="tag accent">ceremonies</span>
+    <span class="tag accent">estimation</span>
+  </div>
+
+  <div class="two-col">
+    <div class="mini-card">
+      <h4>// what stays</h4>
+      <ul>
+        <li><strong>WIP limits</strong> — more important, not less. Agents happily run 20 branches you can't review.</li>
+        <li><strong>Definition of Done</strong> — now includes evals passing + trace reviewed.</li>
+        <li><strong>Retros</strong> — still the fastest learning loop. Add prompts + traces as artifacts.</li>
+        <li><strong>Demos</strong> — the forcing function for "did it actually work?".</li>
+      </ul>
+    </div>
+    <div class="mini-card">
+      <h4>// what changes or dies</h4>
+      <ul>
+        <li><strong>Story points</strong> — meaningless when an agent ships the task in 20 minutes. Kill them.</li>
+        <li><strong>Daily standup</strong> — shrinks to 10 min, front-loaded with an agent-generated status.</li>
+        <li><strong>Sprint length</strong> — 2 weeks → 3-5 days. The cycle time is real now.</li>
+        <li><strong>Backlog grooming</strong> — becomes "spec quality review"; the spec <em>is</em> the work.</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2 class="section-title">Evolution in six moves</h2>
+
+  <div class="steps">
+
+    <div class="step">
+      <div class="step-num">A</div>
+      <div class="step-body">
+        <h3>Redefine the unit of work around spec + DAG, not ticket</h3>
+        <p>In a human-only team, a ticket is a chunk one person can pick up. In an agentic team, the true unit is a spec that the planner agent can decompose into a task DAG (see Step 04 above).</p>
+        <ul>
+          <li><strong>Parent:</strong> a spec.md (PM-owned, template-enforced).</li>
+          <li><strong>Children:</strong> auto-generated task nodes from the planner, each one PR-sized.</li>
+          <li><strong>Board columns</strong> track the spec; a collapsible drawer shows the child tasks the agent is chewing on.</li>
+          <li>You stop estimating children. You only estimate specs — and only in "will this fit in one cycle?" buckets.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">B</div>
+      <div class="step-body">
+        <h3>Add lanes for agent state, not just human state</h3>
+        <p>Classical Kanban: <em>Todo → In Progress → Review → Done</em>. Agentic Kanban separates agent work from human gates.</p>
+        <pre class="code"><span class="c-com"># Agentic Kanban columns</span>
+Spec Ready   →  Planner queued  →  Agent Building  →  Agent Self-Check
+             →  Human Review    →  CI + Evals      →  Canary        →  Done</pre>
+        <ul>
+          <li><strong>Agent Self-Check</strong> — the agent runs tests, reviewer subagent, and eval subset before a human looks. Half the PRs get sent back here, not to the human.</li>
+          <li><strong>Human Review</strong> has a strict WIP limit = number of humans × 2. Everything else queues.</li>
+          <li>Agent columns <em>can</em> run wide (5-10 in flight); human columns stay narrow.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">C</div>
+      <div class="step-body">
+        <h3>WIP limits become the central governance mechanism</h3>
+        <p>The single biggest failure mode of agentic engineering is humans drowning in agent output. WIP limits are how you prevent it.</p>
+        <ul>
+          <li><strong>Per human:</strong> max 3 PRs in "Human Review" queue at once. Exceed it, and the agent pauses spawning new work.</li>
+          <li><strong>Per agent:</strong> max 1 active branch per agent identity. Forces sequential thinking on a single task.</li>
+          <li><strong>Per repo:</strong> max N merges/day. Protects review quality and CI capacity.</li>
+          <li>Enforce with a board automation that flips new tasks to "blocked" when a limit is hit.</li>
+        </ul>
+        <div class="callout warn"><strong>Little's Law still applies.</strong> Throughput = WIP / Cycle Time. Agents reduce cycle time dramatically — if you don't cap WIP, you just create a review backlog.</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">D</div>
+      <div class="step-body">
+        <h3>Ceremonies, rewritten</h3>
+        <ul>
+          <li><strong>Standup (10 min, async-first)</strong> — agent posts a generated status: what merged, what's stuck in review, what's blocked. Humans only speak to flag a blocker the agent missed.</li>
+          <li><strong>Planning (weekly, 30 min)</strong> — replaces sprint planning. Focus is on <em>which specs ship this week</em>. Decomposition is the planner agent's problem, not the team's.</li>
+          <li><strong>Spec review (2×/week, 45 min)</strong> — new ceremony. Replaces backlog grooming. Humans sharpen the specs so agents don't execute ambiguity.</li>
+          <li><strong>Prompt &amp; eval review (weekly, 30 min)</strong> — we read changes to agent prompts and eval deltas like we read code. This is the meta-ceremony that keeps the system improving.</li>
+          <li><strong>Demo (weekly, 20 min)</strong> — ships or it didn't happen. Includes at least one customer-facing increment.</li>
+          <li><strong>Retro (every 2-3 weeks, 45 min)</strong> — three new categories: <em>prompts that misfired</em>, <em>tools we wished an agent had</em>, <em>places we caught an agent just in time</em>.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">E</div>
+      <div class="step-body">
+        <h3>Roles, re-cast</h3>
+        <p>Titles don't disappear; the job description changes.</p>
+        <table class="stack-table">
+          <thead><tr><th>Role</th><th>Before</th><th>In an agentic team</th></tr></thead>
+          <tbody>
+            <tr><td>Product Owner</td><td>Writes tickets, prioritizes backlog</td><td>Writes specs agents can execute; owns spec-quality ceremony</td></tr>
+            <tr><td>Scrum Master</td><td>Runs ceremonies, removes blockers</td><td>Flow engineer: tunes WIP limits, agent prompts, CI capacity</td></tr>
+            <tr><td>Engineer</td><td>Picks ticket, writes code</td><td>Reviews, pair-programs with agent, writes hard paths &amp; tests</td></tr>
+            <tr><td>Tech Lead</td><td>Architecture, code review</td><td>Owns the planner prompts, the reviewer subagent, and the eval suite</td></tr>
+            <tr><td>QA</td><td>Writes test cases</td><td>Eval engineer: owns regression sets, red-team prompts, quality dashboard</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">F</div>
+      <div class="step-body">
+        <h3>Metrics that actually reflect agentic flow</h3>
+        <p>Velocity in story points is noise. Track these instead.</p>
+        <ul>
+          <li><strong>Spec-to-merge lead time</strong> — p50 and p90. Your real cycle time.</li>
+          <li><strong>First-pass merge rate</strong> — % of agent PRs merged with ≤1 round of human feedback. Agent quality gauge.</li>
+          <li><strong>Review queue depth</strong> — if p95 PR waits &gt;24hr for a human, your WIP limit is too loose.</li>
+          <li><strong>Eval pass rate</strong> — trend over time. Dropping = prompt/tool regression. Investigate same-day.</li>
+          <li><strong>Escaped defects per spec</strong> — bugs found in prod divided by specs shipped. Your real quality bar.</li>
+          <li><strong>Human-edit ratio</strong> — fraction of agent-authored LOC changed in review. Rising = specs are getting sloppier or prompts stale.</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="callout tip"><strong>Bottom line:</strong> Scrum is pressure applied at the sprint boundary; Kanban is pressure applied at the WIP line. Agentic teams lean toward <em>continuous flow with a weekly heartbeat</em> — Kanban bones, one Scrum-style demo + retro cadence, and ceremonies rebuilt around specs and prompts instead of tickets and points.</div>
+
+  <h2 class="section-title">Opinionated defaults</h2>
+  <table class="stack-table">
+    <thead><tr><th>Layer</th><th>Pick</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td>Language</td><td>TypeScript server + Python for data</td><td>Agents are best-in-class on TS; Python for ML adjacency</td></tr>
+      <tr><td>Backend framework</td><td>Hono / Next.js / FastAPI</td><td>Small, well-documented surfaces are easier for agents</td></tr>
+      <tr><td>DB</td><td>Postgres + pgvector</td><td>One DB. Don't Mongo/Redis/Elastic on day one</td></tr>
+      <tr><td>Queue</td><td>Postgres-backed (pgmq) or Inngest</td><td>Skip Kafka until you need it</td></tr>
+      <tr><td>Infra</td><td>Vercel/Fly + Neon + Cloudflare</td><td>Lowest ops burden, agents can call CLIs easily</td></tr>
+      <tr><td>Testing</td><td>Vitest + Playwright + small fixture factories</td><td>Fast tests keep agents in a tight loop</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout"><strong>Golden rule:</strong> if an agent can't reproduce the full workflow from repo state + <code class="inline">CLAUDE.md</code> alone, document the gap. That gap is where your next incident lives.</div>
+</main>
+<footer><span>Stargate · Software Engineering</span><span class="mono">/engineering</span></footer>
+</body></html>

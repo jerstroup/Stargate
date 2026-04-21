@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Product Design · Stargate</title>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<header class="site-nav"><div class="nav-wrap">
+<a class="brand" href="index.html"><span class="logo-dot"></span>Stargate<span class="tag">Agentic Ops</span></a>
+<nav class="primary">
+<a href="index.html">Overview</a>
+<a href="founders.html">Founders</a>
+<a href="marketing.html">Marketing</a>
+<a href="engineering.html">Engineering</a>
+<a href="design.html" class="active">Design</a>
+<a href="product.html">Product</a>
+<a href="finance.html">Finance</a>
+<a href="support.html">Support</a>
+<a href="operations.html">Operations</a>
+<a href="sales.html">Sales</a>
+<a href="data.html">Data</a>
+<a href="legal.html">Legal</a>
+</nav></div></header>
+
+<main>
+  <div class="page-header">
+    <div class="kicker">// PRODUCT DESIGN</div>
+    <h1>A design-system agent your engineering agents can call</h1>
+    <p>Startups that let engineers "just build the UI" ship 14 shades of gray, 6 button styles, and an onboarding flow that feels like four different apps. Instead, build a single design agent that owns tokens, components, and brand — and expose it as an MCP server that every engineering agent must route through.</p>
+  </div>
+
+  <div class="tags">
+    <span class="tag cyan">design system</span>
+    <span class="tag cyan">tokens</span>
+    <span class="tag cyan">Figma MCP</span>
+    <span class="tag cyan">accessibility</span>
+    <span class="tag cyan">brand</span>
+  </div>
+
+  <h2 class="section-title">Why an agent, not just a style guide</h2>
+  <p>A style guide is a PDF nobody reads. A design-system agent is a program that <em>answers questions</em>, <em>rejects proposals</em>, and <em>emits code</em>. Engineering agents get better outcomes because they can <em>ask</em>, not guess.</p>
+
+  <div class="steps">
+
+    <div class="step">
+      <div class="step-num">01</div>
+      <div class="step-body">
+        <h3>Define tokens before components</h3>
+        <p>Tokens are the atom of your design system. Get these right and everything else cascades.</p>
+        <ul>
+          <li><strong>Color</strong> — semantic (bg, fg, accent, danger) not literal (blue-500).</li>
+          <li><strong>Spacing</strong> — one scale (4, 8, 12, 16, 24, 32, 48, 64). No freelance 13px paddings.</li>
+          <li><strong>Type</strong> — 5 ramps max, named by role (display, heading, body, mono, caption).</li>
+          <li><strong>Radius, shadow, motion</strong> — small enumerated sets. "subtle / medium / dramatic".</li>
+        </ul>
+        <div class="callout">Store tokens in one file (<code class="inline">tokens.json</code> or Style Dictionary). It's the source of truth that feeds Figma variables <em>and</em> your CSS variables <em>and</em> the agent.</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">02</div>
+      <div class="step-body">
+        <h3>Ship the component library once, reuse forever</h3>
+        <p>Build ~25 primitives in code. Don't recreate per-feature.</p>
+        <ul>
+          <li>Button, Input, Select, Checkbox, Radio, Switch, Textarea, DatePicker.</li>
+          <li>Card, Dialog, Drawer, Popover, Tooltip, Toast, Tabs.</li>
+          <li>Table, Pagination, Skeleton, EmptyState, ErrorBoundary.</li>
+          <li>Layout primitives: Stack, Cluster, Box, Grid.</li>
+        </ul>
+        <div class="callout tip">Use <strong>shadcn/ui</strong> or <strong>Radix + Tailwind</strong> to shortcut this in ~3 days. Skin with your tokens. Done.</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">03</div>
+      <div class="step-body">
+        <h3>Build the Design Agent (MCP server)</h3>
+        <p>A tiny TypeScript MCP server exposing three tools every engineering agent calls.</p>
+        <ul>
+          <li><code class="inline">get_token(name)</code> — returns the semantic value for a token.</li>
+          <li><code class="inline">get_component(name)</code> — returns the current component API + a code example.</li>
+          <li><code class="inline">review_ui(diff)</code> — takes a UI diff, returns violations ("used hex color outside tokens", "button not from DS").</li>
+        </ul>
+        <pre class="code"><span class="c-com"># Engineering agent asking the design agent</span>
+&gt; I need to add a destructive confirmation dialog.
+  &gt; <span class="c-kw">tool_use</span>: design.get_component(<span class="c-str">"ConfirmDialog"</span>)
+  &gt; <span class="c-kw">tool_use</span>: design.get_token(<span class="c-str">"color.danger.fg"</span>)
+  &lt;- returns component API + token value + a11y note</pre>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">04</div>
+      <div class="step-body">
+        <h3>Figma MCP: close the loop with designers</h3>
+        <p>When you have a part-time designer, connect Figma via MCP so agents can read frame specs and designers can export tokens.</p>
+        <ul>
+          <li>Engineering agents pull frame JSON to understand intent.</li>
+          <li>Figma variables sync to <code class="inline">tokens.json</code> on commit — one source of truth.</li>
+          <li>Optional: a "figma-to-code" agent that produces a first-pass React component from a selected frame, wired to your tokens.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">05</div>
+      <div class="step-body">
+        <h3>Brand voice is part of design</h3>
+        <p>Microcopy is design. Store it with the system and make the design agent own it too.</p>
+        <ul>
+          <li>Sentence case everywhere unless explicitly brand.</li>
+          <li>Error copy rules: name what happened, what's expected, what to do next. No "Oops!"</li>
+          <li>Empty-state rules: a line about what will appear, a primary action, no illustrations that mean nothing.</li>
+          <li>Confirmation dialogs: verb-first button labels ("Delete draft" beats "OK").</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">06</div>
+      <div class="step-body">
+        <h3>Accessibility baked in, not bolted on</h3>
+        <p>Enterprise customers will ask. Ship accessible by default; refuse to expose components that aren't.</p>
+        <ul>
+          <li>Every component renders with a visible focus ring using <code class="inline">--focus</code> token.</li>
+          <li>Contrast: AA by default; AAA for body copy where feasible.</li>
+          <li>CI eval: axe-core runs against every Storybook story; PRs fail on violations.</li>
+          <li>Keyboard map documented per component — agents reading the API see it.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">07</div>
+      <div class="step-body">
+        <h3>Review gates for UI PRs</h3>
+        <p>The design agent becomes a required reviewer in CI for any PR touching <code class="inline">*.tsx</code> or <code class="inline">*.css</code>.</p>
+        <ul>
+          <li>Parses the diff, calls <code class="inline">review_ui</code>, comments inline on violations.</li>
+          <li>Blocking only for token violations, accessibility regressions, and new "one-off" components.</li>
+          <li>Non-blocking suggestions for microcopy and spacing rhythm.</li>
+        </ul>
+        <div class="callout warn"><strong>Rule:</strong> if an engineer needs a component that doesn't exist, they open a design-system ticket — they don't ship a one-off. The agent enforces this.</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">08</div>
+      <div class="step-body">
+        <h3>Marketing &amp; product share the system</h3>
+        <p>Your landing pages and your app should feel like one company.</p>
+        <ul>
+          <li>Marketing site imports the same token package as the product.</li>
+          <li>A subset of components (Button, Card, Section) are shared.</li>
+          <li>The marketing agent (see <a href="marketing.html">Marketing</a>) calls the same <code class="inline">get_token</code> tool so ad creative stays on-brand.</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+  <h2 class="section-title">Deliverables checklist</h2>
+  <table class="stack-table">
+    <thead><tr><th>Artifact</th><th>Where it lives</th><th>Consumed by</th></tr></thead>
+    <tbody>
+      <tr><td>tokens.json</td><td>Monorepo <code class="inline">/packages/tokens</code></td><td>Web, iOS, Figma, agents</td></tr>
+      <tr><td>Component library</td><td><code class="inline">/packages/ui</code></td><td>Product + marketing</td></tr>
+      <tr><td>Design MCP server</td><td><code class="inline">/services/design-agent</code></td><td>All engineering agents</td></tr>
+      <tr><td>Microcopy rules</td><td><code class="inline">/brand/copy.md</code></td><td>Design agent, marketing</td></tr>
+      <tr><td>A11y CI</td><td>GitHub Actions</td><td>Blocking gate</td></tr>
+    </tbody>
+  </table>
+</main>
+<footer><span>Stargate · Product Design</span><span class="mono">/design</span></footer>
+</body></html>

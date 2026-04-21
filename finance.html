@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Finance · Stargate</title>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<header class="site-nav"><div class="nav-wrap">
+<a class="brand" href="index.html"><span class="logo-dot"></span>Stargate<span class="tag">Agentic Ops</span></a>
+<nav class="primary">
+<a href="index.html">Overview</a>
+<a href="founders.html">Founders</a>
+<a href="marketing.html">Marketing</a>
+<a href="engineering.html">Engineering</a>
+<a href="design.html">Design</a>
+<a href="product.html">Product</a>
+<a href="finance.html" class="active">Finance</a>
+<a href="support.html">Support</a>
+<a href="operations.html">Operations</a>
+<a href="sales.html">Sales</a>
+<a href="data.html">Data</a>
+<a href="legal.html">Legal</a>
+</nav></div></header>
+
+<main>
+  <div class="page-header">
+    <div class="kicker">// FINANCE</div>
+    <h1>Models investors trust, built by two people and an agent</h1>
+    <p>You don't need a CFO at seed. You need a disciplined financial system: one live model, one clean metric definitions file, and a finance agent that refreshes both automatically. Investors don't care about perfect models — they care about a founder who <em>knows their numbers cold</em>. This stack makes that cheap.</p>
+  </div>
+
+  <div class="tags">
+    <span class="tag cyan">financial model</span>
+    <span class="tag cyan">scenario planning</span>
+    <span class="tag cyan">investor metrics</span>
+    <span class="tag cyan">cash runway</span>
+  </div>
+
+  <div class="steps">
+
+    <div class="step">
+      <div class="step-num">01</div>
+      <div class="step-body">
+        <h3>Build the metric dictionary first</h3>
+        <p>A YAML/markdown file that defines every metric precisely. If ARR means three things to three people, your model lies.</p>
+        <ul>
+          <li>ARR — what's in, what's out (trials, credits, one-time fees)?</li>
+          <li>Gross margin — what COGS? (hosting, payment fees, support).</li>
+          <li>Burn — gross vs net. Pick one, label it.</li>
+          <li>NRR, CAC, payback, magic number, rule of 40 — each with the SQL that computes it.</li>
+        </ul>
+        <div class="callout">This file is the interface between your data warehouse, your financial model, and every investor update. Version it.</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">02</div>
+      <div class="step-body">
+        <h3>Pick the model format: spreadsheet-as-data</h3>
+        <p>Google Sheets or Causal, <em>not</em> Excel. You want an API. You want diffs.</p>
+        <ul>
+          <li>Structure: <code class="inline">inputs</code> tab, <code class="inline">drivers</code> tab, <code class="inline">P&amp;L</code>, <code class="inline">cashflow</code>, <code class="inline">cap table</code>, <code class="inline">scenarios</code>.</li>
+          <li>Every formula references named ranges, not cell addresses.</li>
+          <li>The model exports JSON every morning to a location the agents can read.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">03</div>
+      <div class="step-body">
+        <h3>The Finance Agent</h3>
+        <p>One agent, three daily jobs.</p>
+        <ul>
+          <li><strong>Actuals sync</strong> — pulls from Stripe, Mercury, Brex, Gusto via MCP; updates the actuals tab; flags anomalies (&gt;20% variance vs forecast).</li>
+          <li><strong>Forecast refresh</strong> — re-runs drivers against updated actuals; updates runway, burn multiple, and cash-out date.</li>
+          <li><strong>Narrative draft</strong> — produces a 1-page monthly financial narrative: top 3 moves, runway update, decisions that need to be made.</li>
+        </ul>
+        <pre class="code"><span class="c-com"># Narrative draft prompt</span>
+Using actuals.json and forecast.json, write a 1-page monthly finance memo.
+Sections:
+  - Headline (1 sentence: are we on track?)
+  - Revenue: MRR, growth %, top 3 account moves
+  - Cash: burn, runway, variance vs plan
+  - Decisions needed (max 3, each with a clear ask)
+No adjectives like "robust" or "strong". Numbers or nothing.</pre>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">04</div>
+      <div class="step-body">
+        <h3>Scenario agent (the hire/pause/raise model)</h3>
+        <p>The CEO should be able to ask "what if we hire 3 engineers and close the pipeline at 60%?" and get an answer in 30 seconds.</p>
+        <ul>
+          <li>Agent takes natural-language scenarios, translates to driver changes, runs the model, returns the 4-number summary: new runway, new cash-out, new ARR-at-raise, new implied valuation.</li>
+          <li>Saves every scenario with a timestamp so you can show an investor "here's the sensitivity."</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">05</div>
+      <div class="step-body">
+        <h3>Investor update generator</h3>
+        <p>Monthly investor updates should be a 20-minute job, not a 3-hour slog.</p>
+        <ul>
+          <li>Pulls metrics, narrative, top wins, top losses, hiring asks.</li>
+          <li>Uses a template with five sections: <em>Headline, KPIs, Highlights, Lowlights, Asks</em>.</li>
+          <li>Sends draft to the founder; founder edits the story, facts are already correct.</li>
+        </ul>
+        <div class="callout tip">Investors read the Asks section first. Put real asks — intros, hiring, advice on a decision. Not "nothing, we're good."</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">06</div>
+      <div class="step-body">
+        <h3>Focus on what investors actually price on</h3>
+        <p>Most finance hallucination comes from founders modeling the wrong things. Anchor on these:</p>
+        <table class="stack-table">
+          <thead><tr><th>Stage</th><th>Numbers that price</th></tr></thead>
+          <tbody>
+            <tr><td>Pre-seed</td><td>Founder quality, design partners committed, weekly shipping cadence</td></tr>
+            <tr><td>Seed</td><td>Month-over-month revenue growth, first 5 logos, gross retention signals</td></tr>
+            <tr><td>Series A</td><td>T2D3 trajectory, &gt;100% NRR, CAC payback &lt;24mo, rule of 40 trending right</td></tr>
+            <tr><td>Series B+</td><td>Magic number &gt;0.7, gross margin &gt;70%, cohort retention curves flattening</td></tr>
+          </tbody>
+        </table>
+        <div class="callout warn">Everything below Series A: <strong>stop modeling 5 years out</strong>. It is a lie and investors know it. Model 18 months of runway + a 6-month plan to the next milestone.</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">07</div>
+      <div class="step-body">
+        <h3>Bookkeeping + compliance on autopilot</h3>
+        <ul>
+          <li><strong>Classification agent</strong> — categorizes transactions in QuickBooks/Xero nightly; flags the ones it can't confidently label.</li>
+          <li><strong>Invoice agent</strong> — reads inbound vendor invoices from email, matches POs, files them.</li>
+          <li><strong>Tax / filings agent</strong> — tracks franchise tax, sales-tax nexus (per state), Delaware annual report, 83(b) windows. Pings calendar 30 days before each.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">08</div>
+      <div class="step-body">
+        <h3>Fraud &amp; anomaly watchdog</h3>
+        <p>An agent that compares today's spend + revenue to the last 30 days and raises a Slack alert on anything &gt;3σ.</p>
+        <ul>
+          <li>Ghost charges (double-billed SaaS).</li>
+          <li>Sudden refund spikes (support issue upstream).</li>
+          <li>Card used in a new geography (stolen card).</li>
+          <li>Payroll change you didn't approve.</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="callout tip"><strong>Rhythm:</strong> daily actuals sync, weekly 15-min metrics review with founder, monthly investor update, quarterly board pack. All drafted by agents, decided by humans.</div>
+</main>
+<footer><span>Stargate · Finance</span><span class="mono">/finance</span></footer>
+</body></html>

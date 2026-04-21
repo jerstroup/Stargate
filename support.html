@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Customer Support · Stargate</title>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<header class="site-nav"><div class="nav-wrap">
+<a class="brand" href="index.html"><span class="logo-dot"></span>Stargate<span class="tag">Agentic Ops</span></a>
+<nav class="primary">
+<a href="index.html">Overview</a>
+<a href="founders.html">Founders</a>
+<a href="marketing.html">Marketing</a>
+<a href="engineering.html">Engineering</a>
+<a href="design.html">Design</a>
+<a href="product.html">Product</a>
+<a href="finance.html">Finance</a>
+<a href="support.html" class="active">Support</a>
+<a href="operations.html">Operations</a>
+<a href="sales.html">Sales</a>
+<a href="data.html">Data</a>
+<a href="legal.html">Legal</a>
+</nav></div></header>
+
+<main>
+  <div class="page-header">
+    <div class="kicker">// CUSTOMER SUPPORT</div>
+    <h1>Two humans that feel like twenty</h1>
+    <p>Agentic support isn't about replacing humans with a chatbot. It's about wrapping your two best teammates in an agentic harness: the AI triages, drafts, summarizes, and routes — humans spend 100% of their time on the 10% of tickets that matter, and deflection happens <em>honestly</em>.</p>
+  </div>
+
+  <div class="tags">
+    <span class="tag cyan">triage</span>
+    <span class="tag cyan">deflection</span>
+    <span class="tag cyan">call summaries</span>
+    <span class="tag cyan">bug feedback loop</span>
+  </div>
+
+  <div class="steps">
+
+    <div class="step">
+      <div class="step-num">01</div>
+      <div class="step-body">
+        <h3>Build the knowledge base first (or nothing else works)</h3>
+        <p>A support agent is only as good as its knowledge base. Most startups skip this and wonder why the bot lies.</p>
+        <ul>
+          <li>Structured docs in git — one markdown file per topic. Not a sprawling Notion maze.</li>
+          <li>Include: product docs, known issues, workarounds, pricing, refund policy, SLAs.</li>
+          <li>Every doc has a <code class="inline">frontmatter:</code> owner, last-verified date, scope (self-serve? paid tier only?).</li>
+          <li>CI job: flag any doc not verified in 90 days. Dead docs cause hallucination.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">02</div>
+      <div class="step-body">
+        <h3>Triage agent (every inbound ticket)</h3>
+        <p>Classifies, tags, priorities, and routes. Runs before a human sees the ticket.</p>
+        <ul>
+          <li>Labels: <code class="inline">bug</code>, <code class="inline">how-to</code>, <code class="inline">billing</code>, <code class="inline">feature-request</code>, <code class="inline">churn-risk</code>, <code class="inline">security</code>.</li>
+          <li>Pulls customer context (plan, ARR, last 3 tickets) and attaches it.</li>
+          <li>Auto-escalates <code class="inline">churn-risk</code> and <code class="inline">security</code> to a human within 5 minutes, regardless of hours.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">03</div>
+      <div class="step-body">
+        <h3>Draft-response agent (human-reviewed)</h3>
+        <p>For <code class="inline">how-to</code> and <code class="inline">billing</code> tickets, an agent drafts the response using the KB + the customer's history. Human clicks "send" or edits.</p>
+        <ul>
+          <li>Constraint: agent must cite the KB doc it used. No cited doc = don't send.</li>
+          <li>Voice match to brand spec. Support voice = warmer than marketing voice; keep a separate section in <code class="inline">voice.md</code>.</li>
+          <li>For billing questions it can propose, not execute. Refunds always require a human.</li>
+        </ul>
+        <div class="callout warn"><strong>Never let the agent make a promise in writing.</strong> Deliverability dates, SLA commitments, and refund amounts come from humans. The agent can surface options; humans commit.</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">04</div>
+      <div class="step-body">
+        <h3>Self-serve deflection, honestly done</h3>
+        <p>A chat widget that answers self-serve questions with citations and offers "talk to a human" on every message.</p>
+        <ul>
+          <li>Confidence threshold. If the agent's confidence is low, it opens a ticket instead of guessing.</li>
+          <li>Every deflected conversation is logged and sampled weekly — 20 random conversations read by a human to catch regressions.</li>
+          <li>"Was this helpful?" at the end, with the answer feeding the eval set.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">05</div>
+      <div class="step-body">
+        <h3>Call-summary &amp; follow-up agent</h3>
+        <p>For phone/video support calls: auto-record (with consent), transcribe, summarize, extract commitments, create follow-up tasks.</p>
+        <ul>
+          <li>Summary template: <em>context, issue, resolution attempted, outcome, next step, owner, due date</em>.</li>
+          <li>Posts summary back into the ticket within 60 seconds of call ending.</li>
+          <li>Drafts the follow-up email referencing commitments made on the call.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">06</div>
+      <div class="step-body">
+        <h3>Bug-to-engineering feedback loop (the highest-ROI agent)</h3>
+        <p>When a ticket is labeled <code class="inline">bug</code>, a specialized agent builds an engineering-ready issue and files it in Linear.</p>
+        <ul>
+          <li>Extracts: repro steps, browser/OS/app version, affected account id, logs from the error-tracking system (Sentry via MCP).</li>
+          <li>Searches existing issues to dedupe.</li>
+          <li>If it matches an existing issue, adds the customer to the "notify-when-fixed" list automatically.</li>
+        </ul>
+        <pre class="code"><span class="c-com"># Bug issue template</span>
+## Repro
+&lt;agent-extracted steps&gt;
+## Environment
+&lt;agent-extracted browser, version, account&gt;
+## Logs
+&lt;linked Sentry events&gt;
+## Customers impacted
+&lt;auto-updating list; paste account IDs&gt;</pre>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">07</div>
+      <div class="step-body">
+        <h3>Voice-of-customer digest</h3>
+        <p>Weekly agent-generated digest to the whole team. Crucially, not just "top complaints" — top <em>shifts</em>.</p>
+        <ul>
+          <li>What new complaint theme emerged this week vs last month?</li>
+          <li>Which feature requests are from high-ARR accounts?</li>
+          <li>Which existing bugs are regressing in frequency?</li>
+          <li>Routed into the PM opportunity-scoring agent (see <a href="product.html">Product</a>).</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">08</div>
+      <div class="step-body">
+        <h3>Measurement that reflects reality</h3>
+        <ul>
+          <li><strong>First-response time</strong> — for AI draft, target &lt;1 min; for human-sent, target &lt;1 hr.</li>
+          <li><strong>Deflection quality</strong> — % of deflected conversations where the customer didn't come back within 48 hr with the same issue.</li>
+          <li><strong>Escalation accuracy</strong> — % of agent-escalated tickets that humans agreed should have been escalated.</li>
+          <li><strong>Bug-to-fix latency</strong> — customer-reported bug → engineering issue filed → PR merged. Target &lt;72hr for P1.</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+  <h2 class="section-title">Stack</h2>
+  <table class="stack-table">
+    <thead><tr><th>Layer</th><th>Pick</th><th>Why</th></tr></thead>
+    <tbody>
+      <tr><td>Helpdesk</td><td>Plain / Intercom / Front</td><td>Modern APIs, webhook-friendly</td></tr>
+      <tr><td>Transcription</td><td>Fireflies / Granola</td><td>Reliable summaries, calendar sync</td></tr>
+      <tr><td>Error tracking</td><td>Sentry</td><td>MCP-readable, rich context</td></tr>
+      <tr><td>Knowledge base</td><td>MDX in monorepo</td><td>Docs ship with product versioning</td></tr>
+      <tr><td>Eval tooling</td><td>Braintrust / Langfuse</td><td>Regression tests on your support agent</td></tr>
+    </tbody>
+  </table>
+</main>
+<footer><span>Stargate · Customer Support</span><span class="mono">/support</span></footer>
+</body></html>

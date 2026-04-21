@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Founders · Stargate</title>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<header class="site-nav"><div class="nav-wrap">
+<a class="brand" href="index.html"><span class="logo-dot"></span>Stargate<span class="tag">Agentic Ops</span></a>
+<nav class="primary">
+<a href="index.html">Overview</a>
+<a href="founders.html" class="active">Founders</a>
+<a href="marketing.html">Marketing</a>
+<a href="engineering.html">Engineering</a>
+<a href="design.html">Design</a>
+<a href="product.html">Product</a>
+<a href="finance.html">Finance</a>
+<a href="support.html">Support</a>
+<a href="operations.html">Operations</a>
+<a href="sales.html">Sales</a>
+<a href="data.html">Data</a>
+<a href="legal.html">Legal</a>
+</nav></div></header>
+
+<main>
+  <div class="page-header">
+    <div class="kicker">// FOUNDERS</div>
+    <h1>Your AI co-founder before you can afford one</h1>
+    <p>You are CEO, CFO, Chief of Staff, recruiter, and lead salesperson. This playbook turns three agents into the other six hats you're wearing — pitching, researching, negotiating, and reporting — so you can focus on the one thing only you can do: decide.</p>
+  </div>
+
+  <div class="tags">
+    <span class="tag cyan">fundraising</span>
+    <span class="tag cyan">pitch deck</span>
+    <span class="tag cyan">market research</span>
+    <span class="tag cyan">negotiation</span>
+    <span class="tag cyan">investor CRM</span>
+  </div>
+
+  <h2 class="section-title">The agent roster</h2>
+  <p>Four agents cover 90% of a founder's weekly work. Build them in this order.</p>
+
+  <div class="steps">
+
+    <div class="step">
+      <div class="step-num">01</div>
+      <div class="step-body">
+        <h3>Build a "Founder Context Pack" first</h3>
+        <p>Every good founder agent needs three documents to stop hallucinating about your company. Put these in a single repo or Notion space — every agent reads from it.</p>
+        <ul>
+          <li><strong>one-pager.md</strong> — problem, customer, wedge, why-now, team, ask.</li>
+          <li><strong>market.md</strong> — TAM/SAM/SOM with sources, 5 closest competitors, differentiation matrix.</li>
+          <li><strong>metrics.md</strong> — current MRR/ARR, growth rate, burn, runway, CAC, top customer logos.</li>
+        </ul>
+        <div class="callout">Update weekly. Treat it as a living artifact. Every agent prompt starts with <code class="inline">&lt;context&gt;{{founder_context_pack}}&lt;/context&gt;</code>.</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">02</div>
+      <div class="step-body">
+        <h3>Pitch Deck &amp; Narrative Agent</h3>
+        <p>Turns your context pack into investor-ready decks, updates them for each fund's thesis, and rehearses you with devil's-advocate questions.</p>
+        <ul>
+          <li>Tool: Claude Agent SDK + a Google Slides or Pitch.com MCP server.</li>
+          <li>Skill 1: <code class="inline">generate_deck(fund_thesis, stage)</code> — rewrites the narrative for sector investors vs generalists.</li>
+          <li>Skill 2: <code class="inline">redteam_deck()</code> — simulates the 20 hardest questions you'll get. Use before every partner meeting.</li>
+          <li>Skill 3: <code class="inline">tighten_story()</code> — forces your one-liner to under 140 chars and your problem slide to one sentence.</li>
+        </ul>
+        <pre class="code"><span class="c-com"># Example: red-team the deck</span>
+<span class="c-kw">claude</span> --agent pitch-agent \
+  --input deck.pdf \
+  --prompt <span class="c-str">"You are a Series A partner at a16z focused on dev tools.
+Ask me the 15 hardest questions about traction, moat, and GTM.
+For each, score my deck's current answer 1-5 and suggest one fix."</span></pre>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">03</div>
+      <div class="step-body">
+        <h3>Investor Research &amp; CRM Agent</h3>
+        <p>Maps the universe of investors for your stage/sector, scores them against your thesis, finds warm intros via LinkedIn/email graph, and keeps a running CRM.</p>
+        <ul>
+          <li><strong>Inputs:</strong> Crunchbase/PitchBook via MCP, LinkedIn, your Gmail + Calendar.</li>
+          <li><strong>Output:</strong> ranked sheet of 80-120 funds with partner names, last relevant check, portfolio conflicts, and suggested intro path.</li>
+          <li><strong>Loop:</strong> after every meeting, it pulls the calendar event, drafts a follow-up email, and logs outcome + next step.</li>
+        </ul>
+        <div class="callout tip"><strong>Tip:</strong> let it <em>draft</em> outreach but gate the send. Investors spot generic AI copy in one line.</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">04</div>
+      <div class="step-body">
+        <h3>Market &amp; Competitor Scout</h3>
+        <p>A scheduled agent that runs every Monday morning and produces a 5-bullet "what changed in my market last week" brief.</p>
+        <ul>
+          <li>Sources: Google News + RSS via WebFetch, competitor changelogs, HN, ProductHunt, YC batch pages, GitHub trending.</li>
+          <li>Uses a scheduled trigger (cron) + a summarizer sub-agent.</li>
+          <li>Delivers to Slack #intel channel — <em>not</em> email (emails die, channels compound).</li>
+        </ul>
+        <pre class="code"><span class="c-com"># Weekly brief prompt (summarizer)</span>
+Produce 5 bullets, each &lt;=2 sentences:
+  1. Most important competitor move (with link)
+  2. Shift in customer language we saw in reviews/social
+  3. New fundraising in our space + thesis implied
+  4. Regulatory or platform change that affects us
+  5. One contrarian signal worth debating at Monday standup</pre>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">05</div>
+      <div class="step-body">
+        <h3>Negotiation &amp; Deal-Desk Agent</h3>
+        <p>Reads inbound contracts (leases, term sheets, vendor MSAs), benchmarks terms against market, and drafts counters.</p>
+        <ul>
+          <li><strong>Lease negotiation:</strong> feed it the LOI + comparable rents scraped from CompStak/CoStar; it returns a markup with annotated comments.</li>
+          <li><strong>Term sheets:</strong> compare to YC's Post-Money SAFE or NVCA templates; flag non-standard terms (option pool shuffles, participating pref, super pro-rata).</li>
+          <li><strong>Vendor MSAs:</strong> auto-check for IP assignment, data handling, auto-renewal traps. Produce a one-page diff for your lawyer.</li>
+        </ul>
+        <div class="callout warn"><strong>Guardrail:</strong> this agent never sends. It produces a markup + a 5-point "what I'd push back on" memo. You and your lawyer decide.</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">06</div>
+      <div class="step-body">
+        <h3>Personal Chief of Staff Agent</h3>
+        <p>The glue agent. Reads your inbox + calendar, prepares you for every meeting, and drafts follow-ups within 10 minutes of each call ending.</p>
+        <ul>
+          <li><strong>Pre-brief:</strong> 30 min before a meeting, pings you in Slack with a one-pager: who they are, last interaction, three topics likely to come up, two asks.</li>
+          <li><strong>Post-meeting:</strong> pulls transcripts (Fireflies/Granola MCP), extracts commitments, drafts the follow-up, and creates tasks in Linear/Notion.</li>
+          <li><strong>Weekly review:</strong> Friday 4pm agent DM — "here's what slipped, here's what to cut, here's what I'd put on your calendar next week."</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">07</div>
+      <div class="step-body">
+        <h3>Rollout &amp; governance</h3>
+        <p>Three rules to stay sane:</p>
+        <ol>
+          <li><strong>One agent a week.</strong> Ship, use it for 5 working days, fix, then add the next.</li>
+          <li><strong>Tag every agent-generated artifact.</strong> Footer: <code class="inline">— drafted by pitch-agent v3, reviewed by [you]</code>. Protects you legally and mentally.</li>
+          <li><strong>Audit monthly.</strong> Read the trace logs. Kill agents that aren't saving you 2+ hours/week.</li>
+        </ol>
+      </div>
+    </div>
+
+  </div>
+
+  <h2 class="section-title">What this stack replaces</h2>
+  <p>A rough map of what each agent takes off your plate, and what to keep doing yourself.</p>
+
+  <table class="stack-table">
+    <thead><tr><th>Task</th><th>Agent-owned</th><th>Human-owned</th></tr></thead>
+    <tbody>
+      <tr><td>Pitch deck v1 → v40</td><td>✓ generates, iterates</td><td>Final narrative + slide 1</td></tr>
+      <tr><td>Investor target list</td><td>✓ research + rank</td><td>Prioritization + intro path</td></tr>
+      <tr><td>Follow-up emails</td><td>✓ drafts</td><td>You review &amp; send</td></tr>
+      <tr><td>Term sheet redlines</td><td>✓ flags non-standard</td><td>Real lawyer, every time</td></tr>
+      <tr><td>Board updates</td><td>✓ drafts from metrics.md</td><td>The hard truth &amp; the ask</td></tr>
+      <tr><td>Hiring outreach</td><td>✓ sources + first touch</td><td>Founder-led closes</td></tr>
+    </tbody>
+  </table>
+</main>
+<footer><span>Stargate · Founders</span><span class="mono">/founders</span></footer>
+</body></html>
