@@ -3,7 +3,7 @@
 > Example artifact for the **Engineering** playbook. Every coding agent (planner, coder, reviewer, test-author, release, oncall) reads this first. When this file contradicts the code, fix this file — don't work around it.
 
 **Owner:** engineering
-**Last updated:** 2026-04-19
+**Last updated:** 2026-07-13
 
 ## What we're building
 Nimbus: a meeting agent for professional services firms. Captures meetings, writes notes, and takes downstream action in CRM/PSA tools (Clio, Kantata, Salesforce) through MCP.
@@ -13,7 +13,7 @@ Nimbus: a meeting agent for professional services firms. Captures meetings, writ
 - **API:** FastAPI, Pydantic v2, SQLAlchemy 2.0
 - **Workers:** Temporal — every long-running agent workflow lives here, never in the API
 - **DB:** Postgres 16 + pgvector on Neon
-- **Agents:** Claude Agent SDK (Python + TS), Opus 4.7 for planning, Sonnet 4.6 for most loops, Haiku 4.5 for classify/extract
+- **Agents:** Claude Agent SDK (Python + TS), Opus 4.8 for planning, Sonnet 5 for most loops, Haiku 4.5 for classify/extract
 - **Infra:** Pulumi → Render + Neon + Temporal Cloud
 
 ## Repo layout
