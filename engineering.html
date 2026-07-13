@@ -69,6 +69,8 @@
   <h2 class="section-title">The rollout</h2>
   <p>Ten steps. Roughly 6-10 weeks elapsed for a 2-3 person team.</p>
 
+  <div class="callout tip"><strong>Pre-PMF? Take the MVP cut first.</strong> Steps 01, 02, 05, and 06 are a complete working system: an agent-legible repo, one standardized coding agent, the one-task-one-PR loop, and a reviewer agent in CI. Defer 03 (add MCP servers one at a time, as a task actually needs them), 04 (an approved spec + plan mode beats a dedicated planner agent while the team is ≤3), 07 (start with a 10-task regression set, grow it from real failures), and 08–09 until you have paying users. Whatever cut you take, wrap it in three named human gates: <strong>Gate 1 — a human approves every spec</strong> before code is written; <strong>Gate 2 — a human approves every merge</strong>; <strong>Gate 3 — a human flips every production flag</strong>. Agents generate and recommend; humans decide.</div>
+
   <div class="steps">
 
     <div class="step">
@@ -159,6 +161,7 @@ Emit as markdown, no code.</pre>
         <p>A GitHub Action that runs a reviewer subagent on every PR. Not a gate — a signal amplifier.</p>
         <ul>
           <li>Loads the diff, the touched files' full contents, the spec, and the eval suite.</li>
+          <li>Checks spec conformance first: does the diff satisfy the acceptance criteria, and does it build anything the spec's non-goals excluded? Scope creep is the #1 agent failure mode.</li>
           <li>Checks: missing error paths, unbounded loops, N+1 queries, security smells (SSRF, injection), test coverage of new branches.</li>
           <li>Posts inline comments prefixed <code class="inline">🤖</code> so they're easy to filter.</li>
         </ul>
@@ -347,6 +350,7 @@ Spec Ready   →  Planner queued  →  Agent Building  →  Agent Self-Check
           <li><strong>Eval pass rate</strong> — trend over time. Dropping = prompt/tool regression. Investigate same-day.</li>
           <li><strong>Escaped defects per spec</strong> — bugs found in prod divided by specs shipped. Your real quality bar.</li>
           <li><strong>Human-edit ratio</strong> — fraction of agent-authored LOC changed in review. Rising = specs are getting sloppier or prompts stale.</li>
+          <li><strong>Verdict rate</strong> — % of shipped specs that got an explicit keep/iterate/kill verdict against their success metric within the measurement window. Shipping without a verdict is motion, not learning (see <a href="product.html">Product</a> and <a href="data.html">Data</a> for the measurement agents).</li>
         </ul>
       </div>
     </div>
