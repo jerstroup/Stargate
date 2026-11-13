@@ -3,7 +3,8 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Customer Support · Stargate</title>
+<title>Support Agent System · Stargate</title>
+<meta name="description" content="A default customer support agent system with orchestrator, knowledge base, triage, resolution, escalation and bug loop, customer success, and quality and insights agents, plus a copy-paste setup prompt for Claude." />
 <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -26,150 +27,615 @@
 
 <main>
   <div class="page-header">
-    <div class="kicker">// CUSTOMER SUPPORT</div>
-    <h1>Two humans that feel like twenty</h1>
-    <p>Agentic support isn't about replacing humans with a chatbot. It's about wrapping your two best teammates in an agentic harness: the AI triages, drafts, summarizes, and routes — humans spend 100% of their time on the 10% of tickets that matter, and deflection happens <em>honestly</em>.</p>
+    <div class="kicker">// SUPPORT · AGENT SYSTEM</div>
+    <h1>A support team of agents that makes two people feel like twenty</h1>
+    <p>Seven agents that work like a small customer-experience team. One keeps the knowledge base true and current. One sorts every incoming ticket. One drafts answers that cite their sources. One turns bugs into issues engineering can act on. One keeps customers healthy so they stay. One measures quality and tells the rest of the company what customers are saying. An orchestrator keeps the queue moving. Your people spend their time on the 10% of conversations that need a human. Copy the <a href="#setup">setup prompt</a> into Claude. It will interview you about your support operation and then write the whole system as a folder of agent files.</p>
   </div>
 
   <div class="tags">
-    <span class="tag cyan">triage</span>
-    <span class="tag cyan">deflection</span>
-    <span class="tag cyan">call summaries</span>
-    <span class="tag cyan">bug feedback loop</span>
+    <span class="tag cyan">knowledge base</span>
+    <span class="tag cyan">triage &amp; routing</span>
+    <span class="tag cyan">cited replies</span>
+    <span class="tag cyan">honest deflection</span>
+    <span class="tag cyan">bug loop</span>
+    <span class="tag cyan">customer success</span>
+    <span class="tag cyan">voice of customer</span>
   </div>
 
-  <div class="steps">
+  <!-- ===================== GOAL ===================== -->
+  <h2 class="section-title">The goal the system works toward</h2>
+  <p>Every agent, every task, and every weekly report is judged against one outcome.</p>
 
-    <div class="step">
-      <div class="step-num">01</div>
-      <div class="step-body">
-        <h3>Build the knowledge base first (or nothing else works)</h3>
-        <p>A support agent is only as good as its knowledge base. Most startups skip this and wonder why the bot lies.</p>
-        <ul>
-          <li>Structured docs in git — one markdown file per topic. Not a sprawling Notion maze.</li>
-          <li>Include: product docs, known issues, workarounds, pricing, refund policy, SLAs.</li>
-          <li>Every doc has a <code class="inline">frontmatter:</code> owner, last-verified date, scope (self-serve? paid tier only?).</li>
-          <li>CI job: flag any doc not verified in 90 days. Dead docs cause hallucination.</li>
-        </ul>
-        <div class="callout tip"><strong>Example:</strong> see <a href="examples/support.md"><code class="inline">examples/support.md</code></a> — a filled-in KB article with frontmatter for a fictional startup.</div>
-      </div>
+  <div class="goal-panel">
+    <div>
+      <div class="label">// north star</div>
+      <h2>Every customer gets a fast, accurate, honest resolution, and what they tell us makes the product better, so they stay.</h2>
+      <p>Closing tickets isn't the win; solving problems so they don't come back is. "Deflection" counts only when the customer doesn't return with the same issue. New customers arrive from the <a href="sales.html">Sales agent system</a>'s handoff. Bugs go to <a href="engineering.html">Engineering</a>, and themes from customer conversations go to <a href="product.html">Product</a>'s Customer Discovery agent.</p>
+    </div>
+    <div class="metrics">
+      <div class="metric"><div class="k">Primary</div><div class="v">Resolved on first contact, not reopened within 7 days</div></div>
+      <div class="metric"><div class="k">Speed</div><div class="v">First response &lt; 1 hr · P1 bug → issue &lt; 1 hr</div></div>
+      <div class="metric"><div class="k">Retention</div><div class="v">CSAT · gross revenue retention</div></div>
+      <div class="metric"><div class="k">Guardrail</div><div class="v">AI answers cite a doc · a human is one click away</div></div>
+    </div>
+  </div>
+
+  <!-- ===================== DIAGRAM ===================== -->
+  <h2 class="section-title" id="diagram">How the agents work together</h2>
+  <p>The orchestrator sets the queue's priorities for the day and the week. Conversations arrive from customers and from the Sales handoff, get triaged against the knowledge base, and are resolved. When a fix is needed they're escalated to engineering, and the account is kept healthy so the customer stays. Quality &amp; Insights samples conversations and sends a scorecard back, so the next week's plan is based on what actually helped customers. Click any agent to jump to its role.</p>
+
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 1000 595" role="img" aria-labelledby="dg-title dg-desc" xmlns="http://www.w3.org/2000/svg">
+      <title id="dg-title">Support agent system flow</title>
+      <desc id="dg-desc">Shared support context feeds a Support Orchestrator, which you approve. The orchestrator dispatches work to the Knowledge Base agent and the Triage and Routing agent (intake). Triage also receives tickets, chats and new accounts from customers and the Sales system. Both feed Resolution and Replies (resolve). Next come Escalation and Bugs, then Customer Success and Retention (fix and retain), which produce retained customers. Quality and Insights samples conversations and escalations, tracks retention, and sends a weekly scorecard back to the orchestrator.</desc>
+      <defs>
+        <marker id="a-cyan" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#22d3ee"/></marker>
+        <marker id="a-violet" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#7c5cff"/></marker>
+        <marker id="a-pink" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#f472b6"/></marker>
+        <marker id="a-amber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#fbbf24"/></marker>
+        <marker id="a-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#34d399"/></marker>
+      </defs>
+
+      <!-- Shared context band -->
+      <rect x="20" y="10" width="960" height="52" rx="10" fill="rgba(34,211,238,0.06)" stroke="#22d3ee" stroke-opacity="0.5" stroke-dasharray="4 4"/>
+      <text x="500" y="31" text-anchor="middle" class="t-mono">SHARED CONTEXT · READ BY EVERY AGENT</text>
+      <text x="500" y="50" text-anchor="middle" class="t-sub">product &amp; plans · customers · policies &amp; SLAs · support voice · escalation paths · tools &amp; access</text>
+      <line x1="500" y1="62" x2="500" y2="91" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#a-cyan)"/>
+
+      <!-- Orchestrator -->
+      <a href="#agent-orchestrator">
+        <rect x="370" y="94" width="260" height="64" rx="12" fill="#1c1640" stroke="#7c5cff" stroke-width="1.5"/>
+        <text x="500" y="121" text-anchor="middle" class="t-title">Support Orchestrator</text>
+        <text x="500" y="142" text-anchor="middle" class="t-sub">queue health · staffing · priorities</text>
+      </a>
+
+      <!-- You -->
+      <rect x="760" y="100" width="220" height="52" rx="26" fill="#161d2e" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="870" y="122" text-anchor="middle" class="t-title">You (support lead)</text>
+      <text x="870" y="140" text-anchor="middle" class="t-sub">refunds · credits · promises</text>
+      <line x1="633" y1="126" x2="756" y2="126" stroke="#fbbf24" stroke-width="1.5" marker-start="url(#a-amber)" marker-end="url(#a-amber)"/>
+      <text x="694" y="117" text-anchor="middle" class="t-label">approval gates</text>
+
+      <!-- Dispatch bus -->
+      <line x1="500" y1="158" x2="500" y2="180" stroke="#7c5cff" stroke-width="1.5"/>
+      <line x1="120" y1="180" x2="620" y2="180" stroke="#7c5cff" stroke-width="1.5"/>
+      <line x1="120" y1="180" x2="120" y2="202" stroke="#7c5cff" stroke-width="1.5" marker-end="url(#a-violet)"/>
+      <line x1="370" y1="180" x2="370" y2="202" stroke="#7c5cff" stroke-width="1.5" marker-end="url(#a-violet)"/>
+      <line x1="620" y1="180" x2="620" y2="202" stroke="#7c5cff" stroke-width="1.5" marker-end="url(#a-violet)"/>
+      <text x="245" y="174" text-anchor="middle" class="t-label">queue priorities &amp; fixes</text>
+
+      <!-- Lanes -->
+      <rect x="20" y="205" width="200" height="265" rx="14" fill="rgba(255,255,255,0.015)" stroke="#2d3748"/>
+      <rect x="260" y="205" width="220" height="265" rx="14" fill="rgba(255,255,255,0.015)" stroke="#2d3748"/>
+      <rect x="520" y="205" width="200" height="265" rx="14" fill="rgba(255,255,255,0.015)" stroke="#2d3748"/>
+      <text x="120" y="226" text-anchor="middle" class="t-mono">01 · INTAKE</text>
+      <text x="370" y="226" text-anchor="middle" class="t-mono">02 · RESOLVE</text>
+      <text x="620" y="226" text-anchor="middle" class="t-mono">03 · FIX &amp; RETAIN</text>
+      <text x="870" y="226" text-anchor="middle" class="t-mono">04 · GOAL</text>
+
+      <!-- Intake -->
+      <a href="#agent-kb">
+        <rect x="32" y="245" width="176" height="90" rx="12" fill="#111827" stroke="#22d3ee" stroke-width="1.5"/>
+        <text x="120" y="276" text-anchor="middle" class="t-title">Knowledge</text>
+        <text x="120" y="295" text-anchor="middle" class="t-title">Base</text>
+        <text x="120" y="317" text-anchor="middle" class="t-sub">articles · gaps · freshness</text>
+      </a>
+      <line x1="120" y1="335" x2="120" y2="351" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#a-cyan)"/>
+      <a href="#agent-triage">
+        <rect x="32" y="355" width="176" height="90" rx="12" fill="#111827" stroke="#22d3ee" stroke-width="1.5"/>
+        <text x="120" y="386" text-anchor="middle" class="t-title">Triage &amp;</text>
+        <text x="120" y="405" text-anchor="middle" class="t-title">Routing</text>
+        <text x="120" y="427" text-anchor="middle" class="t-sub">tags · priority · context</text>
+      </a>
+
+      <!-- Resolve -->
+      <a href="#agent-replies">
+        <rect x="272" y="300" width="196" height="96" rx="12" fill="#111827" stroke="#22d3ee" stroke-width="1.5"/>
+        <text x="370" y="332" text-anchor="middle" class="t-title">Resolution</text>
+        <text x="370" y="351" text-anchor="middle" class="t-title">&amp; Replies</text>
+        <text x="370" y="374" text-anchor="middle" class="t-sub">cited drafts · AI first reply</text>
+      </a>
+
+      <!-- Fix & retain -->
+      <a href="#agent-escalation">
+        <rect x="532" y="245" width="176" height="80" rx="12" fill="#111827" stroke="#22d3ee" stroke-width="1.5"/>
+        <text x="620" y="278" text-anchor="middle" class="t-title">Escalation &amp; Bugs</text>
+        <text x="620" y="300" text-anchor="middle" class="t-sub">eng issues · incidents</text>
+      </a>
+      <line x1="620" y1="325" x2="620" y2="371" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#a-cyan)"/>
+      <text x="628" y="345" class="t-label">fix shipped</text>
+      <text x="628" y="358" class="t-label">→ notify</text>
+      <a href="#agent-success">
+        <rect x="532" y="375" width="176" height="80" rx="12" fill="#111827" stroke="#22d3ee" stroke-width="1.5"/>
+        <text x="620" y="408" text-anchor="middle" class="t-title">Customer Success</text>
+        <text x="620" y="427" text-anchor="middle" class="t-title">&amp; Retention</text>
+        <text x="620" y="446" text-anchor="middle" class="t-sub">onboarding · health · churn</text>
+      </a>
+
+      <!-- Goal -->
+      <rect x="770" y="280" width="200" height="116" rx="16" fill="rgba(52,211,153,0.08)" stroke="#34d399" stroke-width="1.5"/>
+      <text x="870" y="308" text-anchor="middle" class="t-mono" style="fill:#34d399">THE GOAL</text>
+      <text x="870" y="334" text-anchor="middle" class="t-title" style="font-size:17px">Customers retained</text>
+      <text x="870" y="356" text-anchor="middle" class="t-sub">resolved fast &amp; honestly</text>
+      <text x="870" y="374" text-anchor="middle" class="t-sub">product keeps improving</text>
+
+      <!-- Work flow arrows -->
+      <path d="M208,290 C240,290 238,330 268,330" fill="none" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#a-cyan)"/>
+      <path d="M208,400 C240,400 238,366 268,366" fill="none" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#a-cyan)"/>
+      <path d="M468,348 C500,348 498,285 528,285" fill="none" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#a-cyan)"/>
+      <path d="M708,415 C740,415 738,360 766,360" fill="none" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#a-cyan)"/>
+
+      <!-- Inbound from customers & Sales -->
+      <a href="sales.html#diagram">
+        <rect x="30" y="492" width="190" height="54" rx="27" fill="rgba(52,211,153,0.06)" stroke="#34d399" stroke-width="1.5" stroke-dasharray="4 3"/>
+        <text x="125" y="515" text-anchor="middle" class="t-title" style="font-size:13px">Customers + Sales</text>
+        <text x="125" y="533" text-anchor="middle" class="t-sub">tickets · chats · new accounts</text>
+      </a>
+      <line x1="120" y1="490" x2="120" y2="449" stroke="#34d399" stroke-width="1.5" marker-end="url(#a-green)"/>
+
+      <!-- Quality & Insights -->
+      <a href="#agent-insights">
+        <rect x="260" y="500" width="460" height="60" rx="12" fill="#111827" stroke="#f472b6" stroke-width="1.5"/>
+        <text x="490" y="526" text-anchor="middle" class="t-title">Quality &amp; Insights</text>
+        <text x="490" y="546" text-anchor="middle" class="t-sub">CSAT · QA sampling · voice-of-customer digest · scorecard</text>
+      </a>
+      <line x1="370" y1="470" x2="370" y2="497" stroke="#f472b6" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#a-pink)"/>
+      <line x1="620" y1="470" x2="620" y2="497" stroke="#f472b6" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#a-pink)"/>
+      <text x="378" y="490" class="t-label">conversations</text>
+      <text x="628" y="490" class="t-label">escalations</text>
+      <path d="M870,396 V530 H724" fill="none" stroke="#f472b6" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#a-pink)"/>
+      <text x="880" y="470" class="t-label">CSAT, churn &amp;</text>
+      <text x="880" y="484" class="t-label">renewals</text>
+
+      <!-- Feedback loop to orchestrator -->
+      <path d="M490,560 V580 H8 V126 H366" fill="none" stroke="#f472b6" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#a-pink)"/>
+      <text x="190" y="120" text-anchor="middle" class="t-label">weekly scorecard → re-plan</text>
+    </svg>
+    <div class="diagram-legend">
+      <span class="ctrl">dispatch (orchestrator → agents)</span>
+      <span>work flow (tickets, answers, fixes)</span>
+      <span class="dash">data &amp; feedback loop</span>
+      <span class="gate">human approval</span>
+    </div>
+  </div>
+
+  <!-- ===================== ROSTER ===================== -->
+  <h2 class="section-title" id="roster">The agents and what each one does</h2>
+  <p>Each agent becomes its own markdown file. The defaults below are best practice. The setup interview adjusts them to your product, ticket volume, channels, team and tools.</p>
+
+  <div class="agent-grid">
+
+    <div class="agent-card lead" id="agent-orchestrator">
+      <div class="stage">// control</div>
+      <h3>Support Orchestrator</h3>
+      <p class="mission">Acts as head of support. Keeps the queue healthy, matches coverage to demand, decides what the agents handle and what goes to people, and brings you only the decisions that need you.</p>
+      <h5>Does</h5>
+      <ul>
+        <li>Runs a daily queue check (backlog, tickets at risk of missing their response-time target, escalations) and a weekly review using the quality scorecard.</li>
+        <li>Sets <strong>what AI may handle</strong>: which topics get automatic answers, which get drafts for a person to review, and which always go straight to a person.</li>
+        <li>Collects refunds, credits, exceptions and promises to customers into one approval list. Shares themes with Product and bugs with Engineering.</li>
+      </ul>
+      <h5>Asks you</h5>
+      <ul><li>Ticket volume and channels, team size and hours, response-time targets (SLAs), and what customers may and may not be promised.</li></ul>
+      <div class="file">→ agents/support-orchestrator.md</div>
     </div>
 
-    <div class="step">
-      <div class="step-num">02</div>
-      <div class="step-body">
-        <h3>Triage agent (every inbound ticket)</h3>
-        <p>Classifies, tags, priorities, and routes. Runs before a human sees the ticket.</p>
-        <ul>
-          <li>Labels: <code class="inline">bug</code>, <code class="inline">how-to</code>, <code class="inline">billing</code>, <code class="inline">feature-request</code>, <code class="inline">churn-risk</code>, <code class="inline">security</code>.</li>
-          <li>Pulls customer context (plan, ARR, last 3 tickets) and attaches it.</li>
-          <li>Auto-escalates <code class="inline">churn-risk</code> and <code class="inline">security</code> to a human within 5 minutes, regardless of hours.</li>
-        </ul>
-      </div>
+    <div class="agent-card" id="agent-kb">
+      <div class="stage">// 01 · intake</div>
+      <h3>Knowledge Base</h3>
+      <p class="mission">Keeps the knowledge base true and current, because a support agent is only as good as the docs it cites.</p>
+      <h5>Does</h5>
+      <ul>
+        <li>Keeps one article per topic, each with frontmatter: owner, <strong>last-verified date</strong>, scope and tags (see the <a href="examples/support.md">example KB article</a>).</li>
+        <li>Flags articles that haven't been verified in 90 days. Those drop out of the set the AI is allowed to cite until someone checks them.</li>
+        <li>Spots gaps: questions that keep coming up with no article get a drafted article for review.</li>
+      </ul>
+      <h5>Asks you</h5>
+      <ul><li>Where your docs live (help center, Notion, git), your refund and billing policies, known issues, and who owns each area.</li></ul>
+      <div class="file">→ agents/knowledge-base.md</div>
     </div>
 
-    <div class="step">
-      <div class="step-num">03</div>
-      <div class="step-body">
-        <h3>Draft-response agent (human-reviewed)</h3>
-        <p>For <code class="inline">how-to</code> and <code class="inline">billing</code> tickets, an agent drafts the response using the KB + the customer's history. Human clicks "send" or edits.</p>
-        <ul>
-          <li>Constraint: agent must cite the KB doc it used. No cited doc = don't send.</li>
-          <li>Voice match to brand spec. Support voice = warmer than marketing voice; keep a separate section in <code class="inline">voice.md</code>.</li>
-          <li>For billing questions it can propose, not execute. Refunds always require a human.</li>
-        </ul>
-        <div class="callout warn"><strong>Never let the agent make a promise in writing.</strong> Deliverability dates, SLA commitments, and refund amounts come from humans. The agent can surface options; humans commit.</div>
-      </div>
+    <div class="agent-card" id="agent-triage">
+      <div class="stage">// 01 · intake</div>
+      <h3>Triage &amp; Routing</h3>
+      <p class="mission">Sorts every incoming conversation before a person sees it, so the urgent ones never wait.</p>
+      <h5>Does</h5>
+      <ul>
+        <li>Labels each ticket (how-to, bug, billing, feature request, churn risk, security) and sets its priority.</li>
+        <li>Attaches the customer's context: plan, account value, health and their last 3 tickets.</li>
+        <li><strong>Sends security issues and churn risks to a person within 5 minutes</strong>, at any hour. Everything else goes to the right queue or owner.</li>
+      </ul>
+      <h5>Asks you</h5>
+      <ul><li>Your helpdesk (Intercom, Zendesk, Help Scout, Front, shared inbox), your priority levels and response targets, and your on-call rotation.</li></ul>
+      <div class="file">→ agents/triage-routing.md</div>
     </div>
 
-    <div class="step">
-      <div class="step-num">04</div>
-      <div class="step-body">
-        <h3>Self-serve deflection, honestly done</h3>
-        <p>A chat widget that answers self-serve questions with citations and offers "talk to a human" on every message.</p>
-        <ul>
-          <li>Confidence threshold. If the agent's confidence is low, it opens a ticket instead of guessing.</li>
-          <li>Every deflected conversation is logged and sampled weekly — 20 random conversations read by a human to catch regressions.</li>
-          <li>"Was this helpful?" at the end, with the answer feeding the eval set.</li>
-        </ul>
-      </div>
+    <div class="agent-card" id="agent-replies">
+      <div class="stage">// 02 · resolve</div>
+      <h3>Resolution &amp; Replies</h3>
+      <p class="mission">Writes accurate, warm answers quickly, and is honest about when to hand over to a person.</p>
+      <h5>Does</h5>
+      <ul>
+        <li>Drafts replies from the knowledge base and the customer's history, and <strong>cites the article it used</strong>. If there's no article to cite, it doesn't send.</li>
+        <li>AI-first replies only on topics you've approved. They say they're from AI, offer "talk to a person" in every reply, and hand over to a person when the AI isn't confident.</li>
+        <li>Summarizes support calls and drafts follow-ups. It can suggest a refund or a delivery date but never commits to one.</li>
+      </ul>
+      <h5>Asks you</h5>
+      <ul><li>Your support voice, the topics AI may answer on its own, and whether drafts need review or may be sent automatically.</li></ul>
+      <div class="file">→ agents/resolution-replies.md</div>
     </div>
 
-    <div class="step">
-      <div class="step-num">05</div>
-      <div class="step-body">
-        <h3>Call-summary &amp; follow-up agent</h3>
-        <p>For phone/video support calls: auto-record (with consent), transcribe, summarize, extract commitments, create follow-up tasks.</p>
-        <ul>
-          <li>Summary template: <em>context, issue, resolution attempted, outcome, next step, owner, due date</em>.</li>
-          <li>Posts summary back into the ticket within 60 seconds of call ending.</li>
-          <li>Drafts the follow-up email referencing commitments made on the call.</li>
-        </ul>
-      </div>
+    <div class="agent-card" id="agent-escalation">
+      <div class="stage">// 03 · fix &amp; retain</div>
+      <h3>Escalation &amp; Bug Loop</h3>
+      <p class="mission">Turns customer pain into fixes. This is usually the agent that pays off most.</p>
+      <h5>Does</h5>
+      <ul>
+        <li>Turns bug tickets into issues <a href="engineering.html">Engineering</a> can act on: reproduction steps, environment, affected accounts, and linked error logs (e.g. from Sentry).</li>
+        <li>Checks for an existing issue first. If there is one, it adds the customer to a <strong>notify-when-fixed</strong> list, and it drafts the "it's fixed" message when the fix ships.</li>
+        <li>During an outage, drafts status-page updates and messages to affected customers for a person to approve.</li>
+      </ul>
+      <h5>Asks you</h5>
+      <ul><li>Your issue tracker (Linear, Jira, GitHub), your error tracking, your status page, and your bug severity levels.</li></ul>
+      <div class="file">→ agents/escalation-bugs.md</div>
     </div>
 
-    <div class="step">
-      <div class="step-num">06</div>
-      <div class="step-body">
-        <h3>Bug-to-engineering feedback loop (the highest-ROI agent)</h3>
-        <p>When a ticket is labeled <code class="inline">bug</code>, a specialized agent builds an engineering-ready issue and files it in Linear.</p>
-        <ul>
-          <li>Extracts: repro steps, browser/OS/app version, affected account id, logs from the error-tracking system (Sentry via MCP).</li>
-          <li>Searches existing issues to dedupe.</li>
-          <li>If it matches an existing issue, adds the customer to the "notify-when-fixed" list automatically.</li>
-        </ul>
-        <pre class="code"><span class="c-com"># Bug issue template</span>
-## Repro
-&lt;agent-extracted steps&gt;
-## Environment
-&lt;agent-extracted browser, version, account&gt;
-## Logs
-&lt;linked Sentry events&gt;
-## Customers impacted
-&lt;auto-updating list; paste account IDs&gt;</pre>
-      </div>
+    <div class="agent-card" id="agent-success">
+      <div class="stage">// 03 · fix &amp; retain</div>
+      <h3>Customer Success &amp; Retention</h3>
+      <p class="mission">Makes sure customers reach value and stay. It picks up where the Sales handoff ends.</p>
+      <h5>Does</h5>
+      <ul>
+        <li>Turns the <a href="sales.html#agent-handoff">Sales handoff</a> document into an onboarding plan with goals, check-ins, and every promise made during the sale.</li>
+        <li>Keeps a health score (usage, support load, sentiment, payment status) and triggers a playbook when an account is at risk.</li>
+        <li>Prepares renewal and business-review packs from data, and spots expansion opportunities to pass back to Sales.</li>
+      </ul>
+      <h5>Asks you</h5>
+      <ul><li>Who owns accounts after the sale, your customer-success tool if any, renewal terms, and what signs of a healthy customer look like.</li></ul>
+      <div class="file">→ agents/customer-success.md</div>
     </div>
 
-    <div class="step">
-      <div class="step-num">07</div>
-      <div class="step-body">
-        <h3>Voice-of-customer digest</h3>
-        <p>Weekly agent-generated digest to the whole team. Crucially, not just "top complaints" — top <em>shifts</em>.</p>
-        <ul>
-          <li>What new complaint theme emerged this week vs last month?</li>
-          <li>Which feature requests are from high-ARR accounts?</li>
-          <li>Which existing bugs are regressing in frequency?</li>
-          <li>Routed into the PM opportunity-scoring agent (see <a href="product.html">Product</a>).</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="step">
-      <div class="step-num">08</div>
-      <div class="step-body">
-        <h3>Measurement that reflects reality</h3>
-        <ul>
-          <li><strong>First-response time</strong> — for AI draft, target &lt;1 min; for human-sent, target &lt;1 hr.</li>
-          <li><strong>Deflection quality</strong> — % of deflected conversations where the customer didn't come back within 48 hr with the same issue.</li>
-          <li><strong>Escalation accuracy</strong> — % of agent-escalated tickets that humans agreed should have been escalated.</li>
-          <li><strong>Bug-to-fix latency</strong> — customer-reported bug → engineering issue filed → PR merged. Target &lt;72hr for P1.</li>
-        </ul>
-      </div>
+    <div class="agent-card measure" id="agent-insights">
+      <div class="stage">// measure &amp; learn</div>
+      <h3>Quality &amp; Insights</h3>
+      <p class="mission">Measures what customers actually experienced and turns support into a source of product insight.</p>
+      <h5>Does</h5>
+      <ul>
+        <li>Has a person review 20 random AI-handled conversations each week. Counts a ticket as deflected only if the customer <strong>didn't come back with the same issue within 48 hours</strong>.</li>
+        <li>Tracks first-response time, resolution time, reopen rate, CSAT, how accurate escalations were, and how long bugs take to get fixed.</li>
+        <li>Sends a weekly voice-of-customer digest that highlights <em>changes</em> rather than only the top complaints, to Product's <a href="product.html#agent-discovery">Customer Discovery</a> agent.</li>
+      </ul>
+      <h5>Asks you</h5>
+      <ul><li>The metrics your helpdesk reports, whether you run CSAT or NPS, and access to read or export conversations.</li></ul>
+      <div class="file">→ agents/quality-insights.md</div>
     </div>
 
   </div>
 
-  <h2 class="section-title">Stack</h2>
-  <table class="stack-table">
-    <thead><tr><th>Layer</th><th>Pick</th><th>Why</th></tr></thead>
-    <tbody>
-      <tr><td>Helpdesk</td><td>Plain / Intercom / Front</td><td>Modern APIs, webhook-friendly</td></tr>
-      <tr><td>Transcription</td><td>Fireflies / Granola</td><td>Reliable summaries, calendar sync</td></tr>
-      <tr><td>Error tracking</td><td>Sentry</td><td>MCP-readable, rich context</td></tr>
-      <tr><td>Knowledge base</td><td>MDX in monorepo</td><td>Docs ship with product versioning</td></tr>
-      <tr><td>Eval tooling</td><td>Braintrust / Langfuse</td><td>Regression tests on your support agent</td></tr>
-    </tbody>
-  </table>
+  <!-- ===================== FILES ===================== -->
+  <h2 class="section-title" id="files">What Claude will create for you</h2>
+  <p>A folder you own. Plain markdown files are easy to edit, version and reuse. In Claude Code the agent files go in <code class="inline">.claude/agents/</code> so they load as subagents.</p>
+
+<pre class="tree">support-agents/
+├── CLAUDE.md                    <span class="c-com"># entry point: goal, roster, workflow, rules</span>
+├── context/                     <span class="c-com"># shared brain, read by every agent</span>
+│   ├── product-and-plans.md
+│   ├── customers-and-segments.md
+│   ├── policies-and-slas.md
+│   ├── support-voice.md
+│   ├── escalation-paths.md
+│   ├── ai-scope.md
+│   └── tools-and-access.md
+├── agents/                      <span class="c-com"># .claude/agents/ in Claude Code</span>
+│   ├── support-orchestrator.md
+│   ├── knowledge-base.md
+│   ├── triage-routing.md
+│   ├── resolution-replies.md
+│   ├── escalation-bugs.md
+│   ├── customer-success.md
+│   └── quality-insights.md
+├── playbooks/
+│   ├── first-30-days.md
+│   ├── weekly-cadence.md
+│   └── approval-gates.md
+├── kb/                          <span class="c-com"># knowledge-base articles (or a pointer to your help center)</span>
+└── outputs/                     <span class="c-com"># where agents deliver work</span>
+    ├── drafts/  escalations/  accounts/  kb-gaps/
+    └── reports/</pre>
+
+  <!-- ===================== SETUP PROMPT ===================== -->
+  <h2 class="section-title" id="setup">Setup prompt: paste it into your Claude</h2>
+  <p>Claude interviews you in five short rounds: product, customers, volume and team, tools, and policies and AI scope. Every question shows a best-practice default, so you can answer "defaults" and keep going. It then writes the files and gives you a first-week plan.</p>
+
+  <div class="how-to">
+    <div class="mini-card">
+      <h4><span class="n">1</span>Copy or download</h4>
+      <p>Use the buttons below. The download is a <code class="inline">.md</code> file you can keep or share with your team.</p>
+    </div>
+    <div class="mini-card">
+      <h4><span class="n">2</span>Paste into Claude</h4>
+      <p>Claude Code or the Claude desktop app can write the folder directly. On claude.ai, Claude delivers the files as a zip or as copyable blocks.</p>
+    </div>
+    <div class="mini-card">
+      <h4><span class="n">3</span>Answer &amp; connect</h4>
+      <p>Answer the interview questions. Connect your helpdesk, knowledge base, issue tracker and error tracking through Claude's connectors, read-only first. Never paste a password into the chat.</p>
+    </div>
+  </div>
+
+  <div class="prompt-box">
+    <div class="prompt-toolbar">
+      <span class="file-name">support-agent-system-setup.md</span>
+      <button class="btn" type="button" data-prompt-copy="prompt-support">Copy prompt</button>
+      <button class="btn secondary" type="button" data-prompt-download="prompt-support" data-filename="support-agent-system-setup.md">Download .md</button>
+    </div>
+    <pre data-prompt-view="prompt-support">Loading prompt… (enable JavaScript to view, copy, or download)</pre>
+  </div>
+
+  <div class="callout tip"><strong>Using it on claude.ai?</strong> After Claude generates the files, create a <strong>Project</strong>. Paste <code class="inline">CLAUDE.md</code> into the project instructions and upload the <code class="inline">context/</code>, <code class="inline">agents/</code> and <code class="inline">kb/</code> files as project knowledge. Every chat in that project then has the whole team available.</div>
+
+  <div class="callout warn"><strong>Never let the AI make promises in writing.</strong> Refund amounts, credits, delivery dates and SLA commitments come from people. Agents can suggest options. People commit.</div>
+
+  <div class="two-col">
+    <div class="mini-card">
+      <h4>// always needs your approval</h4>
+      <ul>
+        <li>Refunds, credits, discounts and billing changes</li>
+        <li>Changes to a customer's account, data or access</li>
+        <li>Promises about dates, features or SLAs</li>
+        <li>Expanding which topics AI answers on its own</li>
+        <li>Outage messages, status-page posts and security replies</li>
+      </ul>
+    </div>
+    <div class="mini-card">
+      <h4>// red flags to watch</h4>
+      <ul>
+        <li>Deflection is up but repeat contacts are up too: the AI is closing tickets without solving them</li>
+        <li>Lots of uncited drafts: the knowledge base has gaps or out-of-date articles</li>
+        <li>People rewrite more than half of drafts: the voice file or KB is too thin</li>
+        <li>The same bug keeps getting reported: the notify-and-fix loop is broken</li>
+        <li>CSAT is fine but churn is rising: you're only hearing from happy customers</li>
+      </ul>
+    </div>
+  </div>
 </main>
-<footer><span>Stargate · Customer Support</span><span class="mono">/support</span></footer>
+<footer><span>Stargate · Support Agent System</span><span class="mono">/support</span></footer>
+
+<script type="text/plain" id="prompt-support">
+# Support Agent System — Setup Prompt
+
+You are going to set up a **customer support agent system** for my business. It is a small team of specialized AI agents, defined as markdown files in a folder, working together toward one goal:
+
+> **Every customer gets a fast, accurate, honest resolution, and what they tell us makes the product better, so they stay.**
+
+Your job in this conversation:
+1. **Interview me** so the system fits my product, customers, ticket volume and team.
+2. **Fill any gaps with best-practice defaults**, and tell me which ones you assumed.
+3. **Create the folder** of context files, agent files, knowledge-base scaffolding and playbooks described below.
+4. **Hand me a first-week plan** and the list of tools I should connect.
+
+---
+
+## Ground rules
+
+- Ask questions in **rounds of no more than 6**, numbered. After each question, put in [brackets] the default you'll use if I skip it. I can reply "defaults" to accept every default in a round.
+- **Don't ask about things you can look up.** If I give you a website, help center or docs URL and you can browse, read them first (help center, pricing, terms, refund policy, status page). Use them to pre-fill answers, then ask me to confirm.
+- **Never ask me for passwords, API keys, or login codes in the chat.** For tool access, use official connectors or MCP integrations that sign in through the provider. Ask for read-only access first. If no connector exists, ask me for an export (CSV, PDF, or pasted conversations).
+- **Agents never make commitments in writing.** Refunds, credits, discounts, delivery dates, feature promises and SLA exceptions come from people. Agents may suggest options for a person to approve.
+- **AI talking directly to customers is limited and honest.** It answers only the topics I approve, always says it's AI, always offers an easy route to a person, and hands over when it isn't confident or when the customer is upset, at risk of leaving, or raising a security, legal or safety issue.
+- **Protect customer data.** Use the minimum personal data needed. Never copy personal details (names, emails, payment data, account contents) into context files, the KB or reports; refer to accounts by ID. Strip personal data from examples and follow the privacy rules that apply to me (GDPR, CCPA, HIPAA and so on).
+- **Don't invent facts, policies or fixes.** If there's no knowledge-base article to support an answer, say so and escalate. Mark anything unconfirmed as `TODO:` in the files.
+- Write every file so that another Claude session, with no access to this conversation, could act on it. Keep files specific to my business and concise. Use bullet points rather than essays.
+
+---
+
+## Step 1 — Interview me
+
+### Round 1 · The product and its support needs
+1. Business name, plus your **website and help center URLs**.
+2. What does the product do, and who uses it (B2B, B2C, or both)? [inferred from site]
+3. Plans or tiers, and whether support differs by plan (e.g. priority support for higher tiers). [same support for all plans]
+4. The top 5 reasons customers contact you today. [inferred from help center; flagged TODO]
+5. Stage: pre-launch, first customers, growing, or established? [first customers]
+
+### Round 2 · Customers and expectations
+1. Customer segments that need different handling (e.g. enterprise accounts, free users, a regulated industry). [one segment]
+2. Promised or expected response times by priority (SLAs). [P1 urgent: 1 hr · P2 high: 4 business hrs · P3 normal: 1 business day]
+3. Languages and time zones you support. [English, your business hours]
+4. How new customers are onboarded today, and who owns accounts after the sale. [the founder or support owns onboarding]
+5. Main reasons customers have left (if known). [unknown; Quality & Insights will baseline]
+
+### Round 3 · Volume, team and channels
+1. Rough ticket or conversation volume per week. [under 100]
+2. Channels: email, chat widget, in-app, phone, social, community forum, Slack Connect. [email + chat]
+3. Who answers today, how many people, and in what hours? [1–2 people, business hours]
+4. Who's on call for urgent issues outside business hours? [the founder]
+5. Hours per week someone can spend reviewing agent drafts and sampling AI conversations. [3 hours]
+
+### Round 4 · Tools and access
+For each item, tell me what you use, or "none":
+1. Helpdesk or inbox (Intercom, Zendesk, Help Scout, Front, Freshdesk, Gmail or Outlook shared inbox)
+2. Knowledge base or docs (help-center tool, Notion, GitBook, a docs site in git)
+3. Issue tracker and error tracking (Linear, Jira, GitHub Issues; Sentry, Datadog)
+4. Status page (Statuspage, Instatus, BetterStack) and the team chat used for escalations (Slack, Teams)
+5. CRM or customer-success tool, plus billing (HubSpot, Salesforce, Vitally, Planhat; Stripe)
+6. Product analytics for usage and health signals (PostHog, Amplitude, Mixpanel)
+
+**After this round:**
+- **Tools I already have.** Check whether a connector or MCP integration for that tool exists in your current environment. In claude.ai and the desktop app, look under Settings → Connectors. In Claude Code, look at `claude mcp`. If one exists, tell me exactly how to connect it, read-only first. If none exists, tell me which export to provide and how. Record each tool as connected, export-only, or not connected in `context/tools-and-access.md`.
+- **Tools I don't have.** Recommend the default from Step 2 that fits my stage, volume and budget, explain why in one line, and add a setup task to the plan. Don't make tools a blocker. The system must work from exports and pasted conversations alone.
+
+### Round 5 · Policies, voice and AI scope
+1. Refund, cancellation, billing and data-deletion policies (a link or summary). [TODO: no refunds without your approval]
+2. Three words for how support should sound, and one word for how it must never sound. [warm, clear, competent; never robotic]
+3. Which topics may AI answer **on its own**, which as **drafts for a person to review**, and which should **never involve AI**? [on its own: none at first · drafts: how-to and account questions · never: billing disputes, security, legal, angry customers, cancellations]
+4. Privacy and compliance limits: GDPR, HIPAA, SOC 2, data residency, or customer contracts. [GDPR-style care: minimal personal data]
+5. Anything beyond the default approval gates that must come to you first? [defaults only]
+6. Where should agents deliver work? [drafts and internal notes in the helpdesk if connected; otherwise files in `outputs/`; alerts to Slack if connected]
+
+**Before creating anything**, show me a one-screen summary of what you learned and what you're assuming. Mark each item *confirmed*, *inferred* or *default*. Ask me to correct it. Then build.
+
+---
+
+## Step 2 — Best-practice defaults (use these unless my answers say otherwise)
+
+**Adjust to volume**
+- *Under ~100 tickets a week:* a shared inbox or a lightweight helpdesk is fine. Agents draft every reply, a person sends, and the focus is building the knowledge base.
+- *~100–1,000 a week:* a proper helpdesk, automatic triage, AI answering approved how-to topics on its own, and weekly quality review.
+- *More than 1,000 a week:* tiered queues, routing by skill, a dedicated quality-review role, and dashboards by segment.
+
+**Knowledge base first**
+- One article per topic in markdown or the help center, each with frontmatter: `id`, `title`, `owner`, `last_verified`, `scope` (customer-facing or internal), `plans`, `tags`.
+- Articles not verified in 90 days drop out of the set the AI may cite until someone re-checks them.
+- Include product how-tos, known issues and workarounds, pricing and plans, the refund policy, SLAs, and troubleshooting trees ordered by how often each cause occurs.
+- Gap loop: any question asked 3+ times in a month without an article triggers a drafted article for review.
+
+**Triage and routing**
+- Labels: how-to, bug, billing, account access, feature request, churn risk, security or privacy, and outage.
+- Priorities: P1 (the customer is blocked, an outage, or security); P2 (a major feature is broken, or a high-value account); P3 (normal); P4 (feedback or a feature request).
+- Attach the customer's context to every ticket: plan, account value, health score and recent tickets.
+- Send security or privacy issues, churn risks and P1s to a person within 5 minutes, at any hour.
+
+**Resolution and replies**
+- Every draft cites the knowledge-base article(s) it relied on. **No article to cite means don't send:** escalate, and log a KB gap.
+- Reply structure: acknowledge, answer or next step, the article link, and a check that it worked. Keep it short, warm and specific.
+- AI answering on its own is limited to approved topics. Every message says it's AI and offers a person. When the AI isn't confident, it opens a ticket for a person instead of guessing.
+- Call summaries: context, issue, what was tried, outcome, next step, owner and due date. Post them to the ticket within minutes.
+- Never commit to a refund, credit, date or feature. Suggest options for a person to approve.
+
+**Escalation and bug loop**
+- The bug template has reproduction steps, environment (browser, OS, app version), affected account IDs (not personal details), linked error logs, severity, and the number of customers affected.
+- Check for an existing issue before filing a new one. If there is one, add the customer to the notify-when-fixed list.
+- When the fix ships, draft a personal "it's fixed" message to every affected customer for approval.
+- Outages: draft status-page updates every 30–60 minutes and messages to affected customers. A person publishes them.
+- Target: a P1 bug becomes an engineering issue within 1 hour, and P1 bug-to-fix time is under 72 hours.
+
+**Customer success and retention**
+- An onboarding plan built from the sales handoff, with goals, the first milestone where the customer gets value, check-ins at 30, 60 and 90 days, and every promise made during the sale.
+- A health score from usage trend, support volume and sentiment, payment status, and whether there's an engaged champion. Accounts are labeled green, yellow or red.
+- Accounts at risk get an outreach plan for a person to carry out. Renewals are flagged 90 days out. Expansion signals go to Sales.
+
+**Quality and insights**
+- Metrics: first-response time, resolution time, rate resolved on first contact, reopen rate within 7 days, CSAT, the share of escalations a person agreed with, bug-to-fix time, and repeat contacts within 48 hours for AI-handled conversations.
+- A person reviews 20 randomly sampled AI-handled or AI-drafted conversations each week against a rubric: accuracy, citation, tone, and whether it handed over correctly.
+- Weekly voice-of-customer digest: what changed (new themes, rising bugs, requests from high-value accounts), not only the top complaints. It goes to Product.
+
+**Default tools if missing:** Help Scout or Intercom for small teams (Zendesk at higher volume); a help center inside the helpdesk, or markdown in git for the knowledge base; Linear for issues; Sentry for errors; a simple hosted status page; PostHog for usage signals.
+
+**Approval gates (always on):** refunds, credits, discounts and billing changes; changes to a customer's account, data or access; any promise of a date, feature or SLA; expanding which topics AI may answer on its own; outage and security communications; and deleting or exporting customer data.
+
+---
+
+## Step 3 — Create the files
+
+**Where to write:**
+- If you can write files (Claude Code, or the Claude desktop app with folder access), ask where to create the folder [default: `./support-agents`] and write the files directly. **In Claude Code, put the agent files in `support-agents/.claude/agents/`** instead of `agents/` so they load as subagents. Tell me to start Claude Code from inside `support-agents/`.
+- If you can't write files but can run code, create the files and give me a single **.zip** to download.
+- Otherwise, output each file in its own code block, headed by its full path, in the order below.
+
+**Folder structure:**
+```
+support-agents/
+├── CLAUDE.md
+├── context/
+│   ├── product-and-plans.md
+│   ├── customers-and-segments.md
+│   ├── policies-and-slas.md
+│   ├── support-voice.md
+│   ├── escalation-paths.md
+│   ├── ai-scope.md
+│   └── tools-and-access.md
+├── agents/                (use .claude/agents/ in Claude Code)
+│   ├── support-orchestrator.md
+│   ├── knowledge-base.md
+│   ├── triage-routing.md
+│   ├── resolution-replies.md
+│   ├── escalation-bugs.md
+│   ├── customer-success.md
+│   └── quality-insights.md
+├── playbooks/
+│   ├── first-30-days.md
+│   ├── weekly-cadence.md
+│   └── approval-gates.md
+├── kb/
+│   ├── README.md
+│   └── _template.md
+└── outputs/
+    ├── README.md
+    ├── drafts/  escalations/  accounts/  kb-gaps/
+    └── reports/
+```
+
+**`CLAUDE.md`** is the system's entry point. It contains:
+- The goal, the scorecard metrics with their targets, and current baselines (or TODO).
+- A text diagram of the flow: context → orchestrator → knowledge base + triage (which receives customer conversations and new accounts from the sales handoff) → resolution and replies → escalation and bugs (to engineering) → customer success and retention → retained customers, with quality and insights sampling every stage and sending a weekly scorecard back to the orchestrator and a voice-of-customer digest to product.
+- A roster table: agent, one-line job, when to use it, and its output folder.
+- The rules that every agent reads `context/` before working, **no answer without a KB citation**, and **no commitments in writing**, plus the AI-scope rules, the approval gates and the customer-data rules.
+- How to run the system, e.g. "Use the support-orchestrator agent to run today's queue check."
+
+**`context/` files** hold the shared brain, filled with my interview answers and your research. Label every section *confirmed*, *inferred* or *TODO*.
+- `product-and-plans.md`: what the product does, plans and tiers, how support differs by plan, known limitations, and the top contact reasons.
+- `customers-and-segments.md`: segments, how to treat each, onboarding ownership, health signals, and anonymized reasons customers left.
+- `policies-and-slas.md`: refund, cancellation, billing and data-deletion policies; SLAs by priority; hours and languages; the definitions of P1 through P4.
+- `support-voice.md`: voice words and an anti-word, reply structure, phrases to use and avoid, and 2–3 golden replies (warmer than the marketing voice).
+- `escalation-paths.md`: who handles what (bugs, billing, security, legal, outages), on-call contacts by role, and the severity matrix.
+- `ai-scope.md`: the topics AI handles on its own, as drafts, or never; the AI disclosure wording; when to hand over to a person; and how to request a scope change.
+- `tools-and-access.md`: each tool with its status (connected / export-only / recommended / not needed), how to connect it, and the owner.
+
+**`kb/`**
+- `README.md` explains where the real knowledge base lives (in this folder or in my help center), the frontmatter rules, and the 90-day verification rule.
+- `_template.md` is an article template with the frontmatter fields from Step 2.
+- If my help center can be read, also create a `kb/index.md` listing each article with its last-verified status, and seed up to 5 draft articles for the top contact reasons, each marked TODO for verification.
+
+**Every agent file** uses this template. The frontmatter keeps the file valid as a Claude Code subagent.
+```
+---
+name: <kebab-case-name>
+description: <one specific sentence on when to delegate to this agent>
+tools: <Claude Code only: list the tools it needs, e.g. Read, Write, Edit, Glob, Grep, WebSearch, WebFetch. Omit this line to inherit all tools, including connectors.>
+---
+# <Agent name>
+## Mission            (one or two sentences tied to the resolution-and-retention goal)
+## Reads first        (which context/ and kb/ files, and outputs from other agents)
+## Responsibilities   (bullets, customized to this business)
+## Inputs it needs    (and the default it uses when they're missing)
+## Tools & connections (what it uses now, and what to connect next)
+## Outputs            (exact file paths in outputs/ or helpdesk drafts/notes, with the format)
+## Hand-offs          (who receives its output, and what triggers the hand-off)
+## Approval gates     (actions it must never take without the owner)
+## KPIs it owns
+## Cadence            (what it does in real time, daily, weekly and monthly)
+```
+
+Agent-specific requirements. Customize each one with my product, volume, channels and tools:
+- **support-orchestrator.** Runs the cycle from `playbooks/weekly-cadence.md`: a daily queue check (backlog, tickets at risk of missing their SLA, escalations) and a weekly review using the quality scorecard. It maintains `context/ai-scope.md` and proposes changes for my approval, collects every refund, credit, exception and outbound communication into a single approval list in `outputs/reports/`, and makes sure product themes and bugs reach Product and Engineering. It must never bypass an approval gate.
+- **knowledge-base.** Maintains `kb/` (or *my help center*), enforces the frontmatter and the 90-day verification rule, drafts articles for gaps found by triage and quality, writes troubleshooting trees ordered by how often each cause occurs, and keeps internal-only articles separate from customer-facing ones.
+- **triage-routing.** Labels and prioritizes every conversation from *my channels*, attaches the customer's context, routes to queues and owners following `context/escalation-paths.md`, and sends security, churn-risk and P1 items to a person within 5 minutes. It writes internal notes, never replies to customers.
+- **resolution-replies.** Drafts cited replies in *my support voice* as helpdesk drafts (or in `outputs/drafts/`), answers on its own only within `context/ai-scope.md`, hands over to a person under the rules there, summarizes calls, and logs a KB gap whenever it has nothing to cite. It never commits to refunds, credits, dates or features.
+- **escalation-bugs.** Turns bugs into issues for *my tracker* using the bug template, checks for existing issues first, keeps notify-when-fixed lists in `outputs/escalations/`, drafts "it's fixed" messages and outage communications for approval, and tracks bug-to-fix time.
+- **customer-success.** Builds onboarding plans from sales handoff documents, maintains health scores and at-risk playbooks in `outputs/accounts/`, flags renewals 90 days out, prepares business-review packs from data, and passes expansion signals to Sales.
+- **quality-insights.** Calculates the scorecard from *my helpdesk data* (connected or exported), runs the weekly sampling of 20 conversations with its rubric, measures repeat contacts within 48 hours, and writes the weekly scorecard and voice-of-customer digest in `outputs/reports/`, sending the digest to Product.
+
+**`playbooks/`**
+- `first-30-days.md`: Week 1, foundation: confirm context and policies, connect the helpdesk read-only, baseline the metrics, and set the starting AI scope (drafts only). Week 2, knowledge: audit the KB, write articles for the top 10 contact reasons, set up the verification rule. Week 3, workflow: triage labels and routing, drafts with citations on approved topics, the bug template and loop, onboarding plans for new accounts. Week 4, learn: the first scorecard and quality sample, the first voice-of-customer digest, a decision on whether to widen the AI scope, and the next 30-day plan. Adapt it to my volume and answers.
+- `weekly-cadence.md`: Real time: triage and P1, security and churn alerts. Daily: queue check, draft review, bug filing. Monday: scorecard review and priorities. Wednesday: KB gap fixes and health-score review. Friday: quality sampling, the voice-of-customer digest, and lessons learned. Fit it to my team's hours.
+- `approval-gates.md`: the default gates plus mine, who approves each, and how to submit an item for approval.
+
+**`outputs/README.md`** explains what each subfolder holds and the file naming convention (`YYYY-MM-DD-topic.md`, with accounts referenced by ID).
+
+---
+
+## Step 4 — Wrap up
+
+When the files are created, give me:
+1. The folder tree, with a one-line description of each file.
+2. **Assumptions and TODOs.** Everything you defaulted or couldn't confirm, and how to resolve each. Policies come first.
+3. **Connections to set up, in priority order.** The helpdesk comes first, then the knowledge base, then the issue tracker and error tracking, then the CRM and billing, then product analytics. For each, give the exact steps in this environment.
+4. **The first-week plan,** with the one thing I should do today (usually: export the last 30 days of conversations so the top contact reasons and KB gaps are based on real data).
+5. **How to use the system day to day:**
+   - *Claude Code:* "Use the support-orchestrator agent to run today's queue check," or call any agent directly, e.g. "Use the escalation-bugs agent to turn this ticket into a Linear issue."
+   - *claude.ai:* Create a Project. Paste `CLAUDE.md` into the project instructions and upload the `context/`, `agents/` and `kb/` files as project knowledge. Then ask, for example, "Acting as the resolution-replies agent, draft a reply to this ticket."
+
+Start now with Round 1. If I've already given you my website or help center URL, review it first and pre-fill what you can.
+</script>
+<script src="prompt.js"></script>
 </body></html>

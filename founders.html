@@ -3,7 +3,8 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Founders · Stargate</title>
+<title>Founder Agent System · Stargate</title>
+<meta name="description" content="A default founder / CEO-office agent system: chief of staff, market scout, narrative & pitch, fundraising & investor relations, deal desk, key hires, and metrics & board reporting agents, plus a copy-paste setup prompt for Claude." />
 <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -26,149 +27,602 @@
 
 <main>
   <div class="page-header">
-    <div class="kicker">// FOUNDERS</div>
-    <h1>Your AI co-founder before you can afford one</h1>
-    <p>You are CEO, CFO, Chief of Staff, recruiter, and lead salesperson. This playbook turns three agents into the other six hats you're wearing — pitching, researching, negotiating, and reporting — so you can focus on the one thing only you can do: decide.</p>
+    <div class="kicker">// FOUNDERS · AGENT SYSTEM</div>
+    <h1>A CEO office of agents, so you can spend your time on decisions only you can make</h1>
+    <p>Seven agents that work like the chief of staff, analysts and associates you can't afford yet. One watches the market. One sharpens your story. One runs your fundraise and investor relations. One reviews term sheets and contracts. One helps you hire the key people. One keeps the numbers ready for your board. A chief of staff ties them to your top priorities each week. You still decide, send and sign everything. Copy the <a href="#setup">setup prompt</a> into Claude. It will interview you about your company and then write the whole system as a folder of agent files.</p>
   </div>
 
   <div class="tags">
+    <span class="tag cyan">chief of staff</span>
+    <span class="tag cyan">market intel</span>
+    <span class="tag cyan">pitch &amp; narrative</span>
     <span class="tag cyan">fundraising</span>
-    <span class="tag cyan">pitch deck</span>
-    <span class="tag cyan">market research</span>
-    <span class="tag cyan">negotiation</span>
-    <span class="tag cyan">investor CRM</span>
+    <span class="tag cyan">term sheets &amp; contracts</span>
+    <span class="tag cyan">key hires</span>
+    <span class="tag cyan">board &amp; investor updates</span>
   </div>
 
-  <h2 class="section-title">The agent roster</h2>
-  <p>Four agents cover 90% of a founder's weekly work. Build them in this order.</p>
+  <!-- ===================== GOAL ===================== -->
+  <h2 class="section-title">The goal the system works toward</h2>
+  <p>Every agent, every task, and every weekly report is judged against one outcome.</p>
 
-  <div class="steps">
+  <div class="goal-panel">
+    <div>
+      <div class="label">// north star</div>
+      <h2>Hit the company's next milestone with the capital, people and focus to get there, while you spend your hours on the few decisions only you can make.</h2>
+      <p>You name the milestone during setup, for example "close a $3M seed by June" or "reach $1M ARR with 18 months of runway". The system doesn't count decks produced or investors emailed as wins. Those only matter when they move the milestone. It works from the same numbers as the <a href="finance.html">Finance</a> and <a href="data.html">Data</a> functions, so what investors see always matches the books.</p>
+    </div>
+    <div class="metrics">
+      <div class="metric"><div class="k">Primary</div><div class="v">Progress to the next milestone (on track / at risk)</div></div>
+      <div class="metric"><div class="k">Capital</div><div class="v">Runway ≥ 18 months after a raise</div></div>
+      <div class="metric"><div class="k">Leverage</div><div class="v">% of your hours spent on the top 3 priorities</div></div>
+      <div class="metric"><div class="k">Guardrail</div><div class="v">Nothing sent or signed without you · numbers always sourced</div></div>
+    </div>
+  </div>
 
-    <div class="step">
-      <div class="step-num">01</div>
-      <div class="step-body">
-        <h3>Build a "Founder Context Pack" first</h3>
-        <p>Every good founder agent needs three documents to stop hallucinating about your company. Put these in a single repo or Notion space — every agent reads from it.</p>
-        <ul>
-          <li><strong>one-pager.md</strong> — problem, customer, wedge, why-now, team, ask.</li>
-          <li><strong>market.md</strong> — TAM/SAM/SOM with sources, 5 closest competitors, differentiation matrix.</li>
-          <li><strong>metrics.md</strong> — current MRR/ARR, growth rate, burn, runway, CAC, top customer logos.</li>
-        </ul>
-        <div class="callout">Update weekly. Treat it as a living artifact. Every agent prompt starts with <code class="inline">&lt;context&gt;{{founder_context_pack}}&lt;/context&gt;</code>.</div>
-        <div class="callout tip"><strong>Example:</strong> see <a href="examples/founder.md"><code class="inline">examples/founder.md</code></a> — a filled-in <code class="inline">one-pager.md</code> for a fictional startup.</div>
-      </div>
+  <!-- ===================== DIAGRAM ===================== -->
+  <h2 class="section-title" id="diagram">How the agents work together</h2>
+  <p>The chief of staff sets the week's priorities. Work moves from understanding the market and sharpening the story, to raising capital, to closing deals and hiring with it. Metrics &amp; Board Reporting tracks progress toward the milestone and sends a scorecard back, so next week's priorities are based on what actually moved. Click any agent to jump to its role.</p>
+
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 1000 585" role="img" aria-labelledby="dg-title dg-desc" xmlns="http://www.w3.org/2000/svg">
+      <title id="dg-title">Founder agent system flow</title>
+      <desc id="dg-desc">The shared founder context pack feeds a Chief of Staff, which you approve. The chief of staff dispatches work to Market and Competitor Scout and Narrative and Pitch (sense and narrate), then Fundraising and Investor Relations (raise), then Deal Desk and Key Hires and Recruiting (close and build), producing the company's next milestone. Metrics and Board Reporting tracks the investor pipeline, hires and deals, and milestone progress, and sends a weekly scorecard back to the chief of staff.</desc>
+      <defs>
+        <marker id="a-cyan" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#22d3ee"/></marker>
+        <marker id="a-violet" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#7c5cff"/></marker>
+        <marker id="a-pink" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#f472b6"/></marker>
+        <marker id="a-amber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#fbbf24"/></marker>
+      </defs>
+
+      <!-- Shared context band -->
+      <rect x="20" y="10" width="960" height="52" rx="10" fill="rgba(34,211,238,0.06)" stroke="#22d3ee" stroke-opacity="0.5" stroke-dasharray="4 4"/>
+      <text x="500" y="31" text-anchor="middle" class="t-mono">FOUNDER CONTEXT PACK · READ BY EVERY AGENT</text>
+      <text x="500" y="50" text-anchor="middle" class="t-sub">one-pager · market · metrics · priorities &amp; milestones · investors &amp; network · tools &amp; access</text>
+      <line x1="500" y1="62" x2="500" y2="91" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#a-cyan)"/>
+
+      <!-- Orchestrator -->
+      <a href="#agent-orchestrator">
+        <rect x="370" y="94" width="260" height="64" rx="12" fill="#1c1640" stroke="#7c5cff" stroke-width="1.5"/>
+        <text x="500" y="121" text-anchor="middle" class="t-title">Chief of Staff</text>
+        <text x="500" y="142" text-anchor="middle" class="t-sub">priorities · briefs · weekly review</text>
+      </a>
+
+      <!-- You -->
+      <rect x="760" y="100" width="220" height="52" rx="26" fill="#161d2e" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="870" y="122" text-anchor="middle" class="t-title">You (founder / CEO)</text>
+      <text x="870" y="140" text-anchor="middle" class="t-sub">decide · send · sign</text>
+      <line x1="633" y1="126" x2="756" y2="126" stroke="#fbbf24" stroke-width="1.5" marker-start="url(#a-amber)" marker-end="url(#a-amber)"/>
+      <text x="694" y="117" text-anchor="middle" class="t-label">approval gates</text>
+
+      <!-- Dispatch bus -->
+      <line x1="500" y1="158" x2="500" y2="180" stroke="#7c5cff" stroke-width="1.5"/>
+      <line x1="120" y1="180" x2="620" y2="180" stroke="#7c5cff" stroke-width="1.5"/>
+      <line x1="120" y1="180" x2="120" y2="202" stroke="#7c5cff" stroke-width="1.5" marker-end="url(#a-violet)"/>
+      <line x1="370" y1="180" x2="370" y2="202" stroke="#7c5cff" stroke-width="1.5" marker-end="url(#a-violet)"/>
+      <line x1="620" y1="180" x2="620" y2="202" stroke="#7c5cff" stroke-width="1.5" marker-end="url(#a-violet)"/>
+      <text x="245" y="174" text-anchor="middle" class="t-label">top 3 priorities &amp; asks</text>
+
+      <!-- Lanes -->
+      <rect x="20" y="205" width="200" height="265" rx="14" fill="rgba(255,255,255,0.015)" stroke="#2d3748"/>
+      <rect x="260" y="205" width="220" height="265" rx="14" fill="rgba(255,255,255,0.015)" stroke="#2d3748"/>
+      <rect x="520" y="205" width="200" height="265" rx="14" fill="rgba(255,255,255,0.015)" stroke="#2d3748"/>
+      <text x="120" y="226" text-anchor="middle" class="t-mono">01 · SENSE &amp; NARRATE</text>
+      <text x="370" y="226" text-anchor="middle" class="t-mono">02 · RAISE</text>
+      <text x="620" y="226" text-anchor="middle" class="t-mono">03 · CLOSE &amp; BUILD</text>
+      <text x="870" y="226" text-anchor="middle" class="t-mono">04 · GOAL</text>
+
+      <!-- Sense & narrate -->
+      <a href="#agent-scout">
+        <rect x="32" y="245" width="176" height="90" rx="12" fill="#111827" stroke="#22d3ee" stroke-width="1.5"/>
+        <text x="120" y="276" text-anchor="middle" class="t-title">Market &amp;</text>
+        <text x="120" y="295" text-anchor="middle" class="t-title">Competitor Scout</text>
+        <text x="120" y="317" text-anchor="middle" class="t-sub">weekly what-changed brief</text>
+      </a>
+      <a href="#agent-narrative">
+        <rect x="32" y="355" width="176" height="90" rx="12" fill="#111827" stroke="#22d3ee" stroke-width="1.5"/>
+        <text x="120" y="386" text-anchor="middle" class="t-title">Narrative</text>
+        <text x="120" y="405" text-anchor="middle" class="t-title">&amp; Pitch</text>
+        <text x="120" y="427" text-anchor="middle" class="t-sub">one-pager · deck · red team</text>
+      </a>
+
+      <!-- Raise -->
+      <a href="#agent-fundraising">
+        <rect x="272" y="300" width="196" height="96" rx="12" fill="#111827" stroke="#22d3ee" stroke-width="1.5"/>
+        <text x="370" y="332" text-anchor="middle" class="t-title">Fundraising &amp;</text>
+        <text x="370" y="351" text-anchor="middle" class="t-title">Investor Relations</text>
+        <text x="370" y="374" text-anchor="middle" class="t-sub">target list · CRM · updates</text>
+      </a>
+
+      <!-- Close & build -->
+      <a href="#agent-dealdesk">
+        <rect x="532" y="245" width="176" height="80" rx="12" fill="#111827" stroke="#22d3ee" stroke-width="1.5"/>
+        <text x="620" y="278" text-anchor="middle" class="t-title">Deal Desk</text>
+        <text x="620" y="300" text-anchor="middle" class="t-sub">term sheets · leases · MSAs</text>
+      </a>
+      <line x1="620" y1="325" x2="620" y2="371" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#a-cyan)"/>
+      <text x="628" y="352" class="t-label">funded</text>
+      <a href="#agent-hiring">
+        <rect x="532" y="375" width="176" height="80" rx="12" fill="#111827" stroke="#22d3ee" stroke-width="1.5"/>
+        <text x="620" y="408" text-anchor="middle" class="t-title">Key Hires &amp;</text>
+        <text x="620" y="427" text-anchor="middle" class="t-title">Recruiting</text>
+        <text x="620" y="446" text-anchor="middle" class="t-sub">scorecards · sourcing · offers</text>
+      </a>
+
+      <!-- Goal -->
+      <rect x="770" y="280" width="200" height="116" rx="16" fill="rgba(52,211,153,0.08)" stroke="#34d399" stroke-width="1.5"/>
+      <text x="870" y="308" text-anchor="middle" class="t-mono" style="fill:#34d399">THE GOAL</text>
+      <text x="870" y="334" text-anchor="middle" class="t-title" style="font-size:17px">Next milestone hit</text>
+      <text x="870" y="356" text-anchor="middle" class="t-sub">funded · staffed · focused</text>
+      <text x="870" y="374" text-anchor="middle" class="t-sub">founder time on what matters</text>
+
+      <!-- Work flow arrows -->
+      <path d="M208,290 C240,290 238,330 268,330" fill="none" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#a-cyan)"/>
+      <path d="M208,400 C240,400 238,366 268,366" fill="none" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#a-cyan)"/>
+      <path d="M468,348 C500,348 498,285 528,285" fill="none" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#a-cyan)"/>
+      <path d="M708,415 C740,415 738,360 766,360" fill="none" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#a-cyan)"/>
+
+      <!-- Metrics & board -->
+      <a href="#agent-metrics">
+        <rect x="260" y="500" width="460" height="60" rx="12" fill="#111827" stroke="#f472b6" stroke-width="1.5"/>
+        <text x="490" y="526" text-anchor="middle" class="t-title">Metrics &amp; Board Reporting</text>
+        <text x="490" y="546" text-anchor="middle" class="t-sub">metrics.md · runway · investor &amp; board updates</text>
+      </a>
+      <line x1="370" y1="470" x2="370" y2="497" stroke="#f472b6" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#a-pink)"/>
+      <line x1="620" y1="470" x2="620" y2="497" stroke="#f472b6" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#a-pink)"/>
+      <text x="378" y="490" class="t-label">raise pipeline</text>
+      <text x="628" y="490" class="t-label">deals &amp; hires</text>
+      <path d="M870,396 V530 H724" fill="none" stroke="#f472b6" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#a-pink)"/>
+      <text x="880" y="470" class="t-label">milestone</text>
+      <text x="880" y="484" class="t-label">progress</text>
+
+      <!-- Feedback loop to orchestrator -->
+      <path d="M260,530 H8 V126 H366" fill="none" stroke="#f472b6" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#a-pink)"/>
+      <text x="190" y="120" text-anchor="middle" class="t-label">weekly scorecard → re-plan</text>
+    </svg>
+    <div class="diagram-legend">
+      <span class="ctrl">dispatch (chief of staff → agents)</span>
+      <span>work flow (insight, story, capital, people)</span>
+      <span class="dash">data &amp; feedback loop</span>
+      <span class="gate">human approval</span>
+    </div>
+  </div>
+
+  <!-- ===================== ROSTER ===================== -->
+  <h2 class="section-title" id="roster">The agents and what each one does</h2>
+  <p>Each agent becomes its own markdown file. The defaults below are best practice. The setup interview adjusts them to your stage, milestone, team and tools.</p>
+
+  <div class="agent-grid">
+
+    <div class="agent-card lead" id="agent-orchestrator">
+      <div class="stage">// control</div>
+      <h3>Chief of Staff</h3>
+      <p class="mission">The glue agent. Keeps your week pointed at the top 3 priorities, prepares you for every meeting, follows up after each one, and brings you only the decisions that need you.</p>
+      <h5>Does</h5>
+      <ul>
+        <li>Sends a <strong>pre-brief 30 minutes before each meeting</strong>: who they are, your last interaction, three likely topics and two asks. After the meeting it drafts the follow-up and logs commitments as tasks.</li>
+        <li>Runs the Friday review: what slipped, what to cut, and what should go on next week's calendar.</li>
+        <li>Collects every draft, signature request and decision into one approval list, and tags each item with the agent that drafted it.</li>
+      </ul>
+      <h5>Asks you</h5>
+      <ul><li>Your next milestone and its date, your top 3 priorities this quarter, and how many hours a week you spend in meetings versus deep work.</li></ul>
+      <div class="file">→ agents/chief-of-staff.md</div>
     </div>
 
-    <div class="step">
-      <div class="step-num">02</div>
-      <div class="step-body">
-        <h3>Pitch Deck &amp; Narrative Agent</h3>
-        <p>Turns your context pack into investor-ready decks, updates them for each fund's thesis, and rehearses you with devil's-advocate questions.</p>
-        <ul>
-          <li>Tool: Claude Agent SDK + a Google Slides or Pitch.com MCP server.</li>
-          <li>Skill 1: <code class="inline">generate_deck(fund_thesis, stage)</code> — rewrites the narrative for sector investors vs generalists.</li>
-          <li>Skill 2: <code class="inline">redteam_deck()</code> — simulates the 20 hardest questions you'll get. Use before every partner meeting.</li>
-          <li>Skill 3: <code class="inline">tighten_story()</code> — forces your one-liner to under 140 chars and your problem slide to one sentence.</li>
-        </ul>
-        <pre class="code"><span class="c-com"># Example: red-team the deck</span>
-<span class="c-kw">claude</span> --agent pitch-agent \
-  --input deck.pdf \
-  --prompt <span class="c-str">"You are a Series A partner at a16z focused on dev tools.
-Ask me the 15 hardest questions about traction, moat, and GTM.
-For each, score my deck's current answer 1-5 and suggest one fix."</span></pre>
-      </div>
+    <div class="agent-card" id="agent-scout">
+      <div class="stage">// 01 · sense &amp; narrate</div>
+      <h3>Market &amp; Competitor Scout</h3>
+      <p class="mission">Makes sure you're never the last to know what changed in your market.</p>
+      <h5>Does</h5>
+      <ul>
+        <li>Every Monday, sends a <strong>5-bullet brief</strong>: the most important competitor move, changes in how customers talk, new funding in your space, regulatory or platform changes, and one contrarian signal worth debating.</li>
+        <li>Keeps <code class="inline">market.md</code> current: market size with sources, the 5 closest competitors, and a matrix of how you differ.</li>
+        <li>Shares findings with the <a href="marketing.html">Marketing</a> and <a href="product.html">Product</a> systems.</li>
+      </ul>
+      <h5>Asks you</h5>
+      <ul><li>Your category, the competitors you watch, and the sources you trust (newsletters, communities, analyst reports).</li></ul>
+      <div class="file">→ agents/market-scout.md</div>
     </div>
 
-    <div class="step">
-      <div class="step-num">03</div>
-      <div class="step-body">
-        <h3>Investor Research &amp; CRM Agent</h3>
-        <p>Maps the universe of investors for your stage/sector, scores them against your thesis, finds warm intros via LinkedIn/email graph, and keeps a running CRM.</p>
-        <ul>
-          <li><strong>Inputs:</strong> Crunchbase/PitchBook via MCP, LinkedIn, your Gmail + Calendar.</li>
-          <li><strong>Output:</strong> ranked sheet of 80-120 funds with partner names, last relevant check, portfolio conflicts, and suggested intro path.</li>
-          <li><strong>Loop:</strong> after every meeting, it pulls the calendar event, drafts a follow-up email, and logs outcome + next step.</li>
-        </ul>
-        <div class="callout tip"><strong>Tip:</strong> let it <em>draft</em> outreach but gate the send. Investors spot generic AI copy in one line.</div>
-      </div>
+    <div class="agent-card" id="agent-narrative">
+      <div class="stage">// 01 · sense &amp; narrate</div>
+      <h3>Narrative &amp; Pitch</h3>
+      <p class="mission">Keeps one sharp company story and adapts it for every audience: investors, candidates, customers and the board.</p>
+      <h5>Does</h5>
+      <ul>
+        <li>Maintains the <strong>one-pager</strong> (problem, customer, wedge, why now, team and ask; see the <a href="examples/founder.md">example one-pager.md</a>) and keeps the one-liner under 140 characters.</li>
+        <li>Builds and tailors the deck to each fund's thesis and stage, and keeps the problem slide to one sentence.</li>
+        <li><strong>Red-teams</strong> the deck before every partner meeting: the 15–20 hardest questions, a 1–5 score for each current answer, and one fix for each.</li>
+      </ul>
+      <h5>Asks you</h5>
+      <ul><li>Your current deck and one-pager (if any), your strongest proof points, and the story you tell when it goes well.</li></ul>
+      <div class="file">→ agents/narrative-pitch.md</div>
     </div>
 
-    <div class="step">
-      <div class="step-num">04</div>
-      <div class="step-body">
-        <h3>Market &amp; Competitor Scout</h3>
-        <p>A scheduled agent that runs every Monday morning and produces a 5-bullet "what changed in my market last week" brief.</p>
-        <ul>
-          <li>Sources: Google News + RSS via WebFetch, competitor changelogs, HN, ProductHunt, YC batch pages, GitHub trending.</li>
-          <li>Uses a scheduled trigger (cron) + a summarizer sub-agent.</li>
-          <li>Delivers to Slack #intel channel — <em>not</em> email (emails die, channels compound).</li>
-        </ul>
-        <pre class="code"><span class="c-com"># Weekly brief prompt (summarizer)</span>
-Produce 5 bullets, each &lt;=2 sentences:
-  1. Most important competitor move (with link)
-  2. Shift in customer language we saw in reviews/social
-  3. New fundraising in our space + thesis implied
-  4. Regulatory or platform change that affects us
-  5. One contrarian signal worth debating at Monday standup</pre>
-      </div>
+    <div class="agent-card" id="agent-fundraising">
+      <div class="stage">// 02 · raise</div>
+      <h3>Fundraising &amp; Investor Relations</h3>
+      <p class="mission">Runs your raise like a tight sales process, and keeps your current investors informed and helpful between raises.</p>
+      <h5>Does</h5>
+      <ul>
+        <li>Builds a ranked list of <strong>80–120 investors</strong> scored on stage, sector, check size, ability to lead, portfolio conflicts and recent activity, with a warm-intro path for each.</li>
+        <li>Runs the investor CRM from target to close, schedules first meetings in a 2–3 week batch, and drafts follow-ups within 24 hours.</li>
+        <li>Drafts the monthly investor update (highlights, metrics, lowlights, asks) and the data-room checklist.</li>
+      </ul>
+      <h5>Asks you</h5>
+      <ul><li>Raise amount, instrument (SAFE or priced round) and timing, your current investors, and where your warm network lives (LinkedIn, email, angels).</li></ul>
+      <div class="file">→ agents/fundraising-ir.md</div>
     </div>
 
-    <div class="step">
-      <div class="step-num">05</div>
-      <div class="step-body">
-        <h3>Negotiation &amp; Deal-Desk Agent</h3>
-        <p>Reads inbound contracts (leases, term sheets, vendor MSAs), benchmarks terms against market, and drafts counters.</p>
-        <ul>
-          <li><strong>Lease negotiation:</strong> feed it the LOI + comparable rents scraped from CompStak/CoStar; it returns a markup with annotated comments.</li>
-          <li><strong>Term sheets:</strong> compare to YC's Post-Money SAFE or NVCA templates; flag non-standard terms (option pool shuffles, participating pref, super pro-rata).</li>
-          <li><strong>Vendor MSAs:</strong> auto-check for IP assignment, data handling, auto-renewal traps. Produce a one-page diff for your lawyer.</li>
-        </ul>
-        <div class="callout warn"><strong>Guardrail:</strong> this agent never sends. It produces a markup + a 5-point "what I'd push back on" memo. You and your lawyer decide.</div>
-      </div>
+    <div class="agent-card" id="agent-dealdesk">
+      <div class="stage">// 03 · close &amp; build</div>
+      <h3>Deal Desk</h3>
+      <p class="mission">Reads the fine print so you negotiate from a position of knowledge, and so your lawyer spends their hours on the hard parts.</p>
+      <h5>Does</h5>
+      <ul>
+        <li>Compares term sheets to standard templates (YC post-money SAFE, NVCA) and flags non-standard terms: option-pool shuffles, participating preferred stock, liquidation preferences above 1×, full-ratchet anti-dilution, and shifts in board control.</li>
+        <li>Benchmarks leases and vendor MSAs. It flags personal guarantees, auto-renewal traps, IP assignment, data-handling terms and liability caps.</li>
+        <li><strong>Never sends or signs.</strong> It produces a marked-up copy and a 5-point "what I'd push back on" memo for you and your <a href="legal.html">lawyer</a>.</li>
+      </ul>
+      <h5>Asks you</h5>
+      <ul><li>Upcoming negotiations (term sheet, lease, key vendors, partnerships), your lawyer, and the terms you won't accept.</li></ul>
+      <div class="file">→ agents/deal-desk.md</div>
     </div>
 
-    <div class="step">
-      <div class="step-num">06</div>
-      <div class="step-body">
-        <h3>Personal Chief of Staff Agent</h3>
-        <p>The glue agent. Reads your inbox + calendar, prepares you for every meeting, and drafts follow-ups within 10 minutes of each call ending.</p>
-        <ul>
-          <li><strong>Pre-brief:</strong> 30 min before a meeting, pings you in Slack with a one-pager: who they are, last interaction, three topics likely to come up, two asks.</li>
-          <li><strong>Post-meeting:</strong> pulls transcripts (Fireflies/Granola MCP), extracts commitments, drafts the follow-up, and creates tasks in Linear/Notion.</li>
-          <li><strong>Weekly review:</strong> Friday 4pm agent DM — "here's what slipped, here's what to cut, here's what I'd put on your calendar next week."</li>
-        </ul>
-      </div>
+    <div class="agent-card" id="agent-hiring">
+      <div class="stage">// 03 · close &amp; build</div>
+      <h3>Key Hires &amp; Recruiting</h3>
+      <p class="mission">Helps you land the few hires that define the company, and lets you spend your recruiting hours on closing candidates.</p>
+      <h5>Does</h5>
+      <ul>
+        <li>Writes a <strong>scorecard for each role</strong> (outcomes for the first 6–12 months and the competencies needed) plus structured interview loops with consistent questions.</li>
+        <li>Builds sourcing lists and drafts personal outreach that you send. It runs reference-check guides and drafts offers within your compensation bands.</li>
+        <li>Follows fair-hiring rules and hands new hires to <a href="operations.html">Operations</a> for onboarding.</li>
+      </ul>
+      <h5>Asks you</h5>
+      <ul><li>The roles you need in the next 6–12 months, your compensation and equity bands, and your applicant tracking system (Ashby, Greenhouse, Gem) if you have one.</li></ul>
+      <div class="file">→ agents/key-hires.md</div>
     </div>
 
-    <div class="step">
-      <div class="step-num">07</div>
-      <div class="step-body">
-        <h3>Rollout &amp; governance</h3>
-        <p>Three rules to stay sane:</p>
-        <ol>
-          <li><strong>One agent a week.</strong> Ship, use it for 5 working days, fix, then add the next.</li>
-          <li><strong>Tag every agent-generated artifact.</strong> Footer: <code class="inline">— drafted by pitch-agent v3, reviewed by [you]</code>. Protects you legally and mentally.</li>
-          <li><strong>Audit monthly.</strong> Read the trace logs. Kill agents that aren't saving you 2+ hours/week.</li>
-        </ol>
-      </div>
+    <div class="agent-card measure" id="agent-metrics">
+      <div class="stage">// measure &amp; learn</div>
+      <h3>Metrics &amp; Board Reporting</h3>
+      <p class="mission">Keeps one trusted set of numbers, so every deck, investor update and board meeting tells the same true story.</p>
+      <h5>Does</h5>
+      <ul>
+        <li>Maintains <code class="inline">metrics.md</code>: revenue or ARR, growth, burn, <strong>runway</strong>, customer acquisition cost, retention and top customers. Each number carries its source and date.</li>
+        <li>If you're not connected yet, <strong>asks you to connect</strong> your accounting, billing and analytics tools read-only, or works from exports. It pulls from the <a href="finance.html">Finance</a> and <a href="data.html">Data</a> systems when those exist.</li>
+        <li>Drafts the board pack (CEO letter, metrics, wins and lows, decisions needed) a week before each meeting, and sends a weekly milestone scorecard to the chief of staff.</li>
+      </ul>
+      <h5>Asks you</h5>
+      <ul><li>Your accounting and billing tools (QuickBooks, Xero, Stripe), your analytics tool, your board members and meeting cadence, and the metrics investors ask you about.</li></ul>
+      <div class="file">→ agents/metrics-board.md</div>
     </div>
 
   </div>
 
-  <h2 class="section-title">What this stack replaces</h2>
-  <p>A rough map of what each agent takes off your plate, and what to keep doing yourself.</p>
+  <!-- ===================== FILES ===================== -->
+  <h2 class="section-title" id="files">What Claude will create for you</h2>
+  <p>A folder you own. Plain markdown files are easy to edit, version and reuse. In Claude Code the agent files go in <code class="inline">.claude/agents/</code> so they load as subagents.</p>
 
-  <table class="stack-table">
-    <thead><tr><th>Task</th><th>Agent-owned</th><th>Human-owned</th></tr></thead>
-    <tbody>
-      <tr><td>Pitch deck v1 → v40</td><td>✓ generates, iterates</td><td>Final narrative + slide 1</td></tr>
-      <tr><td>Investor target list</td><td>✓ research + rank</td><td>Prioritization + intro path</td></tr>
-      <tr><td>Follow-up emails</td><td>✓ drafts</td><td>You review &amp; send</td></tr>
-      <tr><td>Term sheet redlines</td><td>✓ flags non-standard</td><td>Real lawyer, every time</td></tr>
-      <tr><td>Board updates</td><td>✓ drafts from metrics.md</td><td>The hard truth &amp; the ask</td></tr>
-      <tr><td>Hiring outreach</td><td>✓ sources + first touch</td><td>Founder-led closes</td></tr>
-    </tbody>
-  </table>
+<pre class="tree">founder-agents/
+├── CLAUDE.md                    <span class="c-com"># entry point: goal, roster, workflow, rules</span>
+├── context/                     <span class="c-com"># founder context pack, read by every agent</span>
+│   ├── one-pager.md
+│   ├── market.md
+│   ├── metrics.md
+│   ├── priorities-and-milestones.md
+│   ├── investors-and-network.md
+│   └── tools-and-access.md
+├── agents/                      <span class="c-com"># .claude/agents/ in Claude Code</span>
+│   ├── chief-of-staff.md
+│   ├── market-scout.md
+│   ├── narrative-pitch.md
+│   ├── fundraising-ir.md
+│   ├── deal-desk.md
+│   ├── key-hires.md
+│   └── metrics-board.md
+├── playbooks/
+│   ├── first-30-days.md
+│   ├── weekly-cadence.md
+│   └── approval-gates.md
+└── outputs/                     <span class="c-com"># where agents deliver work</span>
+    ├── briefs/  market/  narrative/  fundraising/  deals/  hiring/
+    └── reports/</pre>
+
+  <!-- ===================== SETUP PROMPT ===================== -->
+  <h2 class="section-title" id="setup">Setup prompt: paste it into your Claude</h2>
+  <p>Claude interviews you in five short rounds (company, market and story, capital, tools, team and deals). Every question shows a best-practice default, so you can answer "defaults" and keep going. It then writes the files and gives you a first-week plan.</p>
+
+  <div class="how-to">
+    <div class="mini-card">
+      <h4><span class="n">1</span>Copy or download</h4>
+      <p>Use the buttons below. The download is a <code class="inline">.md</code> file you can keep or share with your co-founders.</p>
+    </div>
+    <div class="mini-card">
+      <h4><span class="n">2</span>Paste into Claude</h4>
+      <p>Claude Code or the Claude desktop app can write the folder directly. On claude.ai, Claude delivers the files as a zip or as copyable blocks.</p>
+    </div>
+    <div class="mini-card">
+      <h4><span class="n">3</span>Answer &amp; connect</h4>
+      <p>Answer the interview questions. Connect your email, calendar, notetaker and accounting tools through Claude's connectors. Never paste a password into the chat.</p>
+    </div>
+  </div>
+
+  <div class="prompt-box">
+    <div class="prompt-toolbar">
+      <span class="file-name">founders-agent-system-setup.md</span>
+      <button class="btn" type="button" data-prompt-copy="prompt-founders">Copy prompt</button>
+      <button class="btn secondary" type="button" data-prompt-download="prompt-founders" data-filename="founders-agent-system-setup.md">Download .md</button>
+    </div>
+    <pre data-prompt-view="prompt-founders">Loading prompt… (enable JavaScript to view, copy, or download)</pre>
+  </div>
+
+  <div class="callout tip"><strong>Using it on claude.ai?</strong> After Claude generates the files, create a <strong>Project</strong>. Paste <code class="inline">CLAUDE.md</code> into the project instructions and upload the <code class="inline">context/</code> and <code class="inline">agents/</code> files as project knowledge. Every chat in that project then has the whole team available.</div>
+
+  <div class="callout warn"><strong>Roll out one agent a week.</strong> Start with the chief of staff, use it for five working days, fix what's wrong, then add the next one. Each month, retire any agent that isn't saving you at least 2 hours a week.</div>
+
+  <div class="two-col">
+    <div class="mini-card">
+      <h4>// always needs your approval</h4>
+      <ul>
+        <li>Any message to investors, candidates, the board or partners</li>
+        <li>Signing, accepting or countering any term sheet, lease or contract</li>
+        <li>Sharing confidential information (cap table, financials, data room access)</li>
+        <li>Offers, compensation and equity grants</li>
+        <li>Any public statement about the raise or company metrics</li>
+      </ul>
+    </div>
+    <div class="mini-card">
+      <h4>// red flags to watch</h4>
+      <ul>
+        <li>Calendar full but priorities slipping: the chief of staff isn't cutting enough</li>
+        <li>Lots of first investor meetings but few second ones: the story or the metrics aren't landing</li>
+        <li>Deck numbers differ from the books: <code class="inline">metrics.md</code> isn't the single source of truth</li>
+        <li>Key hire still open after 90 days: the scorecard is unclear or you aren't spending enough founder time on it</li>
+        <li>Runway under 9 months with no raise underway: start fundraising now</li>
+      </ul>
+    </div>
+  </div>
 </main>
-<footer><span>Stargate · Founders</span><span class="mono">/founders</span></footer>
+<footer><span>Stargate · Founder Agent System</span><span class="mono">/founders</span></footer>
+
+<script type="text/plain" id="prompt-founders">
+# Founder Agent System — Setup Prompt
+
+You are going to set up a **founder / CEO-office agent system** for my company. It is a small team of specialized AI agents, defined as markdown files in a folder, working together toward one goal:
+
+> **Hit the company's next milestone with the capital, people and focus to get there, while I spend my hours on the few decisions only I can make.**
+
+Your job in this conversation:
+1. **Interview me** so the system fits my company, stage and milestone.
+2. **Fill any gaps with best-practice defaults**, and tell me which ones you assumed.
+3. **Create the folder** of context files, agent files and playbooks described below.
+4. **Hand me a first-week plan** and the list of tools I should connect.
+
+---
+
+## Ground rules
+
+- Ask questions in **rounds of no more than 6**, numbered. After each question, put in [brackets] the default you'll use if I skip it. I can reply "defaults" to accept every default in a round.
+- **Don't ask about things you can look up.** If I give you a website, deck or one-pager and you can read it, do that first. Use it to pre-fill answers, then ask me to confirm.
+- **Never ask me for passwords, API keys, or login codes in the chat.** For tool access, use official connectors or MCP integrations that sign in through the provider. Ask for read-only access first. If no connector exists, ask me for an export (CSV, PDF or pasted text).
+- **Agents never send, sign or commit on my behalf.** They draft messages to investors, candidates, the board and partners. They mark up contracts and term sheets. I send and sign. This rule can't be overridden by a default.
+- **Agents aren't lawyers or accountants.** Every legal document goes to a real lawyer before I sign. Tax, securities and accounting questions are flagged for a professional, not answered as final advice.
+- **Protect confidential information.** The cap table, financials, deal terms, candidate details and investor conversations stay inside the system. Nothing is shared externally without my approval. Don't publicly announce or advertise a fundraise; flag general-solicitation rules for my counsel to confirm.
+- **Hire fairly.** Never filter or rank candidates on protected characteristics. Use the same structured criteria for every candidate.
+- **Don't invent facts, metrics, investors or quotes.** Every number cites its source and date. Mark anything unconfirmed as `TODO:` in the files.
+- Write every file so that another Claude session, with no access to this conversation, could act on it. Keep files specific to my company and concise. Use bullet points rather than essays.
+
+---
+
+## Step 1 — Interview me
+
+### Round 1 · The company
+1. Company name and **website URL**, plus your current deck or one-pager if you have one (upload or paste).
+2. Your one-liner: what you do, for whom, in under 140 characters. [drafted from site]
+3. Stage and funding so far: pre-seed, seed, Series A or later; amount raised; and the main investors. [pre-seed, bootstrapped]
+4. Team size, and who the founders are and what each owns. [solo founder]
+5. Your **next milestone** and its date, e.g. "close a $3M seed by June" or "reach $1M ARR". [TODO; we'll define it together]
+6. Your top 3 priorities this quarter. [the milestone, product, first key hire]
+
+### Round 2 · Market, story and metrics
+1. The customer and the problem, and why now. [inferred from site]
+2. The competitors and alternatives you watch most closely. [I'll research and propose]
+3. Your current metrics: revenue or ARR, growth rate, monthly burn, cash in the bank, and the top customers you can name. [TODO; the Metrics agent will baseline]
+4. Your strongest proof points: traction, customer quotes, team credibility, technical advantages. [inferred]
+5. The hardest question investors or customers ask you, and your current answer. [none yet; the Narrative agent will red-team]
+
+### Round 3 · Capital and investors
+1. Are you raising now or within 6 months? How much, with what instrument (SAFE or priced round), and on what timeline? [not raising; investor-relations mode]
+2. Target investor profile: stage, sector focus, check size, lead or follow, geography. [stage- and sector-matched lead investors]
+3. Your warm network: where your relationships live (LinkedIn, email, angels, accelerator, current investors). [LinkedIn + email]
+4. Current investors and board members, and how often you update them. [monthly investor updates, quarterly board meetings]
+5. How much runway you want after the raise. [18–24 months]
+
+### Round 4 · Tools and access
+For each item, tell me what you use, or "none":
+1. Email and calendar (Google Workspace or Microsoft 365)
+2. Meeting notetaker (Granola, Fireflies, Zoom AI, Otter)
+3. Investor CRM or tracker (Affinity, Attio, Notion, Airtable, a spreadsheet) and data room (DocSend, Google Drive, Carta)
+4. Docs and decks (Google Slides, Pitch, Keynote, Notion)
+5. Finance and metrics (QuickBooks, Xero, Stripe, your analytics tool, a cap-table tool such as Carta or Pulley)
+6. Recruiting (Ashby, Greenhouse, Gem, LinkedIn Recruiter) and team chat (Slack)
+
+**After this round:**
+- **Tools I already have.** Check whether a connector or MCP integration for that tool exists in your current environment. In claude.ai and the desktop app, look under Settings → Connectors. In Claude Code, look at `claude mcp`. If one exists, tell me exactly how to connect it, read-only first. If none exists, tell me which export to provide and how. Record each tool as connected, export-only, or not connected in `context/tools-and-access.md`.
+- **Tools I don't have.** Recommend the default from Step 2 that fits my stage and budget, explain why in one line, and add a setup task to the plan. Don't make tools a blocker. The system must work from exports and pasted notes alone.
+
+### Round 5 · Team, deals and guardrails
+1. Key hires you need in the next 6–12 months, and your compensation and equity bands if you have them. [first engineer or first salesperson; bands TODO]
+2. Upcoming negotiations: term sheet, office lease, major vendors, partnerships. [none]
+3. Your lawyer and accountant, if you have them. [TODO; recommend startup-focused counsel]
+4. What's confidential and must never leave the system? [cap table, financials, deal terms, candidate details]
+5. Anything beyond the default approval gates that must come to you first? [defaults only]
+6. Where should agents deliver work? [files in `outputs/`; pre-briefs and the Monday market brief to Slack or email if connected]
+
+**Before creating anything**, show me a one-screen summary of what you learned and what you're assuming. Mark each item *confirmed*, *inferred* or *default*. Ask me to correct it. Then build.
+
+---
+
+## Step 2 — Best-practice defaults (use these unless my answers say otherwise)
+
+**The founder context pack (every agent reads it first)**
+- `one-pager.md`: problem, customer, wedge, why now, team, and the ask.
+- `market.md`: market size (TAM, SAM, SOM) with sources, the 5 closest competitors, and a matrix of how we differ.
+- `metrics.md`: the numbers, each with its source and date.
+- Update the pack weekly. If a number in a deck differs from `metrics.md`, the deck is wrong.
+
+**Chief of staff**
+- Protect focus. Each week has 3 priorities, and anything not serving them is a candidate to cut, delegate or decline.
+- Pre-brief 30 minutes before every external meeting: who they are, the last interaction, 3 likely topics and 2 asks.
+- After each meeting: draft the follow-up within a few hours, and log commitments as tasks with owners and dates.
+- Friday review: what slipped, what to cut, and the proposed calendar for next week.
+- Tag every agent-drafted artifact: "drafted by `<agent>`, reviewed by `<founder>`".
+
+**Market and competitor scout**
+- Monday brief, 5 bullets of 2 sentences or fewer each: (1) the most important competitor move, with a link; (2) a change in how customers talk about the problem; (3) new funding in our space and what it implies; (4) a regulatory or platform change; (5) one contrarian signal worth debating.
+- Sources: news, competitor changelogs and pricing pages, Hacker News, Product Hunt, accelerator batches, industry newsletters, review sites.
+
+**Narrative and pitch**
+- One-liner under 140 characters, and a problem slide of one sentence.
+- Default seed or Series A deck of 10–12 slides: problem, solution, why now, market, product, traction, business model, competition, go-to-market, team, the ask and how the money will be used.
+- Tailor the deck to each fund's thesis (specialist versus generalist), but keep the core story identical.
+- Red-team the deck before every partner meeting: the 15–20 hardest questions on traction, moat, go-to-market and team, a 1–5 score for each current answer, and one fix for each.
+
+**Fundraising and investor relations**
+- Raise for 18–24 months of runway to the next milestone. Start before runway falls below 9 months.
+- A target list of 80–120 investors, scored on stage, sector, check size, ability to lead, portfolio conflicts and recent activity. Each has a warm-intro path, and the best intro is from a founder they've backed.
+- Run a tight process: prepare the materials and data room first, batch first meetings into 2–3 weeks, and build momentum toward term sheets.
+- Investor CRM stages: target → intro requested → first meeting → partner meeting → diligence → term sheet → closed, or passed (with the reason).
+- Follow up within 24 hours of every meeting.
+- Monthly investor update: highlights, key metrics, lowlights, and specific asks (intros, hires, advice). Send it whether the month was good or bad.
+- Share the data room through a tool that logs access. Don't publicly advertise the raise unless counsel confirms it's allowed.
+
+**Deal desk**
+- Term sheets: compare to standard templates (YC post-money SAFE, NVCA model documents). Flag option-pool shuffles, participating preferred stock, liquidation preferences above 1×, full-ratchet anti-dilution, super pro-rata rights, unusual protective provisions, and changes to board control. Model the dilution.
+- Leases: compare against comparable rents. Flag personal guarantees, escalation clauses, auto-renewal and early-termination terms.
+- Vendor and partner contracts: flag IP assignment, data handling, auto-renewals, liability caps, exclusivity and termination terms.
+- The output is always a marked-up copy plus a 5-point "what I'd push back on" memo. **A real lawyer reviews it every time.**
+
+**Key hires and recruiting**
+- A scorecard for each role: mission, 3–5 outcomes for the first 6–12 months, and the competencies needed.
+- A structured interview loop with the same questions and a scoring rubric for every candidate, and a written debrief before any discussion.
+- Sourcing lists and personal outreach drafted by the agent and sent by the founder. Founders close the key candidates themselves.
+- Reference checks with a standard guide. Offers drafted within the agreed compensation and equity bands.
+- Fair-hiring rules: no filtering on protected characteristics, and consistent criteria for everyone.
+
+**Metrics and board reporting**
+- Core metrics, chosen by business model: revenue or ARR and growth rate, gross margin, burn and **runway** (cash ÷ net monthly burn), customer acquisition cost and payback, retention or net revenue retention, pipeline, and headcount.
+- Default tools if missing: QuickBooks or Xero for accounting, Stripe for billing data, Carta or Pulley for the cap table, and a simple Google Sheet or Notion dashboard to start.
+- Board pack, sent a week before each meeting: CEO letter (the honest state of the company), metrics against plan, wins and lows, decisions needed from the board, and the next quarter's priorities.
+- Weekly milestone scorecard to the chief of staff: on track or at risk, what moved, and what's blocking.
+
+**Approval gates (always on):** any message to investors, candidates, the board or partners; signing, accepting or countering any agreement; sharing confidential information or data-room access; offers, compensation and equity; public statements about the raise or metrics; and calendar commitments made on your behalf.
+
+---
+
+## Step 3 — Create the files
+
+**Where to write:**
+- If you can write files (Claude Code, or the Claude desktop app with folder access), ask where to create the folder [default: `./founder-agents`] and write the files directly. **In Claude Code, put the agent files in `founder-agents/.claude/agents/`** instead of `agents/` so they load as subagents. Tell me to start Claude Code from inside `founder-agents/`.
+- If you can't write files but can run code, create the files and give me a single **.zip** to download.
+- Otherwise, output each file in its own code block, headed by its full path, in the order below.
+
+**Folder structure:**
+```
+founder-agents/
+├── CLAUDE.md
+├── context/
+│   ├── one-pager.md
+│   ├── market.md
+│   ├── metrics.md
+│   ├── priorities-and-milestones.md
+│   ├── investors-and-network.md
+│   └── tools-and-access.md
+├── agents/                (use .claude/agents/ in Claude Code)
+│   ├── chief-of-staff.md
+│   ├── market-scout.md
+│   ├── narrative-pitch.md
+│   ├── fundraising-ir.md
+│   ├── deal-desk.md
+│   ├── key-hires.md
+│   └── metrics-board.md
+├── playbooks/
+│   ├── first-30-days.md
+│   ├── weekly-cadence.md
+│   └── approval-gates.md
+└── outputs/
+    ├── README.md
+    ├── briefs/  market/  narrative/  fundraising/  deals/  hiring/
+    └── reports/
+```
+
+**`CLAUDE.md`** is the system's entry point. It contains:
+- The goal, the next milestone and its date, the scorecard metrics with targets, and current baselines (or TODO).
+- A text diagram of the flow: context pack → chief of staff → market scout and narrative & pitch → fundraising & investor relations → deal desk → key hires → milestone, with metrics & board reporting tracking progress and sending a weekly scorecard back to the chief of staff.
+- A roster table: agent, one-line job, when to use it, and its output folder.
+- The rules that every agent reads `context/` before working and **no agent ever sends, signs or commits**, the approval gates, and the confidentiality and fair-hiring rules.
+- How to run the system, e.g. "Use the chief-of-staff agent to plan my week."
+
+**`context/` files** hold the founder context pack, filled with my interview answers and your research. Label every section *confirmed*, *inferred* or *TODO*.
+- `one-pager.md`: problem, customer, wedge, why now, team, traction, and the ask.
+- `market.md`: market size with sources and method, competitors and alternatives, the differentiation matrix, and the tracking sources for the market scout.
+- `metrics.md`: the core metrics, each with its value, source, date and definition, plus runway and the history of each metric over time.
+- `priorities-and-milestones.md`: the next milestone and its date, the top 3 priorities this quarter, what we're explicitly not doing, and the decision log.
+- `investors-and-network.md`: current investors and board, the target investor profile, warm-network sources, and update cadences. Keep investor contact details in the CRM, not here.
+- `tools-and-access.md`: each tool with its status (connected / export-only / recommended / not needed), how to connect it, and the owner.
+
+**Every agent file** uses this template. The frontmatter keeps the file valid as a Claude Code subagent.
+```
+---
+name: <kebab-case-name>
+description: <one specific sentence on when to delegate to this agent>
+tools: <Claude Code only: list the tools it needs, e.g. Read, Write, Edit, Glob, Grep, WebSearch, WebFetch. Omit this line to inherit all tools, including connectors.>
+---
+# <Agent name>
+## Mission            (one or two sentences tied to the next-milestone goal)
+## Reads first        (which context/ files and outputs from other agents)
+## Responsibilities   (bullets, customized to this company)
+## Inputs it needs    (and the default it uses when they're missing)
+## Tools & connections (what it uses now, and what to connect next)
+## Outputs            (exact file paths in outputs/, with the format)
+## Hand-offs          (who receives its output, and what triggers the hand-off)
+## Approval gates     (actions it must never take without the founder)
+## KPIs it owns
+## Cadence            (what it does daily, weekly and monthly)
+```
+
+Agent-specific requirements. Customize each one with my company, stage, milestone and tools:
+- **chief-of-staff.** Runs the weekly cycle from `playbooks/weekly-cadence.md`. Reads the milestone scorecard, proposes the week's top 3 priorities and the calendar to match, writes meeting pre-briefs and follow-up drafts in `outputs/briefs/`, logs commitments, runs the Friday review, collects everything that needs my approval into a single list, and keeps the decision log in `context/priorities-and-milestones.md`. It must never bypass an approval gate.
+- **market-scout.** Writes the Monday 5-bullet brief in `outputs/market/` from *my category and sources*, keeps `context/market.md` current, and flags anything that should change the narrative, the roadmap or the raise.
+- **narrative-pitch.** Keeps `context/one-pager.md`, the deck outline and the one-liner up to date, tailors versions for each audience and fund in `outputs/narrative/`, and red-teams the deck before every partner meeting.
+- **fundraising-ir.** Builds and scores the investor target list, runs the investor pipeline (in *my CRM*, or `outputs/fundraising/pipeline.md`), drafts intro requests and follow-ups for me to send, prepares the data-room checklist, and drafts the monthly investor update.
+- **deal-desk.** Reviews term sheets, leases and contracts against the defaults in Step 2, writes the marked-up copy, the 5-point memo and a dilution model in `outputs/deals/`, and prepares a summary for my lawyer. It never sends or signs.
+- **key-hires.** Writes role scorecards, interview loops, sourcing lists, outreach drafts, reference guides and offer drafts in `outputs/hiring/` for *my open roles*, following the fair-hiring rules, and hands each new hire to onboarding.
+- **metrics-board.** Maintains `context/metrics.md` from *my finance and analytics tools* (read-only), checks that every number cited in a deck or update matches it, drafts the board pack and the weekly milestone scorecard in `outputs/reports/`, and warns me when runway falls below 12 months.
+
+**`playbooks/`**
+- `first-30-days.md`: Week 1, foundation: build the founder context pack, define the milestone and the metrics, set up the chief of staff (pre-briefs and the Friday review). Week 2, story: the one-pager, the deck outline, the first red-team, the first market brief. Week 3, capital and people: the investor target list and pipeline (or the investor-update cadence if not raising), plus scorecards for the next key hire. Week 4, learn: the first milestone scorecard, a board or investor update draft, a review of which agents saved time, and the next 30-day plan. Roll out one agent a week, and adapt it to my answers.
+- `weekly-cadence.md`: Daily: meeting pre-briefs and follow-ups. Monday: the market brief, the scorecard review and the week's priorities. Tuesday to Thursday: investor, hiring and deal work, with drafts going to me for approval. Friday: the review (slipped, cut, next week). Monthly: the investor update and an audit retiring any agent saving less than 2 hours a week. Quarterly: the board pack. Fit it to my calendar.
+- `approval-gates.md`: the default gates plus mine, who approves each, and how to submit an item for approval.
+
+**`outputs/README.md`** explains what each subfolder holds and the file naming convention (`YYYY-MM-DD-topic.md`).
+
+---
+
+## Step 4 — Wrap up
+
+When the files are created, give me:
+1. The folder tree, with a one-line description of each file.
+2. **Assumptions and TODOs.** Everything you defaulted or couldn't confirm, and how to resolve each.
+3. **Connections to set up, in priority order.** Email and calendar come first, then the notetaker, then finance and metrics, then the investor CRM and data room, then recruiting. For each, give the exact steps in this environment.
+4. **The first-week plan,** with the one thing I should do today (usually: confirm the next milestone and its date, and paste in my latest numbers).
+5. **How to use the system day to day:**
+   - *Claude Code:* "Use the chief-of-staff agent to plan my week," or call any agent directly, e.g. "Use the narrative-pitch agent to red-team my deck for a Series A partner meeting."
+   - *claude.ai:* Create a Project. Paste `CLAUDE.md` into the project instructions and upload the `context/` and `agents/` files as project knowledge. Then ask, for example, "Acting as the deal-desk agent, review this term sheet."
+
+Start now with Round 1. If I've already given you my website or deck, review it first and pre-fill what you can.
+</script>
+<script src="prompt.js"></script>
 </body></html>

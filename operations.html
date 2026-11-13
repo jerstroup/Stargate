@@ -3,7 +3,8 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Operations · Stargate</title>
+<title>Operations Agent System · Stargate</title>
+<meta name="description" content="A default operations agent system: orchestrator, recruiting, onboarding & offboarding, knowledge & policy, vendors & SaaS, compliance & IT, and ops health agents — plus a copy-paste setup prompt for Claude." />
 <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -26,138 +27,609 @@
 
 <main>
   <div class="page-header">
-    <div class="kicker">// OPERATIONS</div>
-    <h1>The invisible work that kills velocity — now automated</h1>
-    <p>Ops is every task that falls on "whoever has bandwidth" — hiring, onboarding, vendor management, compliance, IT. None of it grows the business; all of it will kill you if ignored. A small operations agent stack handles the drudgery and flags the exceptions for humans.</p>
+    <div class="kicker">// OPERATIONS · AGENT SYSTEM</div>
+    <h1>An ops team of agents that handles the invisible work</h1>
+    <p>Ops covers the work that falls to "whoever has time": hiring, onboarding, vendors, compliance and IT. None of it grows the business directly, but neglecting any of it causes real damage. Seven agents run it like a small chief-of-staff office. Two bring people in, one keeps knowledge and policy in order, two control spend and risk, one measures the health of the company, and an orchestrator runs the weekly ops review. The rule throughout: <strong>agents handle the routine paperwork; people make the judgment calls.</strong> Copy the <a href="#setup">setup prompt</a> into Claude. It will interview you about your company and then write the whole system as a folder of agent files.</p>
   </div>
 
   <div class="tags">
-    <span class="tag cyan">hiring</span>
-    <span class="tag cyan">onboarding</span>
-    <span class="tag cyan">SOC2</span>
-    <span class="tag cyan">vendor mgmt</span>
-    <span class="tag cyan">IT</span>
+    <span class="tag cyan">recruiting</span>
+    <span class="tag cyan">onboarding &amp; offboarding</span>
+    <span class="tag cyan">policies &amp; SOPs</span>
+    <span class="tag cyan">vendors &amp; SaaS</span>
+    <span class="tag cyan">compliance</span>
+    <span class="tag cyan">IT &amp; access</span>
+    <span class="tag cyan">ops health</span>
   </div>
 
-  <div class="steps">
+  <!-- ===================== GOAL ===================== -->
+  <h2 class="section-title">The goal the system works toward</h2>
+  <p>Every agent, every task, and every weekly report is judged against one outcome.</p>
 
-    <div class="step">
-      <div class="step-num">01</div>
-      <div class="step-body">
-        <h3>Recruiting pipeline agent</h3>
-        <p>From JD to offer, the agent handles the plumbing.</p>
-        <ul>
-          <li><strong>JD generator</strong> — writes role descriptions from a 1-line ask + the company context pack.</li>
-          <li><strong>Sourcing agent</strong> — screens LinkedIn/GitHub matches against the JD rubric, produces a shortlist with evidence per candidate.</li>
-          <li><strong>Scheduling agent</strong> — handles the 4-email back-and-forth to book screens.</li>
-          <li><strong>Interview-kit generator</strong> — creates a tailored rubric + 5 questions per interviewer based on the candidate's background.</li>
-        </ul>
-        <div class="callout warn"><strong>Never let the agent make the hire/no-hire call or auto-reject.</strong> Screening bias, fair-hiring laws, and reputational risk all say: humans decide.</div>
-      </div>
+  <div class="goal-panel">
+    <div>
+      <div class="label">// north star</div>
+      <h2>Keep the company running smoothly as it grows: the right people hired quickly and fairly, every teammate productive fast, tools and spend under control, and compliance ready before a customer asks.</h2>
+      <p>The system judges itself by what the team feels. That means candidates who hear back quickly, new hires who have their access on day one, nobody keeping access after they leave, and questions answered by pointing to a written policy. Vendor costs and renewals feed into <a href="finance.html">Finance</a>. Contracts and policy questions go to <a href="legal.html">Legal</a>.</p>
+    </div>
+    <div class="metrics">
+      <div class="metric"><div class="k">People</div><div class="v">Time-to-hire · new-hire time to productivity</div></div>
+      <div class="metric"><div class="k">Spend</div><div class="v">SaaS cost / employee · seat utilization</div></div>
+      <div class="metric"><div class="k">Risk</div><div class="v">Controls passing · audit-ready evidence</div></div>
+      <div class="metric"><div class="k">Guardrail</div><div class="v">Agents make no hiring calls · access revoked on the last day</div></div>
+    </div>
+  </div>
+
+  <!-- ===================== DIAGRAM ===================== -->
+  <h2 class="section-title" id="diagram">How the agents work together</h2>
+  <p>The orchestrator runs the weekly ops review and sets priorities. Work moves from bringing people in, to keeping the company's knowledge in order, to controlling spend and risk. Requests from managers and the team come in at the bottom left. Ops Health measures every stage and sends a scorecard back to the orchestrator. Click any agent to jump to its role.</p>
+
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 1000 595" role="img" aria-labelledby="dg-title dg-desc" xmlns="http://www.w3.org/2000/svg">
+      <title id="dg-title">Operations agent system flow</title>
+      <desc id="dg-desc">Shared company context feeds an Ops Orchestrator, which you approve. The orchestrator dispatches work to Recruiting and Hiring and to Onboarding and Offboarding (people in), which receive hiring requests from managers and the team. Both feed Knowledge and Policy (run), then Vendors and SaaS and Compliance and IT (control), producing a company that scales smoothly. Ops Health and Metrics tracks requests, spend and controls and sends a weekly scorecard back to the orchestrator.</desc>
+      <defs>
+        <marker id="a-cyan" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#22d3ee"/></marker>
+        <marker id="a-violet" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#7c5cff"/></marker>
+        <marker id="a-pink" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#f472b6"/></marker>
+        <marker id="a-amber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#fbbf24"/></marker>
+        <marker id="a-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#34d399"/></marker>
+      </defs>
+
+      <!-- Shared context band -->
+      <rect x="20" y="10" width="960" height="52" rx="10" fill="rgba(34,211,238,0.06)" stroke="#22d3ee" stroke-opacity="0.5" stroke-dasharray="4 4"/>
+      <text x="500" y="31" text-anchor="middle" class="t-mono">SHARED CONTEXT · READ BY EVERY AGENT</text>
+      <text x="500" y="50" text-anchor="middle" class="t-sub">company &amp; team · roles &amp; hiring plan · policies · tools &amp; vendors · compliance scope · access</text>
+      <line x1="500" y1="62" x2="500" y2="91" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#a-cyan)"/>
+
+      <!-- Orchestrator -->
+      <a href="#agent-orchestrator">
+        <rect x="370" y="94" width="260" height="64" rx="12" fill="#1c1640" stroke="#7c5cff" stroke-width="1.5"/>
+        <text x="500" y="121" text-anchor="middle" class="t-title">Ops Orchestrator</text>
+        <text x="500" y="142" text-anchor="middle" class="t-sub">weekly ops sweep · priorities</text>
+      </a>
+
+      <!-- You -->
+      <rect x="760" y="100" width="220" height="52" rx="26" fill="#161d2e" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="870" y="122" text-anchor="middle" class="t-title">You (founder / ops lead)</text>
+      <text x="870" y="140" text-anchor="middle" class="t-sub">hire · pay · sign · grant access</text>
+      <line x1="633" y1="126" x2="756" y2="126" stroke="#fbbf24" stroke-width="1.5" marker-start="url(#a-amber)" marker-end="url(#a-amber)"/>
+      <text x="694" y="117" text-anchor="middle" class="t-label">approval gates</text>
+
+      <!-- Dispatch bus -->
+      <line x1="500" y1="158" x2="500" y2="180" stroke="#7c5cff" stroke-width="1.5"/>
+      <line x1="120" y1="180" x2="620" y2="180" stroke="#7c5cff" stroke-width="1.5"/>
+      <line x1="120" y1="180" x2="120" y2="202" stroke="#7c5cff" stroke-width="1.5" marker-end="url(#a-violet)"/>
+      <line x1="370" y1="180" x2="370" y2="202" stroke="#7c5cff" stroke-width="1.5" marker-end="url(#a-violet)"/>
+      <line x1="620" y1="180" x2="620" y2="202" stroke="#7c5cff" stroke-width="1.5" marker-end="url(#a-violet)"/>
+      <text x="245" y="174" text-anchor="middle" class="t-label">weekly ops priorities</text>
+
+      <!-- Lanes -->
+      <rect x="20" y="205" width="200" height="265" rx="14" fill="rgba(255,255,255,0.015)" stroke="#2d3748"/>
+      <rect x="260" y="205" width="220" height="265" rx="14" fill="rgba(255,255,255,0.015)" stroke="#2d3748"/>
+      <rect x="520" y="205" width="200" height="265" rx="14" fill="rgba(255,255,255,0.015)" stroke="#2d3748"/>
+      <text x="120" y="226" text-anchor="middle" class="t-mono">01 · PEOPLE IN</text>
+      <text x="370" y="226" text-anchor="middle" class="t-mono">02 · RUN</text>
+      <text x="620" y="226" text-anchor="middle" class="t-mono">03 · CONTROL</text>
+      <text x="870" y="226" text-anchor="middle" class="t-mono">04 · GOAL</text>
+
+      <!-- People in -->
+      <a href="#agent-onboarding">
+        <rect x="32" y="245" width="176" height="90" rx="12" fill="#111827" stroke="#22d3ee" stroke-width="1.5"/>
+        <text x="120" y="276" text-anchor="middle" class="t-title">Onboarding &amp;</text>
+        <text x="120" y="295" text-anchor="middle" class="t-title">Offboarding</text>
+        <text x="120" y="317" text-anchor="middle" class="t-sub">day-1 ready · same-day revoke</text>
+      </a>
+      <line x1="120" y1="355" x2="120" y2="339" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#a-cyan)"/>
+      <a href="#agent-recruiting">
+        <rect x="32" y="355" width="176" height="90" rx="12" fill="#111827" stroke="#22d3ee" stroke-width="1.5"/>
+        <text x="120" y="386" text-anchor="middle" class="t-title">Recruiting</text>
+        <text x="120" y="405" text-anchor="middle" class="t-title">&amp; Hiring</text>
+        <text x="120" y="427" text-anchor="middle" class="t-sub">JDs · scheduling · debriefs</text>
+      </a>
+
+      <!-- Run -->
+      <a href="#agent-knowledge">
+        <rect x="272" y="300" width="196" height="96" rx="12" fill="#111827" stroke="#22d3ee" stroke-width="1.5"/>
+        <text x="370" y="332" text-anchor="middle" class="t-title">Knowledge</text>
+        <text x="370" y="351" text-anchor="middle" class="t-title">&amp; Policy</text>
+        <text x="370" y="374" text-anchor="middle" class="t-sub">SOPs · handbook · HR Q&amp;A</text>
+      </a>
+
+      <!-- Control -->
+      <a href="#agent-vendors">
+        <rect x="532" y="245" width="176" height="80" rx="12" fill="#111827" stroke="#22d3ee" stroke-width="1.5"/>
+        <text x="620" y="278" text-anchor="middle" class="t-title">Vendors &amp; SaaS</text>
+        <text x="620" y="300" text-anchor="middle" class="t-sub">renewals · seats · spend</text>
+      </a>
+      <line x1="620" y1="325" x2="620" y2="371" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#a-cyan)"/>
+      <text x="628" y="345" class="t-label">security</text>
+      <text x="628" y="358" class="t-label">review</text>
+      <a href="#agent-compliance">
+        <rect x="532" y="375" width="176" height="80" rx="12" fill="#111827" stroke="#22d3ee" stroke-width="1.5"/>
+        <text x="620" y="408" text-anchor="middle" class="t-title">Compliance</text>
+        <text x="620" y="427" text-anchor="middle" class="t-title">&amp; IT</text>
+        <text x="620" y="446" text-anchor="middle" class="t-sub">controls · access · devices</text>
+      </a>
+
+      <!-- Goal -->
+      <rect x="770" y="280" width="200" height="116" rx="16" fill="rgba(52,211,153,0.08)" stroke="#34d399" stroke-width="1.5"/>
+      <text x="870" y="308" text-anchor="middle" class="t-mono" style="fill:#34d399">THE GOAL</text>
+      <text x="870" y="334" text-anchor="middle" class="t-title" style="font-size:16px">A company that scales</text>
+      <text x="870" y="356" text-anchor="middle" class="t-sub">people productive fast</text>
+      <text x="870" y="374" text-anchor="middle" class="t-sub">cost &amp; risk under control</text>
+
+      <!-- Work flow arrows -->
+      <path d="M208,290 C240,290 238,330 268,330" fill="none" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#a-cyan)"/>
+      <path d="M208,400 C240,400 238,366 268,366" fill="none" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#a-cyan)"/>
+      <path d="M468,348 C500,348 498,285 528,285" fill="none" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#a-cyan)"/>
+      <path d="M708,415 C740,415 738,360 766,360" fill="none" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#a-cyan)"/>
+
+      <!-- Requests in -->
+      <rect x="30" y="492" width="190" height="54" rx="27" fill="rgba(52,211,153,0.06)" stroke="#34d399" stroke-width="1.5" stroke-dasharray="4 3"/>
+      <text x="125" y="515" text-anchor="middle" class="t-title" style="font-size:13px">Managers &amp; team</text>
+      <text x="125" y="533" text-anchor="middle" class="t-sub">hiring asks · requests</text>
+      <line x1="120" y1="490" x2="120" y2="449" stroke="#34d399" stroke-width="1.5" marker-end="url(#a-green)"/>
+
+      <!-- Ops health -->
+      <a href="#agent-metrics">
+        <rect x="260" y="500" width="460" height="60" rx="12" fill="#111827" stroke="#f472b6" stroke-width="1.5"/>
+        <text x="490" y="526" text-anchor="middle" class="t-title">Ops Health &amp; Metrics</text>
+        <text x="490" y="546" text-anchor="middle" class="t-sub">hiring funnel · onboarding pulse · spend · controls · scorecard</text>
+      </a>
+      <line x1="370" y1="470" x2="370" y2="497" stroke="#f472b6" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#a-pink)"/>
+      <line x1="620" y1="470" x2="620" y2="497" stroke="#f472b6" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#a-pink)"/>
+      <text x="378" y="490" class="t-label">questions</text>
+      <text x="628" y="490" class="t-label">spend · controls</text>
+      <path d="M870,396 V530 H724" fill="none" stroke="#f472b6" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#a-pink)"/>
+      <text x="880" y="470" class="t-label">team pulse &amp;</text>
+      <text x="880" y="484" class="t-label">audit status</text>
+
+      <!-- Feedback loop to orchestrator -->
+      <path d="M490,560 V580 H8 V126 H366" fill="none" stroke="#f472b6" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#a-pink)"/>
+      <text x="190" y="120" text-anchor="middle" class="t-label">weekly scorecard → re-plan</text>
+    </svg>
+    <div class="diagram-legend">
+      <span class="ctrl">dispatch (orchestrator → agents)</span>
+      <span>work flow (people, knowledge, controls)</span>
+      <span class="dash">data &amp; feedback loop</span>
+      <span class="gate">human approval</span>
+    </div>
+  </div>
+
+  <!-- ===================== ROSTER ===================== -->
+  <h2 class="section-title" id="roster">The agents and what each one does</h2>
+  <p>Each agent becomes its own markdown file. The defaults below are best practice. The setup interview adjusts them to your team size, locations, tools and compliance needs.</p>
+
+  <div class="agent-grid">
+
+    <div class="agent-card lead" id="agent-orchestrator">
+      <div class="stage">// control</div>
+      <h3>Ops Orchestrator</h3>
+      <p class="mission">Acts as chief of staff. Runs the weekly ops review, decides what needs attention, sends work to the right agent, and brings you only the decisions that need a person.</p>
+      <h5>Does</h5>
+      <ul>
+        <li>Runs a <strong>30-minute weekly ops review</strong> covering open roles, people being onboarded, renewals this month, failing compliance checks, and unanswered questions.</li>
+        <li>Collects offers, hires, spend, access changes and policy changes into one approval list.</li>
+        <li>Applies one principle throughout: agents route work, draft, remind and summarize. Decisions about hiring, firing, pay and policy stay with people.</li>
+      </ul>
+      <h5>Asks you</h5>
+      <ul><li>Team size and locations, the headcount plan, who runs ops today, and who approves what.</li></ul>
+      <div class="file">→ agents/ops-orchestrator.md</div>
     </div>
 
-    <div class="step">
-      <div class="step-num">02</div>
-      <div class="step-body">
-        <h3>Interview debrief synthesizer</h3>
-        <p>After each interview, the agent consumes the scorecard, pulls quotes, and produces a hire-committee packet.</p>
-        <ul>
-          <li>Structured summary against the rubric.</li>
-          <li>Highlighted disagreements between interviewers (the most useful thing to surface).</li>
-          <li>Flags any evidence gaps before the decision meeting.</li>
-        </ul>
-      </div>
+    <div class="agent-card" id="agent-recruiting">
+      <div class="stage">// 01 · people in</div>
+      <h3>Recruiting &amp; Hiring</h3>
+      <p class="mission">Handles the admin of hiring, from job description to offer packet, so you spend your time on interviews and decisions.</p>
+      <h5>Does</h5>
+      <ul>
+        <li>Writes job descriptions and a <strong>scorecard written before sourcing starts</strong>. Every criterion must relate to the job.</li>
+        <li>Schedules interviews and creates interview kits so every candidate gets the same questions for the same role.</li>
+        <li>Summarizes debriefs against the scorecard, highlights where interviewers disagree, and flags missing evidence before the decision.</li>
+        <li><strong>Never makes the hire or no-hire decision</strong>, never rejects anyone on its own, and never looks at protected characteristics.</li>
+      </ul>
+      <h5>Asks you</h5>
+      <ul><li>Open roles and the hiring plan, your interview loop, your applicant tracking system (Ashby, Greenhouse, Workable), and who decides.</li></ul>
+      <div class="file">→ agents/recruiting.md</div>
     </div>
 
-    <div class="step">
-      <div class="step-num">03</div>
-      <div class="step-body">
-        <h3>Onboarding conductor</h3>
-        <p>Day 1 through Day 30 should run itself.</p>
-        <ul>
-          <li>Pre-start: orders laptop, creates accounts (Google, Slack, GitHub, 1Password), sends welcome email, schedules intros.</li>
-          <li>Day 1: a personalized Notion page with their first-week plan, owner assignments, reading list.</li>
-          <li>Weekly: check-in survey; if sentiment dips, escalates to the manager.</li>
-          <li>Day 30: generates a structured "here's what they've learned, here's where they're stuck" doc for the manager to review.</li>
-        </ul>
-        <div class="callout tip"><strong>Example:</strong> see <a href="examples/operations.md"><code class="inline">examples/operations.md</code></a> — a filled-in onboarding runbook (T-7 through Day 30) for a fictional startup.</div>
-      </div>
+    <div class="agent-card" id="agent-onboarding">
+      <div class="stage">// 01 · people in</div>
+      <h3>Onboarding &amp; Offboarding</h3>
+      <p class="mission">Makes day one productive and the last day secure, with the same checklist every time.</p>
+      <h5>Does</h5>
+      <ul>
+        <li>Runs the onboarding checklist from 7 days before the start date through day 30: welcome email, accounts, laptop, buddy, first-week plan and a 30/60/90-day plan (see the <a href="examples/operations.md">example onboarding.md</a>).</li>
+        <li>Runs check-ins at day 7 and day 30. If a new hire seems to be struggling, it raises it with their manager.</li>
+        <li>Offboarding: a <strong>same-day</strong> checklist to remove access, return equipment, hand over files and run the final-pay steps. Access is removed only after you approve.</li>
+      </ul>
+      <h5>Asks you</h5>
+      <ul><li>Your HR and payroll system (Gusto, Rippling, Deel), how you manage accounts and devices, and what onboarding looks like today.</li></ul>
+      <div class="file">→ agents/onboarding-offboarding.md</div>
     </div>
 
-    <div class="step">
-      <div class="step-num">04</div>
-      <div class="step-body">
-        <h3>Compliance &amp; evidence agent (SOC2, ISO, HIPAA)</h3>
-        <p>Most early-stage companies procrastinate on compliance until a customer blocks a deal. Instead, start collecting evidence from day one with an agent.</p>
-        <ul>
-          <li>Connects to Drata/Vanta/Secureframe via API; pulls failing control list weekly.</li>
-          <li>For each failure, it drafts the remediation: a ticket, a policy doc, or a process change.</li>
-          <li>Runs quarterly access reviews: lists who has access to what, who shouldn't, and drafts the revocation PRs.</li>
-        </ul>
-      </div>
+    <div class="agent-card" id="agent-knowledge">
+      <div class="stage">// 02 · run</div>
+      <h3>Knowledge &amp; Policy</h3>
+      <p class="mission">Turns the knowledge in people's heads into written policies and procedures that teammates and agents can look up.</p>
+      <h5>Does</h5>
+      <ul>
+        <li>Keeps one markdown file per policy (expenses, travel, PTO, remote work, security, on-call), each with an owner and a review date.</li>
+        <li>Answers teammates' questions <strong>by citing the policy</strong>. If no policy exists, it says so and asks a person to write one.</li>
+        <li>Notices questions that keep coming up and turns them into new procedures or FAQ entries.</li>
+      </ul>
+      <h5>Asks you</h5>
+      <ul><li>Where documents live (Notion, Confluence, Google Drive), the policies you already have, and any countries with special employment rules.</li></ul>
+      <div class="file">→ agents/knowledge-policy.md</div>
     </div>
 
-    <div class="step">
-      <div class="step-num">05</div>
-      <div class="step-body">
-        <h3>Vendor &amp; SaaS agent</h3>
-        <p>Startups accumulate 40+ SaaS subscriptions by Series A. An agent keeps them sane.</p>
-        <ul>
-          <li>Pulls the SaaS list from your finance system + SSO logs.</li>
-          <li>Flags: unused seats, overlapping tools, auto-renewals &lt;30 days out, MSAs that haven't had a security review.</li>
-          <li>Drafts cancellation emails, negotiation asks, and consolidation proposals.</li>
-        </ul>
-        <pre class="code"><span class="c-com"># Negotiation draft (renewal)</span>
-Our current plan is $X for Y seats; we use Z seats actively (60% utilization).
-We'd like to renew at Z seats at a 15% discount given the utilization gap,
-with a 12-month term. If that's not possible, we're exploring &lt;alt tool&gt;.</pre>
-      </div>
+    <div class="agent-card" id="agent-vendors">
+      <div class="stage">// 03 · control</div>
+      <h3>Vendors &amp; SaaS</h3>
+      <p class="mission">Keeps the software stack lean. No surprise renewals, no paying for unused seats, no tool touching customer data without a review.</p>
+      <h5>Does</h5>
+      <ul>
+        <li>Builds a vendor inventory from spend data and sign-in logs: owner, cost, renewal date and seats actually used.</li>
+        <li>Flags renewals 60 days out, seats unused for 30 days, and tools that do the same job.</li>
+        <li>Drafts negotiation asks, cancellation notices and consolidation plans. Spend data goes to <a href="finance.html">Finance</a>, and contracts go to <a href="legal.html">Legal</a> for review.</li>
+      </ul>
+      <h5>Asks you</h5>
+      <ul><li>Where spend shows up (Ramp, Brex, card statements, QuickBooks), your spending limits, and who owns each tool.</li></ul>
+      <div class="file">→ agents/vendor-saas.md</div>
     </div>
 
-    <div class="step">
-      <div class="step-num">06</div>
-      <div class="step-body">
-        <h3>IT &amp; device agent</h3>
-        <p>MDM events are the ops equivalent of a monitoring alert. Treat them that way.</p>
-        <ul>
-          <li>New device enrolled → checks against the hiring roster (was this expected?).</li>
-          <li>Disk unencrypted, OS out of date, suspicious app installed → drafts remediation steps.</li>
-          <li>Offboarding: a single command revokes SSO, wipes device, forwards email, transfers Drive ownership.</li>
-        </ul>
-      </div>
+    <div class="agent-card" id="agent-compliance">
+      <div class="stage">// 03 · control</div>
+      <h3>Compliance &amp; IT</h3>
+      <p class="mission">Collects compliance evidence from day one, so a security review never blocks a deal, and keeps devices and access tidy.</p>
+      <h5>Does</h5>
+      <ul>
+        <li>Pulls failing controls weekly from Vanta, Drata or Secureframe and drafts the fix for each: a ticket, a policy or a process change.</li>
+        <li>Runs quarterly access reviews (who has access to what, and who shouldn't) and drafts the changes for approval.</li>
+        <li>Checks device basics: required sign-in methods (MFA and SSO), disk encryption, OS updates, and a password manager for everyone.</li>
+      </ul>
+      <h5>Asks you</h5>
+      <ul><li>Which standards customers are asking for (SOC 2, ISO 27001, HIPAA, GDPR), your compliance tool, your identity and device tools, and the kinds of data you handle.</li></ul>
+      <div class="file">→ agents/compliance-it.md</div>
     </div>
 
-    <div class="step">
-      <div class="step-num">07</div>
-      <div class="step-body">
-        <h3>Policy &amp; playbook library</h3>
-        <p>Every repeated ops decision should have a policy. Every policy should be readable by agents.</p>
-        <ul>
-          <li>One markdown file per policy: expense, travel, remote work, PTO, paternity, on-call.</li>
-          <li>An "HR assistant" agent answers teammate questions by citing the policy.</li>
-          <li>If no policy exists, it says so and routes to a human to author one — which is the whole point.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="step">
-      <div class="step-num">08</div>
-      <div class="step-body">
-        <h3>Ritual: the weekly ops sweep</h3>
-        <p>30 minutes, every Friday. The agent dumps its working memory into one doc and you decide what matters.</p>
-        <ul>
-          <li>Hiring: open roles, aging candidates, offers out.</li>
-          <li>Onboarding: people in flight, sentiment flags.</li>
-          <li>Compliance: failing controls, upcoming audits.</li>
-          <li>Vendors: renewals this month, unused seats.</li>
-          <li>People: 1:1s missed, tenure anniversaries, birthdays.</li>
-        </ul>
-      </div>
+    <div class="agent-card measure" id="agent-metrics">
+      <div class="stage">// measure &amp; learn</div>
+      <h3>Ops Health &amp; Metrics</h3>
+      <p class="mission">Measures whether the company is running well, using numbers rather than gut feel.</p>
+      <h5>Does</h5>
+      <ul>
+        <li>Tracks the hiring pipeline (time-to-hire, time each candidate waits for feedback), how new hires are getting on, SaaS cost per employee, compliance controls passing, and how quickly requests are handled.</li>
+        <li>If you're missing a tool, recommends a starter set: Gusto or Rippling for HR, Ashby or Workable for recruiting, Google Workspace with sign-in through it, 1Password, and Vanta or Drata once SOC 2 is needed. If you already have tools, <strong>asks you to connect them</strong> read-only.</li>
+        <li>Sends the orchestrator a weekly scorecard, using aggregated numbers rather than individual employee data.</li>
+      </ul>
+      <h5>Asks you</h5>
+      <ul><li>Which of your HR, ATS, finance and compliance tools you can connect, and who may see people data.</li></ul>
+      <div class="file">→ agents/ops-metrics.md</div>
     </div>
 
   </div>
 
-  <div class="callout tip"><strong>Principle:</strong> automate the clerical, not the judgmental. Agents route, draft, remind, and summarize. Hiring decisions, firing decisions, comp decisions, policy decisions — humans.</div>
+  <!-- ===================== FILES ===================== -->
+  <h2 class="section-title" id="files">What Claude will create for you</h2>
+  <p>A folder you own. Plain markdown files are easy to edit, version and reuse. In Claude Code the agent files go in <code class="inline">.claude/agents/</code> so they load as subagents.</p>
+
+<pre class="tree">operations-agents/
+├── CLAUDE.md                    <span class="c-com"># entry point: goal, roster, workflow, rules</span>
+├── context/                     <span class="c-com"># shared brain, read by every agent</span>
+│   ├── company-and-team.md
+│   ├── roles-and-hiring-plan.md
+│   ├── policies-and-handbook.md
+│   ├── tools-and-vendors.md
+│   ├── compliance-scope.md
+│   └── tools-and-access.md
+├── agents/                      <span class="c-com"># .claude/agents/ in Claude Code</span>
+│   ├── ops-orchestrator.md
+│   ├── recruiting.md
+│   ├── onboarding-offboarding.md
+│   ├── knowledge-policy.md
+│   ├── vendor-saas.md
+│   ├── compliance-it.md
+│   └── ops-metrics.md
+├── playbooks/
+│   ├── first-30-days.md
+│   ├── weekly-cadence.md
+│   └── approval-gates.md
+└── outputs/                     <span class="c-com"># where agents deliver work</span>
+    ├── hiring/  onboarding/  knowledge/  vendors/  compliance/
+    └── reports/</pre>
+
+  <!-- ===================== SETUP PROMPT ===================== -->
+  <h2 class="section-title" id="setup">Setup prompt: paste it into your Claude</h2>
+  <p>Claude interviews you in five short rounds (company, people, tools and spend, compliance, guardrails). Every question shows a best-practice default, so you can answer "defaults" and keep going. It then writes the files and gives you a first-week plan.</p>
+
+  <div class="how-to">
+    <div class="mini-card">
+      <h4><span class="n">1</span>Copy or download</h4>
+      <p>Use the buttons below. The download is a <code class="inline">.md</code> file you can keep or share with your team.</p>
+    </div>
+    <div class="mini-card">
+      <h4><span class="n">2</span>Paste into Claude</h4>
+      <p>Claude Code or the Claude desktop app can write the folder directly. On claude.ai, Claude delivers the files as a zip or as copyable blocks.</p>
+    </div>
+    <div class="mini-card">
+      <h4><span class="n">3</span>Answer &amp; connect</h4>
+      <p>Answer the interview questions. Connect your HR, recruiting, finance and compliance tools through Claude's connectors, read-only first. Never paste a password into the chat.</p>
+    </div>
+  </div>
+
+  <div class="prompt-box">
+    <div class="prompt-toolbar">
+      <span class="file-name">operations-agent-system-setup.md</span>
+      <button class="btn" type="button" data-prompt-copy="prompt-operations">Copy prompt</button>
+      <button class="btn secondary" type="button" data-prompt-download="prompt-operations" data-filename="operations-agent-system-setup.md">Download .md</button>
+    </div>
+    <pre data-prompt-view="prompt-operations">Loading prompt… (enable JavaScript to view, copy, or download)</pre>
+  </div>
+
+  <div class="callout tip"><strong>Using it on claude.ai?</strong> After Claude generates the files, create a <strong>Project</strong>. Paste <code class="inline">CLAUDE.md</code> into the project instructions and upload the <code class="inline">context/</code> and <code class="inline">agents/</code> files as project knowledge. Every chat in that project then has the whole team available.</div>
+
+  <div class="callout warn"><strong>Agents handle the routine paperwork; people make the judgment calls.</strong> Agents never decide who to hire or reject, set pay, or decide on terminations. They never screen candidates on protected characteristics (or on things that stand in for them, such as age or photos), and they never grant or remove access on their own. Fair-hiring laws, privacy and trust all require that a person makes these decisions.</div>
+
+  <div class="two-col">
+    <div class="mini-card">
+      <h4>// always needs your approval</h4>
+      <ul>
+        <li>Hire or no-hire decisions, rejections, offers and pay</li>
+        <li>Any message to candidates or employees about sensitive matters</li>
+        <li>Creating, changing or removing accounts and access</li>
+        <li>Signing, renewing or cancelling contracts, and any payment</li>
+        <li>New or changed policies, and access to employee personal data</li>
+      </ul>
+    </div>
+    <div class="mini-card">
+      <h4>// red flags to watch</h4>
+      <ul>
+        <li>Candidates waiting more than 5 days for feedback: you're losing good people</li>
+        <li>New hires without access on day one: the onboarding checklist isn't wired to IT</li>
+        <li>Ex-employees with active accounts: offboarding isn't same-day</li>
+        <li>SaaS spend growing faster than headcount: renewals aren't being reviewed</li>
+        <li>The same question asked every week: a policy is missing</li>
+      </ul>
+    </div>
+  </div>
 </main>
-<footer><span>Stargate · Operations</span><span class="mono">/operations</span></footer>
+<footer><span>Stargate · Operations Agent System</span><span class="mono">/operations</span></footer>
+
+<script type="text/plain" id="prompt-operations">
+# Operations Agent System — Setup Prompt
+
+You are going to set up an **operations agent system** for my company. It is a small team of specialized AI agents, defined as markdown files in a folder, working together toward one goal:
+
+> **Keep the company running smoothly as it grows: the right people hired quickly and fairly, every teammate productive fast, tools and spend under control, and compliance ready before a customer asks.**
+
+The guiding principle: **agents handle the routine paperwork; people make the judgment calls.** Agents route work, draft, remind and summarize. Decisions about hiring, firing, pay, access and policy stay with people.
+
+Your job in this conversation:
+1. **Interview me** so the system fits my company, team and locations.
+2. **Fill any gaps with best-practice defaults**, and tell me which ones you assumed.
+3. **Create the folder** of context files, agent files and playbooks described below.
+4. **Hand me a first-week plan** and the list of tools I should connect.
+
+---
+
+## Ground rules
+
+- Ask questions in **rounds of no more than 6**, numbered. After each question, put in [brackets] the default you'll use if I skip it. I can reply "defaults" to accept every default in a round.
+- **Don't ask about things you can look up.** If I give you a website, careers page or handbook link and you can browse, read it first. Use it to pre-fill answers, then ask me to confirm.
+- **Never ask me for passwords, API keys, or login codes in the chat.** For tool access, use official connectors or MCP integrations that sign in through the provider. Ask for read-only access first. If no connector exists, ask me for an export (CSV, PDF or pasted text).
+- **Agents never make people decisions.** They don't decide hire or no-hire, reject candidates, make offers, set pay, decide performance or termination outcomes, or send sensitive messages to candidates or employees. They prepare material, and a person decides and sends.
+- **Fair, structured hiring.** Hiring criteria must relate to the job and be written down before sourcing starts. Never screen on, infer or record protected characteristics (age, race, gender, religion, disability, national origin, pregnancy and the like) or things that stand in for them (photos, graduation years, names used as signals). Follow the fair-hiring rules in each location where I hire.
+- **No changes without approval.** Agents never create, change or remove accounts or access, sign or cancel contracts, or make payments. They draft the change and I approve it.
+- **Handle employee and candidate data carefully.** Keep personal data in the HR system or applicant tracker, not in the context files. Reports use aggregated numbers. Share people data only with those who need it.
+- **Don't invent facts, policies or legal requirements.** Mark anything unconfirmed as `TODO:` in the files. Anything that depends on employment law or tax rules for a location gets flagged for a qualified human (an HR advisor, an employment lawyer, or our PEO or EOR provider).
+- Write every file so that another Claude session, with no access to this conversation, could act on it. Keep files specific to my company and concise. Use bullet points rather than essays.
+
+---
+
+## Step 1 — Interview me
+
+### Round 1 · Company and team
+1. Company name and **website URL** (plus a careers page or handbook link, if you have one).
+2. Team size today, and the split between employees and contractors. [under 15, mostly employees]
+3. Where people work: countries and US states, remote, hybrid or office. [US, remote]
+4. How people are employed: directly, through a PEO (Justworks, Rippling PEO), or through an EOR for other countries (Deel, Remote)? [directly, US]
+5. Stage and headcount plan for the next 12 months. [doubling the team]
+6. Who handles ops today, and roughly how many hours a week? [the founder, about 5 hours]
+
+### Round 2 · Hiring and people
+1. Open roles now, and the next 3 planned. [TODO]
+2. How you hire today: sourcing channels, interview stages, who interviews, who decides. [referrals plus job posts; 3-stage loop; founder decides]
+3. What onboarding looks like today, and what new hires usually complain about. [informal; a checklist is needed]
+4. How offboarding works today, especially removing access. [ad hoc]
+5. Do you have an employee handbook or written policies (PTO, expenses, remote work, security)? [none yet]
+6. People tasks that take the most time or get dropped. [I'll propose based on stage]
+
+### Round 3 · Tools, vendors and spend
+For each item, tell me what you use, or "none":
+1. HR, payroll and benefits (Gusto, Rippling, Justworks, Deel, Remote)
+2. Applicant tracking (Ashby, Greenhouse, Lever, Workable, a spreadsheet)
+3. Identity, devices and passwords (Google Workspace or Microsoft 365, Okta, 1Password, a device-management tool such as Kandji, Jamf or Intune)
+4. Documents and wiki (Notion, Confluence, Google Drive) and team chat (Slack or Teams)
+5. Where software spend shows up (Ramp, Brex, company cards, QuickBooks or Xero)
+6. Ticketing for internal requests, if any (Linear, Jira, a Slack channel)
+
+**After this round:**
+- **Tools I already have.** Check whether a connector or MCP integration for that tool exists in your current environment. In claude.ai and the desktop app, look under Settings → Connectors. In Claude Code, look at `claude mcp`. If one exists, tell me exactly how to connect it, read-only first. If none exists, tell me which export to provide and how. Record each tool as connected, export-only, or not connected in `context/tools-and-access.md`.
+- **Tools I don't have.** Recommend the default from Step 2 that fits my size and budget, explain why in one line, and add a setup task to the plan. Don't make tools a blocker. The system must work from exports alone.
+
+### Round 4 · Compliance and risk
+1. Are customers or prospects asking for SOC 2, ISO 27001, HIPAA, GDPR or a security questionnaire? How urgently? [not yet; collect evidence early]
+2. Compliance tool, if any (Vanta, Drata, Secureframe). [none]
+3. Types of data you handle: customer personal data, health, payments, children's data, or government data. [customer business data with some personal data]
+4. Current security basics: two-factor sign-in everywhere, single sign-on, password manager, disk encryption, device management. [partial]
+5. Any upcoming audits, renewals or legal deadlines? [none known]
+
+### Round 5 · Guardrails and ways of working
+1. Who approves hires, offers, pay, spend and access changes? [the founder approves all of them]
+2. Spend threshold that needs approval. [any new vendor, or any renewal over $1,000 a year]
+3. Team rituals you run, or want to run (weekly sync, 1:1s, all-hands, retros). [weekly sync + biweekly 1:1s]
+4. Who may see people data (pay, performance, personal details)? [founder only]
+5. Anything beyond the default approval gates that must come to you first? [defaults only]
+6. Where should agents deliver work? [files in `outputs/`; optionally Slack, Notion or Google Drive if connected]
+
+**Before creating anything**, show me a one-screen summary of what you learned and what you're assuming. Mark each item *confirmed*, *inferred* or *default*. Ask me to correct it. Then build.
+
+---
+
+## Step 2 — Best-practice defaults (use these unless my answers say otherwise)
+
+**Adjust to company size**
+- *Under 15 people:* a lightweight HR and payroll tool, a simple applicant tracker or spreadsheet, a one-page onboarding checklist, the 5 essential policies, two-factor sign-in plus a password manager, and a vendor list kept in a sheet.
+- *15–50 people:* an applicant tracker with scorecards, a written handbook, single sign-on with user provisioning, device management, quarterly access reviews, and SOC 2 Type I when customers start asking.
+- *50+ people:* dedicated People and IT owners, a full HR system, SOC 2 Type II or ISO 27001, formal procurement, and leveling and compensation bands.
+
+**Recruiting and hiring**
+- Write the scorecard before sourcing: 4–6 criteria tied to the job, each with what good evidence looks like.
+- Structured interviews: the same core questions for every candidate in a role, each interviewer assigned specific criteria, and feedback submitted before the debrief.
+- Debrief packet: evidence for each criterion, **where interviewers disagree**, and missing evidence. A person makes the decision.
+- Candidate experience: feedback within 5 business days at every stage. Agents draft updates, and a person sends them. Target time-to-hire: 30–45 days.
+- Never screen on protected characteristics or things that stand in for them, and keep job ads inclusive (screen for gendered and exclusionary wording).
+
+**Onboarding and offboarding**
+- A checklist from 7 days before the start through day 30, with each task tagged `[agent]`, `[manager]` or `[hire]`. Accounts and laptop are ready **before day one**, granted by role with the least access needed, and approved.
+- A buddy, a first-week plan, and a 30/60/90-day plan written by the manager. Check-ins at day 7 and day 30, with a summary for the manager.
+- Offboarding on the **same day**: remove access across single sign-on, email, code, cloud and finance tools; recover devices; transfer file ownership; and handle final pay, benefits and paperwork. Final-pay timing depends on the location, so flag it to a human.
+
+**Knowledge and policy**
+- One markdown file per policy, each with an owner, effective date, review date and a plain-language summary.
+- The essential policies first: expenses, PTO and leave, remote work and equipment, information security and acceptable use, and a code of conduct with an anti-harassment section. These are drafts for human and legal review.
+- The Q&A agent answers by citing the policy. When no policy exists, it says so and sends the question to a person. It tracks repeated questions so they become new policies or FAQ entries.
+
+**Vendors and SaaS**
+- Keep an inventory with owner, cost, billing cycle, renewal date, seats bought and seats used, data access, and security review status.
+- Flag renewals 60 days out, seats unused for 30 days, and tools that duplicate each other. Review every tool that touches customer data for security before purchase.
+- Negotiation drafts use the facts: utilization, a competing alternative, and the term length. Spend reporting is shared with Finance.
+
+**Compliance and IT**
+- Collect evidence from day one, even before an audit. Start with SOC 2 Type I when customers ask, then move to Type II.
+- Baseline controls: two-factor sign-in everywhere, single sign-on where available, a password manager, disk encryption and automatic OS updates enforced through device management, quarterly access reviews, a written incident response plan, and annual security training.
+- Pull failing controls weekly and draft a fix for each: a ticket, a policy or a process change.
+- Suggested tools: Vanta or Drata for compliance, Kandji or Jamf for Mac and Intune for Windows device management, and 1Password.
+
+**Ops health and metrics**
+- Weekly scorecard:
+  - hiring funnel and time-to-hire
+  - candidates waiting more than 5 days for feedback
+  - new hires in onboarding and how they're getting on
+  - open offboarding items
+  - SaaS spend per employee and seat utilization
+  - renewals in the next 60 days
+  - failing controls by age
+  - how quickly internal requests are handled
+- Report people metrics as aggregates only. Never put an individual's pay, health or performance data in reports.
+
+**Approval gates (always on):** hire or no-hire decisions, rejections, offers and pay; sensitive messages to candidates or employees; creating, changing or removing accounts and access; signing, renewing or cancelling contracts, and payments; new or changed policies; and access to employee personal data.
+
+---
+
+## Step 3 — Create the files
+
+**Where to write:**
+- If you can write files (Claude Code, or the Claude desktop app with folder access), ask where to create the folder [default: `./operations-agents`] and write the files directly. **In Claude Code, put the agent files in `operations-agents/.claude/agents/`** instead of `agents/` so they load as subagents. Tell me to start Claude Code from inside `operations-agents/`.
+- If you can't write files but can run code, create the files and give me a single **.zip** to download.
+- Otherwise, output each file in its own code block, headed by its full path, in the order below.
+
+**Folder structure:**
+```
+operations-agents/
+├── CLAUDE.md
+├── context/
+│   ├── company-and-team.md
+│   ├── roles-and-hiring-plan.md
+│   ├── policies-and-handbook.md
+│   ├── tools-and-vendors.md
+│   ├── compliance-scope.md
+│   └── tools-and-access.md
+├── agents/                (use .claude/agents/ in Claude Code)
+│   ├── ops-orchestrator.md
+│   ├── recruiting.md
+│   ├── onboarding-offboarding.md
+│   ├── knowledge-policy.md
+│   ├── vendor-saas.md
+│   ├── compliance-it.md
+│   └── ops-metrics.md
+├── playbooks/
+│   ├── first-30-days.md
+│   ├── weekly-cadence.md
+│   └── approval-gates.md
+└── outputs/
+    ├── README.md
+    ├── hiring/  onboarding/  knowledge/  vendors/  compliance/
+    └── reports/
+```
+
+**`CLAUDE.md`** is the system's entry point. It contains:
+- The goal, the guiding principle, and the scorecard metrics with their targets and current baselines (or TODO).
+- A text diagram of the flow: context → orchestrator → recruiting (receiving hiring requests from managers) → onboarding and offboarding → knowledge and policy → vendors and SaaS → compliance and IT → a company that scales, with ops metrics tracking every stage and sending a weekly scorecard back to the orchestrator.
+- A roster table: agent, one-line job, when to use it, and its output folder.
+- The rules that every agent reads `context/` before working, the people-decision rules, the fair-hiring rules, the approval gates, and the people-data rules.
+- How to run the system, e.g. "Use the ops-orchestrator agent to run this week's ops sweep."
+
+**`context/` files** hold the shared brain, filled with my interview answers and your research. Label every section *confirmed*, *inferred* or *TODO*. Store no personal data about individuals.
+- `company-and-team.md`: company overview, team size and structure (roles, not personal details), locations, employment model, stage and growth plan, and rituals.
+- `roles-and-hiring-plan.md`: open and planned roles, the scorecard template, the interview loop, decision rights, and the candidate-communication standards.
+- `policies-and-handbook.md`: index of existing and needed policies with owners and review dates, and the onboarding and offboarding checklists.
+- `tools-and-vendors.md`: the vendor inventory (tool, owner, cost, renewal date, seats, data access, review status).
+- `compliance-scope.md`: frameworks in scope and why, types of data handled, baseline control status, and upcoming deadlines.
+- `tools-and-access.md`: each connected system with its status (connected / export-only / recommended / not needed), how to connect it, the owner, and who may see people data.
+
+**Every agent file** uses this template. The frontmatter keeps the file valid as a Claude Code subagent.
+```
+---
+name: <kebab-case-name>
+description: <one specific sentence on when to delegate to this agent>
+tools: <Claude Code only: list the tools it needs, e.g. Read, Write, Edit, Glob, Grep, WebSearch, WebFetch. Omit this line to inherit all tools, including connectors.>
+---
+# <Agent name>
+## Mission            (one or two sentences tied to the goal)
+## Reads first        (which context/ files and outputs from other agents)
+## Responsibilities   (bullets, customized to this company)
+## Inputs it needs    (and the default it uses when they're missing)
+## Tools & connections (what it uses now, and what to connect next)
+## Outputs            (exact file paths in outputs/, with the format)
+## Hand-offs          (who receives its output, and what triggers the hand-off)
+## Approval gates     (actions it must never take without the owner)
+## KPIs it owns
+## Cadence            (what it does daily, weekly, monthly and quarterly)
+```
+
+Agent-specific requirements. Customize each one with my company, locations and tools:
+- **ops-orchestrator.** Runs the weekly ops review from `playbooks/weekly-cadence.md`. Reads the scorecard, sets the week's top 3 ops priorities, briefs each agent, collects every approval item into a single list in `outputs/reports/`, and escalates anything legal, employment-related or security-related to the right person. It must never bypass an approval gate.
+- **recruiting.** Writes job descriptions, scorecards and interview kits in `outputs/hiring/`, drafts scheduling messages and candidate updates for a person to send, and prepares debrief packets that highlight disagreements and missing evidence. It **never** makes or signals a hire, no-hire or rejection decision and never uses protected characteristics. It applies the fair-hiring rules for *my hiring locations*.
+- **onboarding-offboarding.** Keeps the onboarding checklist (7 days before through day 30) and the same-day offboarding checklist in `context/policies-and-handbook.md`, creates a tracker for each person in `outputs/onboarding/`, drafts access and equipment requests for approval, runs the day-7 and day-30 check-ins, and flags final pay and paperwork that depend on location to a human.
+- **knowledge-policy.** Keeps the policy library and procedures in `outputs/knowledge/` (and the wiki, if connected), drafts missing essential policies for human and legal review, answers questions by citing the policy, and logs questions it couldn't answer as policy gaps.
+- **vendor-saas.** Builds and maintains the vendor inventory from *my spend source* and sign-in logs, flags renewals, unused seats and duplicate tools, drafts negotiation and cancellation notes in `outputs/vendors/`, and sends contracts for legal or security review before anything is signed.
+- **compliance-it.** Tracks *my frameworks in scope*, pulls failing controls weekly (from the compliance tool or a checklist), drafts fixes, runs quarterly access reviews and device checks, and drafts access changes for approval in `outputs/compliance/`.
+- **ops-metrics.** Defines the scorecard, recommends tools I'm missing, guides me through read-only connections, and writes the weekly scorecard in `outputs/reports/` using aggregated people data only.
+
+**`playbooks/`**
+- `first-30-days.md`: Week 1, foundation: confirm context, build the vendor inventory, check the baseline security controls (two-factor sign-in, password manager, encryption), and list open offboarding and access gaps. Week 2, people: the onboarding and offboarding checklists, a scorecard and interview kit for the next open role, and candidate-communication templates. Week 3, knowledge: drafts of the 5 essential policies for review, and a Q&A agent wired to the policy library. Week 4, control and learn: renewal and savings actions, the first access review, the first scorecard, and the next 30-day plan. Adapt it to my size and answers.
+- `weekly-cadence.md`: Daily: internal requests and scheduling drafts. Monday: open roles and candidate wait times. Wednesday: onboarding and offboarding status, plus access requests for approval. Thursday: renewals in the next 60 days and failing controls. Friday: the 30-minute weekly ops review, with the scorecard, approval list and decisions logged. Fit it to my ops hours.
+- `approval-gates.md`: the default gates plus mine, who approves each, and how to submit an item for approval.
+
+**`outputs/README.md`** explains what each subfolder holds, the file naming convention (`YYYY-MM-DD-topic.md`), and the rule that no individual's personal data is stored in outputs. Refer to people by role or initials only, and keep personal details in the HR system or applicant tracker.
+
+---
+
+## Step 4 — Wrap up
+
+When the files are created, give me:
+1. The folder tree, with a one-line description of each file.
+2. **Assumptions and TODOs.** Everything you defaulted or couldn't confirm, especially anything that depends on employment law, tax or compliance and needs a qualified human, and how to resolve each.
+3. **Connections to set up, in priority order.** Identity and email (Google Workspace or Microsoft 365) come first, then HR and payroll, then the spend source, then the applicant tracker, then the compliance tool. For each, give the exact steps in this environment.
+4. **The first-week plan,** with the one thing I should do today (usually: check that every former team member's access is revoked, and turn on two-factor sign-in everywhere).
+5. **How to use the system day to day:**
+   - *Claude Code:* "Use the ops-orchestrator agent to run this week's ops sweep," or call any agent directly, e.g. "Use the onboarding-offboarding agent to prepare the checklist for our new engineer starting Monday."
+   - *claude.ai:* Create a Project. Paste `CLAUDE.md` into the project instructions and upload the `context/` and `agents/` files as project knowledge. Then ask, for example, "Acting as the vendor-saas agent, list every renewal in the next 60 days with a recommendation."
+
+Start now with Round 1. If I've already given you my website URL, review it first and pre-fill what you can.
+</script>
+<script src="prompt.js"></script>
 </body></html>

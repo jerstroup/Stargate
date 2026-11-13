@@ -3,7 +3,8 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Legal &amp; Compliance · Stargate</title>
+<title>Legal &amp; Compliance Agent System · Stargate</title>
+<meta name="description" content="A default legal and compliance agent system: orchestrator, contract review, privacy & data protection, compliance & trust, regulatory radar, policy & IP hygiene, and obligations & risk agents, plus a copy-paste setup prompt for Claude." />
 <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -26,132 +27,615 @@
 
 <main>
   <div class="page-header">
-    <div class="kicker">// LEGAL &amp; COMPLIANCE</div>
-    <h1>Fractional general counsel for roughly zero dollars</h1>
-    <p>Legal agents don't replace your lawyer — they replace the <em>billable hours</em> you'd spend getting your lawyer up to speed on a non-standard contract. The stack below cuts contract turnaround from weeks to hours and keeps your compliance posture audit-ready year-round.</p>
+    <div class="kicker">// LEGAL &amp; COMPLIANCE · AGENT SYSTEM</div>
+    <h1>A legal desk of agents that keeps deals moving and you audit-ready</h1>
+    <p>Seven agents that work like a fractional legal and compliance team. Two review what comes in: contracts, plus the data-protection terms attached to them. One keeps your security and compliance evidence current. Two watch the rules and keep your policies and IP clean. One tracks every obligation and deadline. An orchestrator sorts incoming requests and sends anything risky to a real attorney. The agents do the drafting. Your lawyer makes the judgment calls and you sign. Copy the <a href="#setup">setup prompt</a> into Claude. It will interview you about your company and then write the whole system as a folder of agent files.</p>
   </div>
 
   <div class="tags">
-    <span class="tag cyan">contracts</span>
-    <span class="tag cyan">DPAs</span>
-    <span class="tag cyan">SOC2</span>
-    <span class="tag cyan">privacy</span>
-    <span class="tag cyan">IP</span>
+    <span class="tag cyan">contract review</span>
+    <span class="tag cyan">privacy &amp; DPAs</span>
+    <span class="tag cyan">SOC 2 &amp; questionnaires</span>
+    <span class="tag cyan">regulatory radar</span>
+    <span class="tag cyan">policies &amp; IP</span>
+    <span class="tag cyan">obligations &amp; risk</span>
   </div>
 
-  <div class="steps">
+  <div class="callout warn"><strong>Not legal advice.</strong> These agents prepare, compare and flag. They don't give legal opinions. A qualified attorney in the relevant jurisdiction must review anything binding, anything high-risk, and anything relied on outside the company. Agents never sign, never send redlines or legal positions to a counterparty, and never make filings or notifications.</div>
 
-    <div class="step">
-      <div class="step-num">01</div>
-      <div class="step-body">
-        <h3>Build a policy &amp; template library first</h3>
-        <p>This is the corpus every legal agent reads against.</p>
-        <ul>
-          <li>Your own: MSA, DPA, SOW, NDA, offer letter, contractor agreement, privacy policy, AUP, terms of service, SLA.</li>
-          <li>Your positions: what you'll concede, what you won't, with reasons. This is the "playbook" document lawyers charge $10k to write — worth every dollar, once.</li>
-          <li>Regulatory: GDPR obligations, CCPA, state privacy laws you're subject to, any sector rules (HIPAA, PCI).</li>
-        </ul>
-        <div class="callout">Store in git. Your legal agent becomes smarter every time your actual lawyer negotiates a term.</div>
-        <div class="callout tip"><strong>Example:</strong> see <a href="examples/legal.md"><code class="inline">examples/legal.md</code></a> — a filled-in contract <code class="inline">playbook.md</code> for a fictional startup.</div>
-      </div>
+  <!-- ===================== GOAL ===================== -->
+  <h2 class="section-title">The goal the system works toward</h2>
+  <p>Every agent, every task, and every weekly report is judged against one outcome.</p>
+
+  <div class="goal-panel">
+    <div>
+      <div class="label">// north star</div>
+      <h2>Close deals at speed and stay audit-ready year-round, with no missed obligations and every binding or high-risk decision reviewed by the right human.</h2>
+      <p>The system doesn't count drafts produced as wins. What matters is how fast a contract is ready to sign, whether your controls have current evidence, and that nothing falls through the cracks. Non-standard terms arrive from the <a href="sales.html">Sales deal desk</a>. Vendor and employment paperwork comes from <a href="operations.html">Operations</a>. Obligations with money attached, such as renewals, caps and credits, are shared with <a href="finance.html">Finance</a>.</p>
+    </div>
+    <div class="metrics">
+      <div class="metric"><div class="k">Primary</div><div class="v">Contract turnaround (intake → ready to sign)</div></div>
+      <div class="metric"><div class="k">Coverage</div><div class="v">% of contracts on our paper / within playbook</div></div>
+      <div class="metric"><div class="k">Readiness</div><div class="v">% of compliance controls with current evidence</div></div>
+      <div class="metric"><div class="k">Guardrail</div><div class="v">0 missed deadlines · 100% attorney review on high-risk</div></div>
+    </div>
+  </div>
+
+  <!-- ===================== DIAGRAM ===================== -->
+  <h2 class="section-title" id="diagram">How the agents work together</h2>
+  <p>The orchestrator takes in every request, sorts it by risk, and sends high-risk matters to your attorney. Work moves from reviewing what comes in, to keeping you compliant, to staying ahead of new rules. Contracts arrive from Sales. The Obligations &amp; Risk agent tracks every commitment and deadline and sends a scorecard back, so next week's priorities follow your real exposure. Click any agent to jump to its role.</p>
+
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 1000 595" role="img" aria-labelledby="dg-title dg-desc" xmlns="http://www.w3.org/2000/svg">
+      <title id="dg-title">Legal and compliance agent system flow</title>
+      <desc id="dg-desc">Shared legal context feeds a Legal Orchestrator, which routes high-risk matters to you and your attorney. The orchestrator dispatches work to Contract Review and Privacy and Data Protection (review), which receives contracts from the Sales deal desk; then Compliance and Trust (comply); then Regulatory Radar and Policy and IP Hygiene (anticipate), producing low legal risk at deal speed. Obligations and Risk tracks commitments, controls and deadlines and sends a weekly scorecard back to the orchestrator.</desc>
+      <defs>
+        <marker id="a-cyan" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#22d3ee"/></marker>
+        <marker id="a-violet" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#7c5cff"/></marker>
+        <marker id="a-pink" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#f472b6"/></marker>
+        <marker id="a-amber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#fbbf24"/></marker>
+        <marker id="a-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#34d399"/></marker>
+      </defs>
+
+      <!-- Shared context band -->
+      <rect x="20" y="10" width="960" height="52" rx="10" fill="rgba(34,211,238,0.06)" stroke="#22d3ee" stroke-opacity="0.5" stroke-dasharray="4 4"/>
+      <text x="500" y="31" text-anchor="middle" class="t-mono">SHARED CONTEXT · READ BY EVERY AGENT</text>
+      <text x="500" y="50" text-anchor="middle" class="t-sub">company &amp; entities · jurisdictions · contract playbook · templates · data map · counsel &amp; escalation · tools</text>
+      <line x1="500" y1="62" x2="500" y2="91" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#a-cyan)"/>
+
+      <!-- Orchestrator -->
+      <a href="#agent-orchestrator">
+        <rect x="370" y="94" width="260" height="64" rx="12" fill="#1c1640" stroke="#7c5cff" stroke-width="1.5"/>
+        <text x="500" y="121" text-anchor="middle" class="t-title">Legal Orchestrator</text>
+        <text x="500" y="142" text-anchor="middle" class="t-sub">intake · risk triage · escalation</text>
+      </a>
+
+      <!-- You -->
+      <rect x="760" y="100" width="220" height="52" rx="26" fill="#161d2e" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="870" y="122" text-anchor="middle" class="t-title">You + your attorney</text>
+      <text x="870" y="140" text-anchor="middle" class="t-sub">decide risk · sign · send · file</text>
+      <line x1="633" y1="126" x2="756" y2="126" stroke="#fbbf24" stroke-width="1.5" marker-start="url(#a-amber)" marker-end="url(#a-amber)"/>
+      <text x="694" y="117" text-anchor="middle" class="t-label">review gates</text>
+
+      <!-- Dispatch bus -->
+      <line x1="500" y1="158" x2="500" y2="180" stroke="#7c5cff" stroke-width="1.5"/>
+      <line x1="120" y1="180" x2="620" y2="180" stroke="#7c5cff" stroke-width="1.5"/>
+      <line x1="120" y1="180" x2="120" y2="202" stroke="#7c5cff" stroke-width="1.5" marker-end="url(#a-violet)"/>
+      <line x1="370" y1="180" x2="370" y2="202" stroke="#7c5cff" stroke-width="1.5" marker-end="url(#a-violet)"/>
+      <line x1="620" y1="180" x2="620" y2="202" stroke="#7c5cff" stroke-width="1.5" marker-end="url(#a-violet)"/>
+      <text x="245" y="174" text-anchor="middle" class="t-label">matters by risk tier</text>
+
+      <!-- Lanes -->
+      <rect x="20" y="205" width="200" height="265" rx="14" fill="rgba(255,255,255,0.015)" stroke="#2d3748"/>
+      <rect x="260" y="205" width="220" height="265" rx="14" fill="rgba(255,255,255,0.015)" stroke="#2d3748"/>
+      <rect x="520" y="205" width="200" height="265" rx="14" fill="rgba(255,255,255,0.015)" stroke="#2d3748"/>
+      <text x="120" y="226" text-anchor="middle" class="t-mono">01 · REVIEW</text>
+      <text x="370" y="226" text-anchor="middle" class="t-mono">02 · COMPLY</text>
+      <text x="620" y="226" text-anchor="middle" class="t-mono">03 · ANTICIPATE</text>
+      <text x="870" y="226" text-anchor="middle" class="t-mono">04 · GOAL</text>
+
+      <!-- Review -->
+      <a href="#agent-privacy">
+        <rect x="32" y="245" width="176" height="90" rx="12" fill="#111827" stroke="#22d3ee" stroke-width="1.5"/>
+        <text x="120" y="276" text-anchor="middle" class="t-title">Privacy &amp; Data</text>
+        <text x="120" y="295" text-anchor="middle" class="t-title">Protection</text>
+        <text x="120" y="317" text-anchor="middle" class="t-sub">data map · DPAs · DSARs</text>
+      </a>
+      <line x1="120" y1="355" x2="120" y2="339" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#a-cyan)"/>
+      <a href="#agent-contracts">
+        <rect x="32" y="355" width="176" height="90" rx="12" fill="#111827" stroke="#22d3ee" stroke-width="1.5"/>
+        <text x="120" y="386" text-anchor="middle" class="t-title">Contract</text>
+        <text x="120" y="405" text-anchor="middle" class="t-title">Review</text>
+        <text x="120" y="427" text-anchor="middle" class="t-sub">playbook · redlines · memo</text>
+      </a>
+
+      <!-- Comply -->
+      <a href="#agent-compliance">
+        <rect x="272" y="300" width="196" height="96" rx="12" fill="#111827" stroke="#22d3ee" stroke-width="1.5"/>
+        <text x="370" y="332" text-anchor="middle" class="t-title">Compliance</text>
+        <text x="370" y="351" text-anchor="middle" class="t-title">&amp; Trust</text>
+        <text x="370" y="374" text-anchor="middle" class="t-sub">SOC 2 · questionnaires · IR</text>
+      </a>
+
+      <!-- Anticipate -->
+      <a href="#agent-radar">
+        <rect x="532" y="245" width="176" height="80" rx="12" fill="#111827" stroke="#22d3ee" stroke-width="1.5"/>
+        <text x="620" y="278" text-anchor="middle" class="t-title">Regulatory Radar</text>
+        <text x="620" y="300" text-anchor="middle" class="t-sub">rule changes · one-pagers</text>
+      </a>
+      <line x1="620" y1="325" x2="620" y2="371" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#a-cyan)"/>
+      <text x="628" y="352" class="t-label">updates</text>
+      <a href="#agent-policy">
+        <rect x="532" y="375" width="176" height="80" rx="12" fill="#111827" stroke="#22d3ee" stroke-width="1.5"/>
+        <text x="620" y="408" text-anchor="middle" class="t-title">Policy &amp; IP</text>
+        <text x="620" y="427" text-anchor="middle" class="t-title">Hygiene</text>
+        <text x="620" y="446" text-anchor="middle" class="t-sub">ToS · IP · OSS · entity</text>
+      </a>
+
+      <!-- Goal -->
+      <rect x="770" y="280" width="200" height="116" rx="16" fill="rgba(52,211,153,0.08)" stroke="#34d399" stroke-width="1.5"/>
+      <text x="870" y="308" text-anchor="middle" class="t-mono" style="fill:#34d399">THE GOAL</text>
+      <text x="870" y="334" text-anchor="middle" class="t-title" style="font-size:17px">Low risk, fast deals</text>
+      <text x="870" y="356" text-anchor="middle" class="t-sub">contracts ready to sign</text>
+      <text x="870" y="374" text-anchor="middle" class="t-sub">audit-ready year-round</text>
+
+      <!-- Work flow arrows -->
+      <path d="M208,290 C240,290 238,330 268,330" fill="none" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#a-cyan)"/>
+      <path d="M208,400 C240,400 238,366 268,366" fill="none" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#a-cyan)"/>
+      <path d="M468,348 C500,348 498,285 528,285" fill="none" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#a-cyan)"/>
+      <path d="M708,415 C740,415 738,360 766,360" fill="none" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#a-cyan)"/>
+
+      <!-- Inbound from Sales -->
+      <a href="sales.html#agent-dealdesk">
+        <rect x="30" y="492" width="190" height="54" rx="27" fill="rgba(52,211,153,0.06)" stroke="#34d399" stroke-width="1.5" stroke-dasharray="4 3"/>
+        <text x="125" y="515" text-anchor="middle" class="t-title" style="font-size:13px">From Sales deal desk</text>
+        <text x="125" y="533" text-anchor="middle" class="t-sub">contracts &amp; redlines in</text>
+      </a>
+      <line x1="120" y1="490" x2="120" y2="449" stroke="#34d399" stroke-width="1.5" marker-end="url(#a-green)"/>
+
+      <!-- Obligations & Risk -->
+      <a href="#agent-obligations">
+        <rect x="260" y="500" width="460" height="60" rx="12" fill="#111827" stroke="#f472b6" stroke-width="1.5"/>
+        <text x="490" y="526" text-anchor="middle" class="t-title">Obligations &amp; Risk</text>
+        <text x="490" y="546" text-anchor="middle" class="t-sub">contract register · deadlines · risk register · scorecard</text>
+      </a>
+      <line x1="370" y1="470" x2="370" y2="497" stroke="#f472b6" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#a-pink)"/>
+      <line x1="620" y1="470" x2="620" y2="497" stroke="#f472b6" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#a-pink)"/>
+      <text x="378" y="490" class="t-label">controls</text>
+      <text x="628" y="490" class="t-label">deadlines</text>
+      <path d="M870,396 V530 H724" fill="none" stroke="#f472b6" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#a-pink)"/>
+      <text x="880" y="470" class="t-label">signed terms &amp;</text>
+      <text x="880" y="484" class="t-label">obligations</text>
+
+      <!-- Feedback loop to orchestrator -->
+      <path d="M490,560 V580 H8 V126 H366" fill="none" stroke="#f472b6" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#a-pink)"/>
+      <text x="190" y="120" text-anchor="middle" class="t-label">weekly scorecard → re-plan</text>
+    </svg>
+    <div class="diagram-legend">
+      <span class="ctrl">dispatch (orchestrator → agents)</span>
+      <span>work flow (contracts, controls, policies)</span>
+      <span class="dash">data &amp; feedback loop</span>
+      <span class="gate">human / attorney review</span>
+    </div>
+  </div>
+
+  <!-- ===================== ROSTER ===================== -->
+  <h2 class="section-title" id="roster">The agents and what each one does</h2>
+  <p>Each agent becomes its own markdown file. The defaults below are best practice. The setup interview adjusts them to your jurisdictions, industry, contract volume, risk tolerance and tools.</p>
+
+  <div class="agent-grid">
+
+    <div class="agent-card lead" id="agent-orchestrator">
+      <div class="stage">// control</div>
+      <h3>Legal Orchestrator</h3>
+      <p class="mission">Acts as the front door of a fractional general counsel's office. Every request comes in here and gets a risk tier and an owner. Routine work stays with the agents. Anything binding, high-risk or outside the playbook goes to your attorney with a short brief.</p>
+      <h5>Does</h5>
+      <ul>
+        <li>Runs a single intake (an email alias or Slack channel) and a matter tracker: request, type, risk tier, owner and due date.</li>
+        <li>Sorts every matter into one of three tiers: <strong>standard</strong> (you approve), <strong>negotiated within fallbacks</strong> (you approve, with a memo) and <strong>outside the playbook or high-risk</strong> (attorney review required).</li>
+        <li>Prepares escalation packets so your lawyer is billed for judgment, not for catching up on the background.</li>
+      </ul>
+      <h5>Asks you</h5>
+      <ul><li>Who handles legal today (founder, fractional GC, outside counsel), your risk tolerance, and who must review what.</li></ul>
+      <div class="file">→ agents/legal-orchestrator.md</div>
     </div>
 
-    <div class="step">
-      <div class="step-num">02</div>
-      <div class="step-body">
-        <h3>Contract-review agent</h3>
-        <p>Consumes inbound contracts (MSAs, DPAs, customer redlines) and produces a structured review.</p>
-        <ul>
-          <li>Compares clauses to your playbook: acceptable / negotiate / reject.</li>
-          <li>Highlights missing clauses your template would include.</li>
-          <li>Flags risky language: uncapped liability, broad IP assignment, unilateral termination, indemnification asymmetry.</li>
-          <li>Drafts redlines in the Word/Google Doc and a 5-bullet "what I'd push back on" memo.</li>
-        </ul>
-        <div class="callout warn"><strong>Nothing goes to a customer without a human lawyer reviewing.</strong> The agent is a first pass; it gets you to the bar of "junior associate's first draft" in 10 minutes.</div>
-      </div>
+    <div class="agent-card" id="agent-contracts">
+      <div class="stage">// 01 · review</div>
+      <h3>Contract Review</h3>
+      <p class="mission">Gives every incoming contract a first pass in minutes, at the level of a junior associate's first draft, measured against your playbook.</p>
+      <h5>Does</h5>
+      <ul>
+        <li>Compares each clause to your <strong>contract playbook</strong> (hard lines, fallbacks, acceptable concessions) and rates it acceptable, negotiate or escalate (see the <a href="examples/legal.md">example playbook.md</a>).</li>
+        <li>Flags risky language such as uncapped liability, broad IP assignment, one-sided indemnities, MFN or exclusivity clauses, and training AI on your data. It also flags clauses that are missing.</li>
+        <li>Drafts <em>suggested</em> redlines plus a short "what I'd push back on" memo. A person sends anything back to the other side.</li>
+      </ul>
+      <h5>Asks you</h5>
+      <ul><li>The contracts you sign most, whether you have your own templates, the positions you already hold, and your e-signature and storage tools.</li></ul>
+      <div class="file">→ agents/contract-review.md</div>
     </div>
 
-    <div class="step">
-      <div class="step-num">03</div>
-      <div class="step-body">
-        <h3>DPA &amp; privacy agent</h3>
-        <p>Enterprise deals live or die on the Data Processing Addendum.</p>
-        <ul>
-          <li>Maintains a machine-readable list of your sub-processors with purpose and region.</li>
-          <li>Auto-fills customer DPA templates from your canonical data map.</li>
-          <li>Monitors sub-processor changes (did Stripe add a new region?) and notifies customers with active DPAs.</li>
-        </ul>
-      </div>
+    <div class="agent-card" id="agent-privacy">
+      <div class="stage">// 01 · review</div>
+      <h3>Privacy &amp; Data Protection</h3>
+      <p class="mission">Keeps your privacy promises consistent with what you actually do. Enterprise deals often hinge on the data processing agreement (DPA).</p>
+      <h5>Does</h5>
+      <ul>
+        <li>Maintains the <strong>data map</strong>: what personal data you hold, why, where it lives, who sees it and how long you keep it. It also keeps a list of sub-processors (vendors that handle that data) with their regions.</li>
+        <li>Fills in customer DPAs from the data map, and flags EU data transfers and sub-processor changes that require notifying customers.</li>
+        <li>Runs the process for data subject access requests (DSARs), where people ask to see or delete their data, and checks that the privacy policy matches practice.</li>
+      </ul>
+      <h5>Asks you</h5>
+      <ul><li>What personal data you handle (any sensitive categories), where your users are, and your current privacy policy and vendors.</li></ul>
+      <div class="file">→ agents/privacy-data.md</div>
     </div>
 
-    <div class="step">
-      <div class="step-num">04</div>
-      <div class="step-body">
-        <h3>Security-questionnaire agent (the deal-accelerator)</h3>
-        <p>The infamous SIG-Lite with 300 questions. This agent makes it a 2-hour task, not a 2-week one.</p>
-        <ul>
-          <li>Reads against your policy library + Drata/Vanta evidence.</li>
-          <li>Drafts answers with citations to the source policy.</li>
-          <li>Flags questions where your current posture doesn't meet the ask — those go to a human, with a proposed remediation.</li>
-        </ul>
-      </div>
+    <div class="agent-card" id="agent-compliance">
+      <div class="stage">// 02 · comply</div>
+      <h3>Compliance &amp; Trust</h3>
+      <p class="mission">Turns security reviews from a 2-week scramble into a 2-hour task and keeps you ready for an audit.</p>
+      <h5>Does</h5>
+      <ul>
+        <li>Plans the path to SOC 2 or ISO 27001 when buyers start asking, and keeps a calendar of evidence to collect for each control.</li>
+        <li>Drafts security-questionnaire answers from an <strong>approved answer bank</strong>, with citations. Where your current setup falls short of a question, it routes it to a person with a proposed fix.</li>
+        <li>Maintains the incident-response and breach-notification plan. <strong>Whether an incident must be reported is decided by an attorney.</strong></li>
+      </ul>
+      <h5>Asks you</h5>
+      <ul><li>Any certifications you hold or are targeting, your compliance tool (Vanta, Drata, Secureframe), and how often questionnaires come in.</li></ul>
+      <div class="file">→ agents/compliance-trust.md</div>
     </div>
 
-    <div class="step">
-      <div class="step-num">05</div>
-      <div class="step-body">
-        <h3>Clickwrap &amp; consent agent</h3>
-        <p>The sneakiest source of future liability: inconsistent terms.</p>
-        <ul>
-          <li>Checks that every place a user can sign up, invite, or purchase presents the current ToS.</li>
-          <li>Logs consents with version hash of ToS; provides audit-ready exports on request.</li>
-          <li>When ToS changes, coordinates the re-consent flow across product + marketing surfaces.</li>
-        </ul>
-      </div>
+    <div class="agent-card" id="agent-radar">
+      <div class="stage">// 03 · anticipate</div>
+      <h3>Regulatory Radar</h3>
+      <p class="mission">Watches the rules that apply to you, so new obligations don't catch you by surprise.</p>
+      <h5>Does</h5>
+      <ul>
+        <li>Each month, scans for changes relevant to <em>your</em> jurisdictions and industry: privacy laws, AI regulation (e.g. the EU AI Act), and sector rules.</li>
+        <li>Writes a one-pager for each change: what changed, whether it applies to you, the deadline, a suggested action and how confident it is. These go to you and your counsel.</li>
+        <li>Sends needed policy updates to Policy &amp; IP Hygiene.</li>
+      </ul>
+      <h5>Asks you</h5>
+      <ul><li>Where you operate and where your users are, your industry and any regulators, and whether you build with or sell AI.</li></ul>
+      <div class="file">→ agents/regulatory-radar.md</div>
     </div>
 
-    <div class="step">
-      <div class="step-num">06</div>
-      <div class="step-body">
-        <h3>IP hygiene agent</h3>
-        <p>Startups die from sloppy IP. Not often, but when it happens, it's fatal at diligence.</p>
-        <ul>
-          <li>Every employee and contractor has a signed IP assignment on file — agent tracks and nags until signed.</li>
-          <li>Open-source license scan on every build; blocks GPL/AGPL pulls into proprietary code.</li>
-          <li>Third-party content (images, fonts, code snippets) logged with license + source.</li>
-        </ul>
-      </div>
+    <div class="agent-card" id="agent-policy">
+      <div class="stage">// 03 · anticipate</div>
+      <h3>Policy &amp; IP Hygiene</h3>
+      <p class="mission">Prevents the slow-burn problems that surface during due diligence: unsigned IP assignments, inconsistent terms and license violations.</p>
+      <h5>Does</h5>
+      <ul>
+        <li>Keeps the policy and template library under version control: terms of service, privacy policy, acceptable use policy, NDA, contractor and employee agreements.</li>
+        <li>Checks that <strong>every employee and contractor has signed an IP assignment</strong>, scans code for open-source licenses (copyleft licenses such as GPL and AGPL get reviewed), and tracks trademarks.</li>
+        <li>Tracks how users accept the terms (ToS version and consent logs) and corporate housekeeping: annual reports, franchise tax, board consents. It works with <a href="operations.html">Operations</a>.</li>
+      </ul>
+      <h5>Asks you</h5>
+      <ul><li>Your entity type and state, HR and code-repository tools, and the status of current templates and trademarks.</li></ul>
+      <div class="file">→ agents/policy-ip-hygiene.md</div>
     </div>
 
-    <div class="step">
-      <div class="step-num">07</div>
-      <div class="step-body">
-        <h3>Regulatory radar</h3>
-        <p>A scheduled agent that watches for changes in the rules you're subject to.</p>
-        <ul>
-          <li>EU AI Act, state privacy laws (CA, CO, CT, VA, TX, UT…), sector rules.</li>
-          <li>When a relevant change hits, it produces a one-pager: what changed, who it affects, deadline, suggested action.</li>
-          <li>Routes to the founder + your outside counsel.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="step">
-      <div class="step-num">08</div>
-      <div class="step-body">
-        <h3>Incident-response &amp; breach-notification playbook</h3>
-        <p>Pre-written, rehearsed, agent-assisted. You don't want to be authoring a breach notice at 2am.</p>
-        <ul>
-          <li>Decision tree: is this reportable? under which law? by when?</li>
-          <li>Notification templates per jurisdiction.</li>
-          <li>Agent assembles the facts from logs + ticket system; lawyer approves; comms sends.</li>
-        </ul>
-      </div>
+    <div class="agent-card measure" id="agent-obligations">
+      <div class="stage">// measure &amp; learn</div>
+      <h3>Obligations &amp; Risk</h3>
+      <p class="mission">Makes sure nothing you've signed or committed to gets missed, and shows the orchestrator where your real exposure is.</p>
+      <h5>Does</h5>
+      <ul>
+        <li>Keeps a <strong>contract register</strong> for every signed agreement: counterparty, value, term, auto-renewal, notice windows, key obligations and non-standard terms.</li>
+        <li>Runs the deadline calendar (renewal notices, filings, certification audits, policy reviews) and a risk register scored by likelihood × impact.</li>
+        <li>Produces a weekly scorecard on turnaround time, contracts on your own paper, evidence freshness and upcoming deadlines. It shares money-related obligations with <a href="finance.html">Finance</a>.</li>
+      </ul>
+      <h5>Asks you</h5>
+      <ul><li>Where signed contracts live, whether it can read your e-signature and storage tools (read-only), and which deadlines you already know about.</li></ul>
+      <div class="file">→ agents/obligations-risk.md</div>
     </div>
 
   </div>
 
-  <div class="callout tip"><strong>Relationship model:</strong> outside counsel charges for judgment, not for drafting. Agents eat the drafting; your lawyer becomes 3x more valuable to you. Call them for the judgment calls and the signatures.</div>
+  <!-- ===================== FILES ===================== -->
+  <h2 class="section-title" id="files">What Claude will create for you</h2>
+  <p>A folder you own. Plain markdown files are easy to edit, version and reuse. In Claude Code the agent files go in <code class="inline">.claude/agents/</code> so they load as subagents. Keep this folder private, because it will hold confidential company information.</p>
+
+<pre class="tree">legal-agents/
+├── CLAUDE.md                    <span class="c-com"># entry point: goal, roster, risk tiers, rules</span>
+├── context/                     <span class="c-com"># shared brain, read by every agent</span>
+│   ├── company-and-entities.md
+│   ├── jurisdictions-and-regulations.md
+│   ├── contract-playbook.md
+│   ├── template-library.md
+│   ├── data-map.md
+│   ├── counsel-and-escalation.md
+│   └── tools-and-access.md
+├── agents/                      <span class="c-com"># .claude/agents/ in Claude Code</span>
+│   ├── legal-orchestrator.md
+│   ├── contract-review.md
+│   ├── privacy-data.md
+│   ├── compliance-trust.md
+│   ├── regulatory-radar.md
+│   ├── policy-ip-hygiene.md
+│   └── obligations-risk.md
+├── playbooks/
+│   ├── first-30-days.md
+│   ├── weekly-cadence.md
+│   ├── approval-gates.md
+│   └── incident-response.md
+└── outputs/                     <span class="c-com"># where agents deliver work</span>
+    ├── contracts/  privacy/  compliance/  regulatory/  policies/
+    └── reports/</pre>
+
+  <!-- ===================== SETUP PROMPT ===================== -->
+  <h2 class="section-title" id="setup">Setup prompt: paste it into your Claude</h2>
+  <p>Claude interviews you in five short rounds (company, contracts, data and compliance, tools, risk and counsel). Every question shows a best-practice default, so you can answer "defaults" and keep going. It then writes the files and gives you a first-week plan.</p>
+
+  <div class="how-to">
+    <div class="mini-card">
+      <h4><span class="n">1</span>Copy or download</h4>
+      <p>Use the buttons below. The download is a <code class="inline">.md</code> file you can keep or share with your team.</p>
+    </div>
+    <div class="mini-card">
+      <h4><span class="n">2</span>Paste into Claude</h4>
+      <p>Claude Code or the Claude desktop app can write the folder directly. On claude.ai, Claude delivers the files as a zip or as copyable blocks.</p>
+    </div>
+    <div class="mini-card">
+      <h4><span class="n">3</span>Answer &amp; connect</h4>
+      <p>Answer the interview questions. Connect document storage, e-signature, and your compliance tool through Claude's connectors, read-only. Never paste a password into the chat.</p>
+    </div>
+  </div>
+
+  <div class="prompt-box">
+    <div class="prompt-toolbar">
+      <span class="file-name">legal-agent-system-setup.md</span>
+      <button class="btn" type="button" data-prompt-copy="prompt-legal">Copy prompt</button>
+      <button class="btn secondary" type="button" data-prompt-download="prompt-legal" data-filename="legal-agent-system-setup.md">Download .md</button>
+    </div>
+    <pre data-prompt-view="prompt-legal">Loading prompt… (enable JavaScript to view, copy, or download)</pre>
+  </div>
+
+  <div class="callout tip"><strong>Using it on claude.ai?</strong> After Claude generates the files, create a <strong>Project</strong>. Paste <code class="inline">CLAUDE.md</code> into the project instructions and upload the <code class="inline">context/</code> and <code class="inline">agents/</code> files as project knowledge. Every chat in that project then has the whole team available. Check your plan's data settings before uploading confidential contracts.</div>
+
+  <div class="callout warn"><strong>Your attorney still makes the call.</strong> Use the agents for drafting, comparing, tracking and flagging, which is the work that eats billable hours. Use your lawyer for judgment: whether to accept a risk, whether an incident must be reported, how to read a new law, and anything you'll sign or file. Using AI doesn't make communications privileged. Ask your counsel how to handle privileged material before you put it in this system.</div>
+
+  <div class="two-col">
+    <div class="mini-card">
+      <h4>// always needs a human (and often an attorney)</h4>
+      <ul>
+        <li>Signing anything, or sending redlines or legal positions to another party</li>
+        <li>Accepting terms outside the playbook or tagged high-risk</li>
+        <li>Filings with any government, court or agency</li>
+        <li>Breach or incident notifications to regulators or customers</li>
+        <li>Publishing or changing the terms of service, privacy policy or other public policies</li>
+        <li>Any legal conclusion relied on outside the company</li>
+      </ul>
+    </div>
+    <div class="mini-card">
+      <h4>// red flags to watch</h4>
+      <ul>
+        <li>Most contracts are on the customer's paper: you need your own templates</li>
+        <li>The same clause gets escalated again and again: the playbook needs a position on it</li>
+        <li>Stale evidence before an audit: the evidence calendar isn't being worked</li>
+        <li>An auto-renewal passed without review: the obligations register is incomplete</li>
+        <li>A contractor without a signed IP assignment: fix it now, before due diligence finds it</li>
+      </ul>
+    </div>
+  </div>
 </main>
-<footer><span>Stargate · Legal</span><span class="mono">/legal</span></footer>
+<footer><span>Stargate · Legal &amp; Compliance Agent System</span><span class="mono">/legal</span></footer>
+
+<script type="text/plain" id="prompt-legal">
+# Legal & Compliance Agent System — Setup Prompt
+
+You are going to set up a **legal and compliance agent system** for my company. It is a small team of specialized AI agents, defined as markdown files in a folder, working together toward one goal:
+
+> **Close deals at speed and stay audit-ready year-round, with no missed obligations and every binding or high-risk decision reviewed by the right human.**
+
+Your job in this conversation:
+1. **Interview me** so the system fits my company, jurisdictions, industry and risk tolerance.
+2. **Fill any gaps with best-practice defaults**, and tell me which ones you assumed.
+3. **Create the folder** of context files, agent files and playbooks described below.
+4. **Hand me a first-week plan** and the list of tools I should connect.
+
+---
+
+## Ground rules
+
+- **This system doesn't give legal advice.** Agents prepare, compare, draft, track and flag. Every agent file must say that a qualified attorney licensed in the relevant jurisdiction reviews anything binding, anything high-risk, and anything relied on outside the company. When something is unclear, agents say so and escalate. They don't guess.
+- **Agents never sign, never send redlines or legal positions to a counterparty, and never make filings, regulatory submissions or breach notifications.** They prepare drafts for a person to act on. No default can override this.
+- **Confidentiality.** Treat contracts, disputes and personal data as confidential. Keep the minimum necessary in the context files and link to source documents rather than copying them. Don't paste personal data into the files. Using AI doesn't make communications privileged, so ask how my counsel wants privileged material handled before including any.
+- **Jurisdiction matters.** Every default below is a common starting point, not a rule for my jurisdiction. Mark jurisdiction-specific items (deadlines, required clauses, filings) as *verify with counsel* unless I've confirmed them.
+- Ask questions in **rounds of no more than 6**, numbered. After each question, put in [brackets] the default you'll use if I skip it. I can reply "defaults" to accept every default in a round.
+- **Don't ask about things you can look up.** If I give you a website and you can browse, read the terms of service, privacy policy, trust or security page, and about page first. Use them to pre-fill answers, then ask me to confirm.
+- **Never ask me for passwords, API keys, or login codes in the chat.** For tool access, use official connectors or MCP integrations that sign in through the provider, **read-only**. If no connector exists, ask me for an export or the documents themselves.
+- **Don't invent facts, clauses, laws, deadlines or citations.** Mark anything unconfirmed as `TODO:`. Never cite a statute, regulation or case you haven't verified from a primary or reputable source, and include the source link.
+- Write every file so that another Claude session, with no access to this conversation, could act on it. Keep files concise and use bullet points and tables.
+
+---
+
+## Step 1 — Interview me
+
+### Round 1 · The company
+1. Company name and **website URL**.
+2. What do you do, and who are your customers (businesses, consumers, government)? [inferred from site]
+3. Entity type and where you're incorporated (e.g. a Delaware C-corp, a UK Ltd). Any subsidiaries? [Delaware C-corp]
+4. Where do you operate, and where are your customers and users? [US, with some EU/UK users]
+5. Stage and headcount, including how many contractors versus employees. [early stage, under 15 people]
+6. Who handles legal today: the founder, a fractional GC, outside counsel, or nobody? [founder, plus outside counsel as needed]
+
+### Round 2 · Contracts
+1. The contract types you handle most: customer MSAs and order forms, NDAs, vendor agreements, DPAs, partner or reseller deals, contractor and employment agreements. [customer MSAs, NDAs, vendor agreements]
+2. Rough volume per month, and the typical deal size for customer contracts. [5–10 a month]
+3. Do you have your own templates ("our paper")? Which ones, and who drafted them? [none; recommend attorney-drafted templates]
+4. Positions you already hold, such as the liability cap, indemnities, governing law and payment terms, or deals you've walked away from. [I'll propose a starter playbook for your counsel to confirm]
+5. Where do signed contracts live, and how are they signed? [Google Drive + DocuSign]
+
+### Round 3 · Data, security and compliance
+1. What personal data do you handle (customers, end users, employees)? Any sensitive categories such as health, financial, children's, biometric or precise location data? [business contact data plus product usage data; nothing sensitive]
+2. Privacy laws likely to apply (GDPR or UK GDPR, CCPA/CPRA and other US state laws, PIPEDA, LGPD). [I'll propose based on your users' locations]
+3. Industry rules (HIPAA, PCI DSS, GLBA, FERPA, FINRA, government contracting). [none]
+4. Security certifications held or targeted (SOC 2 Type I or II, ISO 27001), and how often you get security questionnaires. [none yet; questionnaires occasionally]
+5. Do you build with AI or sell AI features? Any customer terms about training on their data? [you use AI; no training on customer data]
+
+### Round 4 · Tools and access
+For each item, tell me what you use, or "none":
+1. Document storage (Google Drive, SharePoint or OneDrive, Dropbox, Box)
+2. E-signature and contract management (DocuSign, PandaDoc, Dropbox Sign, Ironclad, Juro)
+3. Compliance automation (Vanta, Drata, Secureframe) and any trust portal
+4. Intake channel for legal requests (an email alias, a Slack or Teams channel, a ticketing tool) [a legal@ email alias plus a #legal channel]
+5. HR and payroll (Gusto, Rippling, Deel), for IP assignments and onboarding agreements
+6. Code hosting (GitHub, GitLab), for open-source license scanning
+
+**After this round:**
+- **Tools I already have.** Check whether a connector or MCP integration for that tool exists in your current environment. In claude.ai and the desktop app, look under Settings → Connectors. In Claude Code, look at `claude mcp`. If one exists, tell me exactly how to connect it, read-only. If none exists, tell me which export or documents to provide. Record each tool as connected, export-only, or not connected in `context/tools-and-access.md`.
+- **Tools I don't have.** Recommend the default from Step 2 that fits my stage and budget, explain why in one line, and add a setup task to the plan. Don't make tools a blocker. The system must work from uploaded documents alone.
+
+### Round 5 · Risk, counsel and guardrails
+1. Risk tolerance: conservative, balanced or aggressive (willing to accept more risk to close deals faster)? [balanced]
+2. Who reviews what: which matters go to outside counsel or a fractional GC, which the founder can approve, and any budget limit for outside counsel. [high-risk tier → attorney; standard tier → founder]
+3. How should privileged or highly sensitive material be handled? [keep it out of this system unless counsel directs otherwise]
+4. Any known disputes, regulatory inquiries or deadlines? (Summarize only. Don't paste privileged details.) [none]
+5. Anything beyond the default review gates that must come to you first? [defaults only]
+6. Where should agents deliver work? [files in `outputs/`; optionally a Drive folder or Slack channel if connected]
+
+**Before creating anything**, show me a one-screen summary of what you learned and what you're assuming. Mark each item *confirmed*, *inferred*, *default* or *verify with counsel*. Ask me to correct it. Then build.
+
+---
+
+## Step 2 — Best-practice defaults (use these unless my answers say otherwise; counsel must confirm anything legal in substance)
+
+**Risk tiers (used by every agent)**
+- *Tier 1, standard:* on our paper or a recognized standard form, within the playbook, low value or low exposure. The founder or owner approves.
+- *Tier 2, negotiated within fallbacks:* deviations are covered by pre-approved fallback positions. The owner approves, with a short memo.
+- *Tier 3, high-risk or outside the playbook:* anything beyond the fallbacks; uncapped or very high liability; IP assignment of our core technology; exclusivity or MFN; training AI on customer data; regulated data; non-standard governing law; government counterparties; disputes; anything material. **Attorney review is required.**
+
+**Template library ("our paper" first)**
+- Core set: mutual NDA, MSA plus order form, DPA (with standard contractual clauses for international transfers where relevant), SLA, contractor agreement with IP assignment, employee invention and confidentiality assignment, terms of service, privacy policy, acceptable use policy.
+- Templates are attorney-drafted, version-controlled, and record their owner and last review date. Agents fill in commercial fields only, never legal terms, unless a fallback is pre-approved.
+
+**Contract playbook (a starter for counsel to confirm or change)**
+- A table of each topic with our position, fallbacks, any hard line, and the reasons.
+- Common starting points: liability capped at 12 months of fees paid, with narrow carve-outs; mutual confidentiality; IP indemnity from us for our product only; no assignment of our platform IP (license only); termination for convenience mutual or not at all; no exclusivity or MFN; governing law in our home jurisdiction; payment terms of Net 30; no training on customer data without explicit opt-in; audit rights limited to once a year with notice.
+- Review output: a clause-by-clause table (clause, their language, our position, rating of acceptable / negotiate / escalate, and a suggested redline), a list of missing clauses, an overall risk tier, and a memo of no more than 5 "push back on" points.
+
+**Privacy and data protection**
+- A data map of each category of data: purpose, legal basis (where GDPR applies), systems, region, access, retention and sub-processors.
+- A sub-processor list with purpose and region. Changes trigger customer notices as required by existing DPAs.
+- A privacy policy that matches actual practice. Agents compare the two each quarter.
+- A DSAR process: verify the person, find their data, respond within the legal deadline (commonly 1 month under GDPR and 45 days under CCPA; *verify with counsel*), and log each request.
+- Cookie and consent handling where the law requires it.
+
+**Compliance and trust**
+- Pursue SOC 2 when enterprise buyers ask for it: usually a Type I report first, then Type II. Use a compliance automation tool once the work justifies the cost.
+- An evidence calendar that maps each control to its evidence, owner and how often it must be refreshed.
+- A security questionnaire answer bank, where every answer cites the policy or evidence behind it. New answers need approval before they're reused. Gaps go to a person with a proposed fix.
+- An incident-response plan with roles, a decision tree and notification templates for each jurisdiction. Some regulator deadlines are as short as 72 hours (GDPR). **Whether an incident must be reported is always decided by an attorney.**
+
+**Regulatory radar**
+- A monthly scan of official and reputable sources for my jurisdictions and industry.
+- A one-pager for each change: what changed, whether it applies to us (yes / no / unclear), the deadline, a suggested action, confidence, and the source link. Anything with an "unclear" or "yes" answer goes to counsel.
+
+**Policy and IP hygiene**
+- Every employee and contractor signs an IP assignment **before** starting work. Track missing ones until they're signed.
+- Open-source policy: permissive licenses (MIT, Apache, BSD) are fine. Copyleft licenses (GPL, AGPL, LGPL in some uses) need review before use in code we distribute or offer as a service.
+- Trademarks: search and register the company and product names in key markets.
+- Version the terms of service and privacy policy, use clickwrap acceptance with logged consent (user, version, timestamp), and run a re-consent plan when material changes are made.
+- Corporate housekeeping calendar: annual reports and franchise taxes (e.g. Delaware's by March 1), registered agent, board and stockholder consents, an accurate cap table, and 83(b) election deadlines (30 days, flagged only). *Verify with counsel.*
+
+**Obligations and risk**
+- Contract register: counterparty, type, value, start and end dates, auto-renewal, notice window, key obligations (SLAs, security commitments, caps), non-standard terms, and the owner.
+- Alerts 90, 60 and 30 days before renewal notice windows and other deadlines.
+- Risk register: risk, likelihood × impact, owner, mitigation and review date.
+- Weekly scorecard: matters opened and closed by tier, median turnaround, % of contracts on our paper or within the playbook, overdue items, deadlines in the next 30 days, evidence freshness, and the top 5 risks.
+
+**Review gates (always on):** signing; sending redlines or positions to counterparties; accepting Tier 3 terms; filings and regulatory submissions; breach notifications; publishing or changing public policies; external reliance on any legal conclusion; and sharing confidential or privileged material outside the system.
+
+---
+
+## Step 3 — Create the files
+
+**Where to write:**
+- If you can write files (Claude Code, or the Claude desktop app with folder access), ask where to create the folder [default: `./legal-agents`] and write the files directly. **In Claude Code, put the agent files in `legal-agents/.claude/agents/`** instead of `agents/` so they load as subagents. Tell me to start Claude Code from inside `legal-agents/`. Remind me to keep this folder private and out of public repositories.
+- If you can't write files but can run code, create the files and give me a single **.zip** to download.
+- Otherwise, output each file in its own code block, headed by its full path, in the order below.
+
+**Folder structure:**
+```
+legal-agents/
+├── CLAUDE.md
+├── context/
+│   ├── company-and-entities.md
+│   ├── jurisdictions-and-regulations.md
+│   ├── contract-playbook.md
+│   ├── template-library.md
+│   ├── data-map.md
+│   ├── counsel-and-escalation.md
+│   └── tools-and-access.md
+├── agents/                (use .claude/agents/ in Claude Code)
+│   ├── legal-orchestrator.md
+│   ├── contract-review.md
+│   ├── privacy-data.md
+│   ├── compliance-trust.md
+│   ├── regulatory-radar.md
+│   ├── policy-ip-hygiene.md
+│   └── obligations-risk.md
+├── playbooks/
+│   ├── first-30-days.md
+│   ├── weekly-cadence.md
+│   ├── approval-gates.md
+│   └── incident-response.md
+└── outputs/
+    ├── README.md
+    ├── contracts/  privacy/  compliance/  regulatory/  policies/
+    └── reports/
+```
+
+**`CLAUDE.md`** is the system's entry point. It contains:
+- The goal, the scorecard metrics with their targets, and current baselines (or TODO).
+- A prominent **not-legal-advice and attorney-review** notice, plus the never-sign, never-send, never-file rule.
+- A text diagram of the flow: context → orchestrator (intake and risk tiering) → contract review and privacy (which also receive contracts from sales and operations) → compliance and trust → regulatory radar → policy and IP hygiene → low risk at deal speed, with obligations and risk tracking every commitment and sending a weekly scorecard back to the orchestrator.
+- A roster table: agent, one-line job, when to use it, and its output folder.
+- The risk tiers, the review gates, and the confidentiality and privilege rules.
+- How to run the system, e.g. "Use the legal-orchestrator agent to triage this week's intake."
+
+**`context/` files** hold the shared brain, filled with my interview answers and your research. Label every section *confirmed*, *inferred*, *TODO* or *verify with counsel*.
+- `company-and-entities.md`: entities, incorporation, officers, cap-table owner, business model, and customer types.
+- `jurisdictions-and-regulations.md`: where we operate and where users are, the laws and rules that likely apply (with source links), and industry regulators.
+- `contract-playbook.md`: the positions table (position, fallbacks, hard lines and reasons), risk tiers, and the list of clauses to flag.
+- `template-library.md`: each template with its version, owner, last review, where it lives, and which fields agents may fill in.
+- `data-map.md`: data categories, purposes, legal bases, systems, regions, retention and sub-processors.
+- `counsel-and-escalation.md`: who reviews what, contact routes (roles, not personal details), budget guidance, and how to prepare an escalation packet.
+- `tools-and-access.md`: each tool with its status (connected / export-only / recommended / not needed), how to connect it, and the owner.
+
+**Every agent file** uses this template. The frontmatter keeps the file valid as a Claude Code subagent.
+```
+---
+name: <kebab-case-name>
+description: <one specific sentence on when to delegate to this agent>
+tools: <Claude Code only: list the tools it needs, e.g. Read, Write, Edit, Glob, Grep, WebSearch, WebFetch. Omit this line to inherit all tools, including connectors.>
+---
+# <Agent name>
+> Not legal advice. Prepares and flags for human and attorney review.
+## Mission            (one or two sentences tied to the goal)
+## Reads first        (which context/ files and outputs from other agents)
+## Responsibilities   (bullets, customized to this company)
+## Inputs it needs    (and the default it uses when they're missing)
+## Tools & connections (what it uses now, and what to connect next; read-only)
+## Outputs            (exact file paths in outputs/, with the format)
+## Hand-offs          (who receives its output, and what triggers the hand-off)
+## Review gates       (what it must never do; when to escalate to an attorney)
+## KPIs it owns
+## Cadence            (what it does per request, weekly and monthly)
+```
+
+Agent-specific requirements. Customize each one with my jurisdictions, industry, contract mix and tools:
+- **legal-orchestrator.** Runs intake and the matter tracker (`outputs/reports/matters.md`), assigns a risk tier and an owner to each matter, routes it to the right agent, prepares escalation packets for counsel (the question, the facts, the relevant clauses, our position, the options and a deadline), collects everything that needs a human into a single list, and runs the weekly cycle from `playbooks/weekly-cadence.md`. It must never bypass a review gate.
+- **contract-review.** Reviews contracts against `context/contract-playbook.md` and produces the clause table, missing-clause list, risk tier, suggested redlines and memo in `outputs/contracts/`. It prefers our paper, escalates Tier 3 items, and suggests playbook updates when a clause keeps coming back.
+- **privacy-data.** Maintains `context/data-map.md` and the sub-processor list, drafts DPAs, runs the DSAR process, compares the privacy policy with practice each quarter, and flags international transfers and changes that require notifying customers. Writes to `outputs/privacy/`.
+- **compliance-trust.** Maintains the evidence calendar and the questionnaire answer bank, drafts questionnaire answers with citations, routes gaps with proposed fixes, plans the certification path for *my targets*, and keeps `playbooks/incident-response.md` current. Writes to `outputs/compliance/`.
+- **regulatory-radar.** Runs the monthly scan for *my jurisdictions and industry*, writes one-pagers with sources in `outputs/regulatory/`, sends "applies" and "unclear" items to counsel, and sends policy changes to policy-ip-hygiene.
+- **policy-ip-hygiene.** Maintains the template and policy library, tracks IP assignments, OSS license findings, trademarks, ToS and consent versioning, and the corporate housekeeping calendar. Writes to `outputs/policies/`.
+- **obligations-risk.** Keeps the contract register, deadline calendar and risk register, sends deadline alerts, shares money-related obligations with finance, and writes the weekly scorecard in `outputs/reports/`.
+
+**`playbooks/`**
+- `first-30-days.md`: Week 1, foundation: confirm context, gather the existing templates and signed contracts, set up intake and the matter tracker, and draft the starter playbook for counsel to review. Week 2, inventory: build the contract register from signed agreements, draft the data map and sub-processor list, and audit IP assignments. Week 3, readiness: set up the security questionnaire answer bank, draft the evidence calendar, compare the privacy policy with practice, and draft the incident-response plan for counsel to review. Week 4, learn: the first scorecard, the first regulatory radar, the top 5 risks, counsel's feedback incorporated, and the next 30-day plan. Adapt it to my answers.
+- `weekly-cadence.md`: Daily: intake triage and contract reviews. Monday: matter review and priorities. Midweek: drafts and escalation packets go to me and counsel. Thursday: privacy and compliance tasks. Friday: deadlines for the next 30 days, the scorecard and lessons learned. Monthly: regulatory radar and the privacy-versus-practice check. Quarterly: playbook and template review with counsel.
+- `approval-gates.md`: the default review gates plus mine, the risk tiers, who approves each, and how to submit an item for approval.
+- `incident-response.md`: roles, first steps, fact-gathering checklist, the reportability decision tree (marked *attorney decides*), notification template placeholders for each jurisdiction, and a communications hold.
+
+**`outputs/README.md`** explains what each subfolder holds, the file naming convention (`YYYY-MM-DD-matter-or-topic.md`), and that outputs are confidential drafts, not legal advice.
+
+---
+
+## Step 4 — Wrap up
+
+When the files are created, give me:
+1. The folder tree, with a one-line description of each file.
+2. **Assumptions, TODOs and "verify with counsel" items.** Everything you defaulted or couldn't confirm, and how to resolve each. Group the counsel items into a single list I can send to my attorney.
+3. **Connections to set up, in priority order.** Document storage comes first, then e-signature or contract management, then the compliance tool, then HR and code hosting. For each, give the exact read-only steps in this environment.
+4. **The first-week plan,** with the one thing I should do today (usually: gather every signed contract and template into one folder).
+5. **How to use the system day to day:**
+   - *Claude Code:* "Use the legal-orchestrator agent to triage this week's intake," or call any agent directly, e.g. "Use the contract-review agent to review this MSA against our playbook."
+   - *claude.ai:* Create a Project. Paste `CLAUDE.md` into the project instructions and upload the `context/` and `agents/` files as project knowledge. Then ask, for example, "Acting as the compliance-trust agent, draft answers to this security questionnaire."
+
+Start now with Round 1. If I've already given you my website URL, review the terms, privacy policy and trust pages first, and pre-fill what you can.
+</script>
+<script src="prompt.js"></script>
 </body></html>

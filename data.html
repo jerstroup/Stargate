@@ -3,7 +3,8 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Data &amp; Analytics · Stargate</title>
+<title>Data Agent System · Stargate</title>
+<meta name="description" content="A default data & analytics agent system: orchestrator, governance, ingestion, modeling & semantic layer, text-to-SQL analyst, dashboards, and data quality agents, plus a copy-paste setup prompt for Claude." />
 <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -26,157 +27,599 @@
 
 <main>
   <div class="page-header">
-    <div class="kicker">// DATA &amp; ANALYTICS</div>
-    <h1>A text-to-SQL analyst every teammate can ask</h1>
-    <p>Early-stage companies don't need a data team. They need one clean warehouse, a semantic layer, and an agent that answers questions in plain English — with the SQL shown so humans can verify. This stack scales from 3 people to 50 without rewriting the analytics tier.</p>
+    <div class="kicker">// DATA &amp; ANALYTICS · AGENT SYSTEM</div>
+    <h1>A data team of agents that gives everyone one trusted number</h1>
+    <p>Seven agents that work like a small data team. Two bring data in safely. One defines what every metric means. Two answer questions and build dashboards. One watches data quality around the clock. An orchestrator decides which requests get done first. Every answer shows the query behind it, so anyone can check it. Copy the <a href="#setup">setup prompt</a> into Claude. It will interview you about your data and then write the whole system as a folder of agent files.</p>
   </div>
 
   <div class="tags">
-    <span class="tag cyan">text-to-SQL</span>
+    <span class="tag cyan">ingestion</span>
+    <span class="tag cyan">governance &amp; privacy</span>
     <span class="tag cyan">semantic layer</span>
-    <span class="tag cyan">dbt</span>
-    <span class="tag cyan">warehouse</span>
+    <span class="tag cyan">text-to-SQL</span>
+    <span class="tag cyan">dashboards</span>
+    <span class="tag cyan">data quality</span>
   </div>
 
-  <div class="steps">
+  <!-- ===================== GOAL ===================== -->
+  <h2 class="section-title">The goal the system works toward</h2>
+  <p>Every agent, every task, and every weekly report is judged against one outcome.</p>
 
-    <div class="step">
-      <div class="step-num">01</div>
-      <div class="step-body">
-        <h3>One warehouse. Pick it and commit.</h3>
-        <p>Do not run analytics off your prod DB. Get a warehouse with a free tier on day one.</p>
-        <ul>
-          <li>BigQuery, Snowflake, or Motherduck — all fine. BigQuery is easiest if you're Google-shop.</li>
-          <li>Use Fivetran/Airbyte/dltHub to pipe in: prod DB replicas, Stripe, Segment, Salesforce, Intercom.</li>
-          <li>Dated partitioning on every fact table. Pay-per-query means you want pruning.</li>
-        </ul>
-      </div>
+  <div class="goal-panel">
+    <div>
+      <div class="label">// north star</div>
+      <h2>Every team gets fast, trusted answers: one definition per metric, fresh and tested data, and every number traceable to the query that produced it.</h2>
+      <p>The system doesn't count dashboards built or tables loaded as wins. They only matter when people use the numbers to decide something. This system also feeds the measurement agents in <a href="marketing.html">Marketing</a>, <a href="sales.html">Sales</a>, <a href="product.html">Product</a> and <a href="finance.html">Finance</a>, so the whole company works from the same numbers.</p>
+    </div>
+    <div class="metrics">
+      <div class="metric"><div class="k">Primary</div><div class="v">% of questions answered from certified metrics</div></div>
+      <div class="metric"><div class="k">Trust</div><div class="v">Tests passing · freshness targets met</div></div>
+      <div class="metric"><div class="k">Speed</div><div class="v">Time from question to verified answer</div></div>
+      <div class="metric"><div class="k">Guardrail</div><div class="v">Agents read-only · no PII leaves its home</div></div>
+    </div>
+  </div>
+
+  <!-- ===================== DIAGRAM ===================== -->
+  <h2 class="section-title" id="diagram">How the agents work together</h2>
+  <p>The orchestrator manages a queue of data requests from people and from the other agent systems. Data moves from collection to modeling to answers. Data Quality tests every layer and sends a weekly trust scorecard back so the next week's priorities fix whatever is eroding confidence. Click any agent to jump to its role.</p>
+
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 1000 595" role="img" aria-labelledby="dg-title dg-desc" xmlns="http://www.w3.org/2000/svg">
+      <title id="dg-title">Data agent system flow</title>
+      <desc id="dg-desc">Shared data context feeds a Data Orchestrator, which you approve. The orchestrator dispatches work to Ingestion and Pipelines, which pulls from your data sources, and Governance and Access (collect), then Modeling and Semantic Layer (model), then the Analyst Agent and Dashboards and Insights (serve), producing trusted answers for every team. Data Quality and Observability tests the models, monitors usage and trust, and sends a weekly scorecard back to the orchestrator.</desc>
+      <defs>
+        <marker id="a-cyan" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#22d3ee"/></marker>
+        <marker id="a-violet" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#7c5cff"/></marker>
+        <marker id="a-pink" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#f472b6"/></marker>
+        <marker id="a-amber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#fbbf24"/></marker>
+        <marker id="a-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#34d399"/></marker>
+      </defs>
+
+      <!-- Shared context band -->
+      <rect x="20" y="10" width="960" height="52" rx="10" fill="rgba(34,211,238,0.06)" stroke="#22d3ee" stroke-opacity="0.5" stroke-dasharray="4 4"/>
+      <text x="500" y="31" text-anchor="middle" class="t-mono">SHARED CONTEXT · READ BY EVERY AGENT</text>
+      <text x="500" y="50" text-anchor="middle" class="t-sub">business &amp; KPIs · data sources · metric dictionary · access policy · stakeholders · tools</text>
+      <line x1="500" y1="62" x2="500" y2="91" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#a-cyan)"/>
+
+      <!-- Orchestrator -->
+      <a href="#agent-orchestrator">
+        <rect x="370" y="94" width="260" height="64" rx="12" fill="#1c1640" stroke="#7c5cff" stroke-width="1.5"/>
+        <text x="500" y="121" text-anchor="middle" class="t-title">Data Orchestrator</text>
+        <text x="500" y="142" text-anchor="middle" class="t-sub">request queue · priorities · owners</text>
+      </a>
+
+      <!-- You -->
+      <rect x="760" y="100" width="220" height="52" rx="26" fill="#161d2e" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="870" y="122" text-anchor="middle" class="t-title">You (data owner)</text>
+      <text x="870" y="140" text-anchor="middle" class="t-sub">approve access &amp; schema changes</text>
+      <line x1="633" y1="126" x2="756" y2="126" stroke="#fbbf24" stroke-width="1.5" marker-start="url(#a-amber)" marker-end="url(#a-amber)"/>
+      <text x="694" y="117" text-anchor="middle" class="t-label">approval gates</text>
+
+      <!-- Dispatch bus -->
+      <line x1="500" y1="158" x2="500" y2="180" stroke="#7c5cff" stroke-width="1.5"/>
+      <line x1="120" y1="180" x2="620" y2="180" stroke="#7c5cff" stroke-width="1.5"/>
+      <line x1="120" y1="180" x2="120" y2="202" stroke="#7c5cff" stroke-width="1.5" marker-end="url(#a-violet)"/>
+      <line x1="370" y1="180" x2="370" y2="202" stroke="#7c5cff" stroke-width="1.5" marker-end="url(#a-violet)"/>
+      <line x1="620" y1="180" x2="620" y2="202" stroke="#7c5cff" stroke-width="1.5" marker-end="url(#a-violet)"/>
+      <text x="245" y="174" text-anchor="middle" class="t-label">requests &amp; priorities</text>
+
+      <!-- Lanes -->
+      <rect x="20" y="205" width="200" height="265" rx="14" fill="rgba(255,255,255,0.015)" stroke="#2d3748"/>
+      <rect x="260" y="205" width="220" height="265" rx="14" fill="rgba(255,255,255,0.015)" stroke="#2d3748"/>
+      <rect x="520" y="205" width="200" height="265" rx="14" fill="rgba(255,255,255,0.015)" stroke="#2d3748"/>
+      <text x="120" y="226" text-anchor="middle" class="t-mono">01 · COLLECT</text>
+      <text x="370" y="226" text-anchor="middle" class="t-mono">02 · MODEL</text>
+      <text x="620" y="226" text-anchor="middle" class="t-mono">03 · SERVE</text>
+      <text x="870" y="226" text-anchor="middle" class="t-mono">04 · GOAL</text>
+
+      <!-- Collect -->
+      <a href="#agent-governance">
+        <rect x="32" y="245" width="176" height="90" rx="12" fill="#111827" stroke="#22d3ee" stroke-width="1.5"/>
+        <text x="120" y="276" text-anchor="middle" class="t-title">Governance</text>
+        <text x="120" y="295" text-anchor="middle" class="t-title">&amp; Access</text>
+        <text x="120" y="317" text-anchor="middle" class="t-sub">PII tags · roles · policies</text>
+      </a>
+      <line x1="120" y1="355" x2="120" y2="339" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#a-cyan)"/>
+      <a href="#agent-ingestion">
+        <rect x="32" y="355" width="176" height="90" rx="12" fill="#111827" stroke="#22d3ee" stroke-width="1.5"/>
+        <text x="120" y="386" text-anchor="middle" class="t-title">Ingestion</text>
+        <text x="120" y="405" text-anchor="middle" class="t-title">&amp; Pipelines</text>
+        <text x="120" y="427" text-anchor="middle" class="t-sub">sources → warehouse</text>
+      </a>
+
+      <!-- Model -->
+      <a href="#agent-modeling">
+        <rect x="272" y="300" width="196" height="96" rx="12" fill="#111827" stroke="#22d3ee" stroke-width="1.5"/>
+        <text x="370" y="332" text-anchor="middle" class="t-title">Modeling &amp;</text>
+        <text x="370" y="351" text-anchor="middle" class="t-title">Semantic Layer</text>
+        <text x="370" y="374" text-anchor="middle" class="t-sub">dbt · metrics.yml · docs</text>
+      </a>
+
+      <!-- Serve -->
+      <a href="#agent-analyst">
+        <rect x="532" y="245" width="176" height="80" rx="12" fill="#111827" stroke="#22d3ee" stroke-width="1.5"/>
+        <text x="620" y="278" text-anchor="middle" class="t-title">Analyst Agent</text>
+        <text x="620" y="300" text-anchor="middle" class="t-sub">plain English → shown SQL</text>
+      </a>
+      <line x1="620" y1="325" x2="620" y2="371" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#a-cyan)"/>
+      <text x="628" y="345" class="t-label">recurring</text>
+      <text x="628" y="358" class="t-label">questions</text>
+      <a href="#agent-dashboards">
+        <rect x="532" y="375" width="176" height="80" rx="12" fill="#111827" stroke="#22d3ee" stroke-width="1.5"/>
+        <text x="620" y="408" text-anchor="middle" class="t-title">Dashboards</text>
+        <text x="620" y="427" text-anchor="middle" class="t-title">&amp; Insights</text>
+        <text x="620" y="446" text-anchor="middle" class="t-sub">role KPIs · weekly digest</text>
+      </a>
+
+      <!-- Goal -->
+      <rect x="770" y="280" width="200" height="116" rx="16" fill="rgba(52,211,153,0.08)" stroke="#34d399" stroke-width="1.5"/>
+      <text x="870" y="308" text-anchor="middle" class="t-mono" style="fill:#34d399">THE GOAL</text>
+      <text x="870" y="334" text-anchor="middle" class="t-title" style="font-size:17px">Trusted answers</text>
+      <text x="870" y="356" text-anchor="middle" class="t-sub">for every team &amp; agent</text>
+      <text x="870" y="374" text-anchor="middle" class="t-sub">one number, one definition</text>
+
+      <!-- Work flow arrows -->
+      <path d="M208,290 C240,290 238,330 268,330" fill="none" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#a-cyan)"/>
+      <path d="M208,400 C240,400 238,366 268,366" fill="none" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#a-cyan)"/>
+      <path d="M468,348 C500,348 498,285 528,285" fill="none" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#a-cyan)"/>
+      <path d="M708,415 C740,415 738,360 766,360" fill="none" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#a-cyan)"/>
+      <path d="M708,285 C740,285 738,320 766,320" fill="none" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#a-cyan)"/>
+
+      <!-- Data sources -->
+      <a href="#agent-ingestion">
+        <rect x="30" y="492" width="190" height="54" rx="27" fill="rgba(52,211,153,0.06)" stroke="#34d399" stroke-width="1.5" stroke-dasharray="4 3"/>
+        <text x="125" y="515" text-anchor="middle" class="t-title" style="font-size:13px">Your data sources</text>
+        <text x="125" y="533" text-anchor="middle" class="t-sub">app DB · Stripe · CRM · events</text>
+      </a>
+      <line x1="120" y1="490" x2="120" y2="449" stroke="#34d399" stroke-width="1.5" marker-end="url(#a-green)"/>
+
+      <!-- Data quality -->
+      <a href="#agent-quality">
+        <rect x="260" y="500" width="460" height="60" rx="12" fill="#111827" stroke="#f472b6" stroke-width="1.5"/>
+        <text x="490" y="526" text-anchor="middle" class="t-title">Data Quality &amp; Observability</text>
+        <text x="490" y="546" text-anchor="middle" class="t-sub">dbt tests · freshness · anomalies · trust scorecard</text>
+      </a>
+      <line x1="370" y1="470" x2="370" y2="497" stroke="#f472b6" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#a-pink)"/>
+      <line x1="620" y1="470" x2="620" y2="497" stroke="#f472b6" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#a-pink)"/>
+      <text x="378" y="490" class="t-label">tests</text>
+      <text x="628" y="490" class="t-label">usage</text>
+      <path d="M870,396 V530 H724" fill="none" stroke="#f472b6" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#a-pink)"/>
+      <text x="880" y="470" class="t-label">trust issues &amp;</text>
+      <text x="880" y="484" class="t-label">unanswered Qs</text>
+
+      <!-- Feedback loop to orchestrator -->
+      <path d="M490,560 V580 H8 V126 H366" fill="none" stroke="#f472b6" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#a-pink)"/>
+      <text x="190" y="120" text-anchor="middle" class="t-label">weekly scorecard → re-plan</text>
+    </svg>
+    <div class="diagram-legend">
+      <span class="ctrl">dispatch (orchestrator → agents)</span>
+      <span>work flow (data, models, answers)</span>
+      <span class="dash">data &amp; feedback loop</span>
+      <span class="gate">human approval</span>
+    </div>
+  </div>
+
+  <!-- ===================== ROSTER ===================== -->
+  <h2 class="section-title" id="roster">The agents and what each one does</h2>
+  <p>Each agent becomes its own markdown file. The defaults below are best practice. The setup interview adjusts them to your stage, data sources, tools and privacy requirements.</p>
+
+  <div class="agent-grid">
+
+    <div class="agent-card lead" id="agent-orchestrator">
+      <div class="stage">// control</div>
+      <h3>Data Orchestrator</h3>
+      <p class="mission">Acts as head of data. Runs one queue for every data request, from people and from the measurement agents in the other systems. It decides what gets built first and keeps an owner on every metric.</p>
+      <h5>Does</h5>
+      <ul>
+        <li>Prioritizes requests by the decision each one supports, not by who asked loudest. It pushes back on one-off requests that should become a certified metric.</li>
+        <li>Enforces <strong>"no metric exists unless it's defined"</strong> and keeps a register of who owns each metric.</li>
+        <li>Matches the stack to your stage: spreadsheets first, then a warehouse plus dbt plus a BI tool, then a semantic layer. It tells you when it's time to hire a data lead.</li>
+      </ul>
+      <h5>Asks you</h5>
+      <ul><li>The 5 questions leadership asks every week, who uses the data, and how much you can spend on tools and warehouse each month.</li></ul>
+      <div class="file">→ agents/data-orchestrator.md</div>
     </div>
 
-    <div class="step">
-      <div class="step-num">02</div>
-      <div class="step-body">
-        <h3>Build the semantic layer before building dashboards</h3>
-        <p>The semantic layer is <em>the</em> unlock for agentic data. It's how agents know what "active user" means.</p>
-        <ul>
-          <li>dbt + a metrics/semantic config (dbt Metrics, Cube, or MetricFlow).</li>
-          <li>Every metric has: definition, grain, owner, filters, and the approved SQL.</li>
-          <li>This is the same <code class="inline">metric dictionary</code> referenced in <a href="finance.html">Finance</a>. One file. Two consumers.</li>
-        </ul>
-        <pre class="code"><span class="c-com"># metrics.yml</span>
-metrics:
-  - name: active_users_7d
-    description: Distinct users who performed a core action in the last 7 days.
-    grain: user
-    sql: <span class="c-str">SELECT COUNT(DISTINCT user_id) FROM events WHERE action IN (...) AND ts &gt; NOW() - INTERVAL 7 DAY</span>
-    owner: product</pre>
-        <div class="callout tip"><strong>Example:</strong> see <a href="examples/data.md"><code class="inline">examples/data.md</code></a> — a filled-in semantic-layer spec (the prose companion to <code class="inline">metrics.yml</code>) for a fictional startup.</div>
-      </div>
+    <div class="agent-card" id="agent-governance">
+      <div class="stage">// 01 · collect</div>
+      <h3>Governance &amp; Access</h3>
+      <p class="mission">Makes sure the right people, and only the right agents, can see the right data, and that personal data is minimized and protected.</p>
+      <h5>Does</h5>
+      <ul>
+        <li>Classifies every source and column: public, internal, confidential or <strong>PII</strong>. It masks or excludes sensitive fields by default.</li>
+        <li>Designs access roles, including a <strong>read-only role for agents</strong> and row-level limits on sensitive tables. It handles access requests and keeps an audit trail.</li>
+        <li>Supports privacy obligations (GDPR, CCPA, HIPAA where they apply): retention rules, deletion requests, and a data contract with engineering for schema changes.</li>
+      </ul>
+      <h5>Asks you</h5>
+      <ul><li>What sensitive data you hold, which rules apply to you, and who can approve access.</li></ul>
+      <div class="file">→ agents/governance-access.md</div>
     </div>
 
-    <div class="step">
-      <div class="step-num">03</div>
-      <div class="step-body">
-        <h3>The analyst agent (text-to-SQL, done right)</h3>
-        <p>The difference between a fun demo and a trusted tool is how you wire context.</p>
-        <ul>
-          <li>Agent has read access to: the semantic layer, dbt model docs, past queries (successful ones), a few "gold" annotated queries.</li>
-          <li>For every question it: (a) proposes the SQL, (b) runs it against a sample, (c) shows the SQL + result, (d) asks if you want the full run.</li>
-          <li>Never phrases the answer as a fact without citing the SQL.</li>
-        </ul>
-        <div class="callout warn"><strong>Guardrail:</strong> read-only role for the agent. No DELETE, no DROP, no cross-dataset joins without explicit grant.</div>
-      </div>
+    <div class="agent-card" id="agent-ingestion">
+      <div class="stage">// 01 · collect</div>
+      <h3>Ingestion &amp; Pipelines</h3>
+      <p class="mission">Gets every important source into one place, reliably and cheaply, without running analytics against your production database.</p>
+      <h5>Does</h5>
+      <ul>
+        <li>Recommends one warehouse and sticks with it: BigQuery, Snowflake, MotherDuck or Postgres, chosen for your stack and budget.</li>
+        <li>Connects sources (a read replica of the app database, Stripe, CRM, product events, support, ads) using Fivetran, Airbyte or dlt.</li>
+        <li>Keeps a source inventory with each source's freshness target, owner and cost, and partitions large tables by date to keep queries cheap.</li>
+      </ul>
+      <h5>Asks you</h5>
+      <ul><li>Where your data lives today, which source is the truth for each subject, and how often each needs to update.</li></ul>
+      <div class="file">→ agents/ingestion-pipelines.md</div>
     </div>
 
-    <div class="step">
-      <div class="step-num">04</div>
-      <div class="step-body">
-        <h3>Self-serve dashboards, generated from metrics</h3>
-        <p>Skip Tableau at this stage. Let the analyst agent emit Lightdash/Metabase configs from the semantic layer.</p>
-        <ul>
-          <li>One dashboard per role: founder KPI, sales, CS, finance, engineering SLIs.</li>
-          <li>The agent generates the first pass; humans adjust layout.</li>
-          <li>Every widget traces back to a named metric — no duplicate definitions floating around.</li>
-        </ul>
-      </div>
+    <div class="agent-card" id="agent-modeling">
+      <div class="stage">// 02 · model</div>
+      <h3>Modeling &amp; Semantic Layer</h3>
+      <p class="mission">Turns raw tables into clean models and a single metric dictionary, so agents and people know exactly what "active user" or "ARR" means.</p>
+      <h5>Does</h5>
+      <ul>
+        <li>Builds dbt models in layers: staging → intermediate → marts, with documentation on every model.</li>
+        <li>Writes <code class="inline">metrics.yml</code>. Every metric has a definition, grain, owner, filters and approved SQL (see the <a href="examples/data.md">example semantic layer</a>).</li>
+        <li>Allows <strong>one definition per metric</strong>, shared with Finance, and runs reconciliation checks (e.g. the movements in ARR must add up to net new ARR).</li>
+      </ul>
+      <h5>Asks you</h5>
+      <ul><li>Your key metrics and how you currently define them, any numbers people disagree about, and who owns each metric.</li></ul>
+      <div class="file">→ agents/modeling-semantic.md</div>
     </div>
 
-    <div class="step">
-      <div class="step-num">05</div>
-      <div class="step-body">
-        <h3>Anomaly detection (the alert you actually want)</h3>
-        <p>Forget static thresholds. A nightly agent checks every top-line metric for shifts.</p>
-        <ul>
-          <li>Simple model: 14-day moving baseline + 3σ envelope.</li>
-          <li>When it fires, the agent attempts to <em>explain</em>: segments that moved, correlated deploys, ticket volume shifts.</li>
-          <li>Posts a "here's what changed and why I think so" to Slack, with the SQL.</li>
-        </ul>
-      </div>
+    <div class="agent-card" id="agent-analyst">
+      <div class="stage">// 03 · serve</div>
+      <h3>Analyst Agent</h3>
+      <p class="mission">Answers any teammate's question in plain English, and always shows its work.</p>
+      <h5>Does</h5>
+      <ul>
+        <li>Works from the semantic layer, model docs and a library of verified example queries. Uses certified metrics before writing new SQL.</li>
+        <li>For each question it proposes the SQL, runs it on a sample, shows the <strong>SQL, the metric definition and the result</strong>, and then runs the full query.</li>
+        <li>Never states a number without its query. It says so when a question can't be answered from certified data, and passes recurring questions to Dashboards.</li>
+      </ul>
+      <h5>Asks you</h5>
+      <ul><li>Where people ask questions (Slack, chat, a Claude Project) and any queries you already trust.</li></ul>
+      <div class="file">→ agents/analyst.md</div>
     </div>
 
-    <div class="step">
-      <div class="step-num">06</div>
-      <div class="step-body">
-        <h3>Feature-adoption agent</h3>
-        <p>Per feature shipped behind a flag, the agent owns the measurement loop.</p>
-        <ul>
-          <li>Defines the adoption funnel from the spec.</li>
-          <li>Produces a weekly cohort-retention curve.</li>
-          <li>Compares to the pre-registered hypothesis and reports success/fail with confidence interval.</li>
-        </ul>
-      </div>
+    <div class="agent-card" id="agent-dashboards">
+      <div class="stage">// 03 · serve</div>
+      <h3>Dashboards &amp; Insights</h3>
+      <p class="mission">Gives each role a small, honest dashboard and a weekly summary of what changed and why.</p>
+      <h5>Does</h5>
+      <ul>
+        <li>Builds one dashboard per role: founder KPIs, <a href="marketing.html">marketing</a>, <a href="sales.html">sales</a>, <a href="product.html">product</a>, <a href="finance.html">finance</a> and support. It uses Metabase, Lightdash or Looker Studio.</li>
+        <li>Every chart traces back to a named metric, so there are no duplicate definitions. It retires dashboards nobody opens.</li>
+        <li>Writes a weekly digest of what moved, which segments drove it and what it's correlated with, and runs feature-adoption reports for product launches.</li>
+      </ul>
+      <h5>Asks you</h5>
+      <ul><li>Your BI tool, who needs which view, and your reporting rhythm (weekly team review, monthly board update).</li></ul>
+      <div class="file">→ agents/dashboards-insights.md</div>
     </div>
 
-    <div class="step">
-      <div class="step-num">07</div>
-      <div class="step-body">
-        <h3>Data-quality watchdog</h3>
-        <p>Trust in the warehouse is everything. Treat schema changes as incidents.</p>
-        <ul>
-          <li>dbt tests on every model: not-null on primary keys, unique on join keys, accepted-values on enums.</li>
-          <li>Freshness checks: every source table updated within its SLA.</li>
-          <li>When a test fails, the agent opens a ticket, identifies the upstream schema change (if any), and suggests the fix.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="step">
-      <div class="step-num">08</div>
-      <div class="step-body">
-        <h3>Scale path</h3>
-        <p>At 20 people you'll want:</p>
-        <ul>
-          <li>A reverse-ETL back into Salesforce/HubSpot/Intercom (Hightouch/Census).</li>
-          <li>A lightweight experimentation platform (Statsig/GrowthBook).</li>
-          <li>Row-level permissions on sensitive tables; the agent respects them.</li>
-        </ul>
-        <p>At 50+ people, hire a real data lead. The agent becomes their lever.</p>
-      </div>
+    <div class="agent-card measure" id="agent-quality">
+      <div class="stage">// measure &amp; learn</div>
+      <h3>Data Quality &amp; Observability</h3>
+      <p class="mission">Protects trust in the numbers. It treats bad data and schema changes as incidents, not surprises.</p>
+      <h5>Does</h5>
+      <ul>
+        <li>Runs dbt tests on every model: not-null and unique keys, accepted values, relationships between tables. It also checks each source against its freshness target.</li>
+        <li>Detects anomalies nightly by comparing each metric with its 14-day average (alerting on swings beyond 3 standard deviations), and tries to explain them: which segment moved, recent deploys, changes in ticket volume.</li>
+        <li>When a check fails, it opens a ticket with the suspected upstream cause. It sends a weekly trust scorecard covering tests, freshness, usage and warehouse cost.</li>
+      </ul>
+      <h5>Asks you</h5>
+      <ul><li>Where alerts should go, your issue tracker, and your freshness requirements for critical metrics.</li></ul>
+      <div class="file">→ agents/data-quality.md</div>
     </div>
 
   </div>
 
-  <h2 class="section-title">Pitfalls</h2>
+  <!-- ===================== FILES ===================== -->
+  <h2 class="section-title" id="files">What Claude will create for you</h2>
+  <p>A folder you own. Plain markdown files are easy to edit, version and reuse. In Claude Code the agent files go in <code class="inline">.claude/agents/</code> so they load as subagents.</p>
+
+<pre class="tree">data-agents/
+├── CLAUDE.md                    <span class="c-com"># entry point: goal, roster, workflow, rules</span>
+├── context/                     <span class="c-com"># shared brain, read by every agent</span>
+│   ├── business-and-kpis.md
+│   ├── data-sources.md
+│   ├── metric-dictionary.md
+│   ├── access-and-privacy.md
+│   ├── stakeholders-and-requests.md
+│   └── tools-and-access.md
+├── agents/                      <span class="c-com"># .claude/agents/ in Claude Code</span>
+│   ├── data-orchestrator.md
+│   ├── governance-access.md
+│   ├── ingestion-pipelines.md
+│   ├── modeling-semantic.md
+│   ├── analyst.md
+│   ├── dashboards-insights.md
+│   └── data-quality.md
+├── playbooks/
+│   ├── first-30-days.md
+│   ├── weekly-cadence.md
+│   └── approval-gates.md
+└── outputs/                     <span class="c-com"># where agents deliver work</span>
+    ├── requests/  models/  queries/  dashboards/  incidents/
+    └── reports/</pre>
+
+  <!-- ===================== SETUP PROMPT ===================== -->
+  <h2 class="section-title" id="setup">Setup prompt: paste it into your Claude</h2>
+  <p>Claude interviews you in five short rounds (business, sources, metrics, tools, governance). Every question shows a best-practice default, so you can answer "defaults" and keep going. It then writes the files and gives you a first-week plan.</p>
+
+  <div class="how-to">
+    <div class="mini-card">
+      <h4><span class="n">1</span>Copy or download</h4>
+      <p>Use the buttons below. The download is a <code class="inline">.md</code> file you can keep or share with your team.</p>
+    </div>
+    <div class="mini-card">
+      <h4><span class="n">2</span>Paste into Claude</h4>
+      <p>Claude Code or the Claude desktop app can write the folder directly. On claude.ai, Claude delivers the files as a zip or as copyable blocks.</p>
+    </div>
+    <div class="mini-card">
+      <h4><span class="n">3</span>Answer &amp; connect</h4>
+      <p>Answer the interview questions. Connect your warehouse and BI tool through Claude's connectors, using a <strong>read-only</strong> role. Never paste a password or key into the chat.</p>
+    </div>
+  </div>
+
+  <div class="prompt-box">
+    <div class="prompt-toolbar">
+      <span class="file-name">data-agent-system-setup.md</span>
+      <button class="btn" type="button" data-prompt-copy="prompt-data">Copy prompt</button>
+      <button class="btn secondary" type="button" data-prompt-download="prompt-data" data-filename="data-agent-system-setup.md">Download .md</button>
+    </div>
+    <pre data-prompt-view="prompt-data">Loading prompt… (enable JavaScript to view, copy, or download)</pre>
+  </div>
+
+  <div class="callout tip"><strong>Using it on claude.ai?</strong> After Claude generates the files, create a <strong>Project</strong>. Paste <code class="inline">CLAUDE.md</code> into the project instructions and upload the <code class="inline">context/</code> and <code class="inline">agents/</code> files as project knowledge. Every chat in that project then has the whole team available.</div>
+
+  <div class="callout warn"><strong>Agents get a read-only role, always.</strong> Never connect an agent to your production database or give it write access to the warehouse. Agents propose changes to schemas, models and access as reviewed pull requests or requests to you. They never run destructive SQL themselves.</div>
+
   <div class="two-col">
     <div class="mini-card">
-      <h4>// don't</h4>
+      <h4>// always needs your approval</h4>
       <ul>
-        <li>Let the agent run against prod DB</li>
-        <li>Have multiple definitions of ARR</li>
-        <li>Ship dashboards before the semantic layer</li>
-        <li>Trust SQL you can't read</li>
+        <li>Granting or changing anyone's data access</li>
+        <li>Any write, schema change or destructive SQL (DROP, DELETE, UPDATE)</li>
+        <li>New or changed metric definitions</li>
+        <li>Adding sources that contain personal data, or sharing data externally</li>
+        <li>Syncing data back into CRM or other tools, and warehouse spend above budget</li>
       </ul>
     </div>
     <div class="mini-card">
-      <h4>// do</h4>
+      <h4>// red flags to watch</h4>
       <ul>
-        <li>Start with 10 metrics, not 200</li>
-        <li>Show the SQL, always</li>
-        <li>Version-control everything</li>
-        <li>Sample-run before full-run on large queries</li>
+        <li>Two teams report different numbers for the same metric: the dictionary is being bypassed</li>
+        <li>An answer without its SQL: the analyst can't be verified</li>
+        <li>Tests failing quietly or data going stale: alerts aren't reaching an owner</li>
+        <li>Dashboards nobody opens: you built for completeness instead of decisions</li>
+        <li>Warehouse cost spikes: missing partitions or runaway queries</li>
       </ul>
     </div>
   </div>
 </main>
-<footer><span>Stargate · Data</span><span class="mono">/data</span></footer>
+<footer><span>Stargate · Data Agent System</span><span class="mono">/data</span></footer>
+
+<script type="text/plain" id="prompt-data">
+# Data & Analytics Agent System — Setup Prompt
+
+You are going to set up a **data and analytics agent system** for my business. It is a small team of specialized AI agents, defined as markdown files in a folder, working together toward one goal:
+
+> **Every team gets fast, trusted answers: one definition per metric, fresh and tested data, and every number traceable to the query that produced it.**
+
+Your job in this conversation:
+1. **Interview me** so the system fits my data, stage and team.
+2. **Fill any gaps with best-practice defaults**, and tell me which ones you assumed.
+3. **Create the folder** of context files, agent files and playbooks described below.
+4. **Hand me a first-week plan** and the list of tools I should connect.
+
+---
+
+## Ground rules
+
+- Ask questions in **rounds of no more than 6**, numbered. After each question, put in [brackets] the default you'll use if I skip it. I can reply "defaults" to accept every default in a round.
+- **Don't ask about things you can look up.** If I give you a website, or you can already see a connected warehouse or BI tool, inspect what's available (schemas, table names, existing dashboards) and pre-fill answers, then ask me to confirm.
+- **Never ask me for passwords, API keys, service-account keys, or connection strings in the chat.** For access, use official connectors or MCP integrations. For warehouses and databases, ask me to create a **dedicated read-only role or service account** and connect it through the integration, not by pasting credentials. If no connector exists, ask me for exports (CSV, schema dumps, dashboard screenshots).
+- **Agents are read-only, always.** No agent runs DROP, DELETE, UPDATE, INSERT, TRUNCATE, ALTER or GRANT. Changes to schemas, models, access or pipelines are proposed as reviewed pull requests or written requests to me. Never point an agent at the production application database; use a replica or the warehouse.
+- **Minimize personal data.** Prefer aggregated or pseudonymized data. Never copy personal data (names, emails, IDs tied to people, payment details) into the context files or outputs. Respect row-level and column-level restrictions.
+- **Never invent numbers, tables or definitions.** Every number in any output must come with the query and the metric definition that produced it. Mark anything unconfirmed as `TODO:`.
+- Write every file so that another Claude session, with no access to this conversation, could act on it. Keep files specific to my business and concise. Use bullet points rather than essays.
+
+---
+
+## Step 1 — Interview me
+
+### Round 1 · The business and its questions
+1. Business name and **website URL**, plus what the business does and how it makes money. [inferred from site]
+2. Stage and team size. [early stage, under 20 people]
+3. The **5 questions leadership asks every week**, e.g. "How many active customers do we have?", "What's our MRR?", "Which channel brings the best leads?" [proposed from your business model]
+4. Who consumes data: founders, marketing, sales, product, finance, support, investors, other agent systems? [founders + each function's measurement agent]
+5. Do you have anyone who owns data today (an engineer, analyst, or nobody)? [nobody; a founder approves]
+
+### Round 2 · Data sources
+1. Where does data live today? Production database (Postgres, MySQL, Mongo…), billing (Stripe), CRM, product analytics, support tool, ad platforms, spreadsheets, other SaaS. [app database + Stripe + spreadsheets]
+2. For each subject (customers, revenue, usage, leads), which source is the truth? [billing for revenue, app database for usage, CRM for pipeline]
+3. Roughly how much data: rows per day or events per month? [small: under 10M rows]
+4. Known messy areas, e.g. duplicate customers, manual spreadsheets, broken tracking. [TODO, Data Quality will baseline]
+5. How do schema changes happen in the app? Does engineering tell anyone? [ad hoc, no notice]
+
+### Round 3 · Metrics and goals
+1. Your north-star metric and 5–10 key metrics. [proposed from your model, e.g. active accounts, MRR or ARR, new customers, churn, CAC, activation rate]
+2. How each is defined today, and any **numbers different people disagree about**. [none written down]
+3. Reporting rhythm: weekly team review, monthly board or investor update, real-time needs. [weekly review + monthly update]
+4. Who owns each metric (the person accountable for its definition). [the function lead; founder by default]
+5. Any targets or plans to compare against (budget, OKRs). [none]
+
+### Round 4 · Tools and access
+For each item, tell me what you use, or "none":
+1. Warehouse (BigQuery, Snowflake, Redshift, Databricks, MotherDuck, Postgres)
+2. Ingestion (Fivetran, Airbyte, dlt, Stitch, Segment, custom scripts)
+3. Transformation (dbt Core or Cloud, SQL views, nothing)
+4. BI and dashboards (Metabase, Lightdash, Looker, Looker Studio, Tableau, Power BI, Hex, Mode)
+5. Product analytics and experimentation (PostHog, Amplitude, Mixpanel, Statsig, GrowthBook)
+6. Code repo and issue tracker (GitHub, GitLab, Linear, Jira), and team chat (Slack or Teams)
+
+**After this round:**
+- **Tools I already have.** Check whether a connector or MCP integration for that tool exists in your current environment. In claude.ai and the desktop app, look under Settings → Connectors. In Claude Code, look at `claude mcp`. If one exists, tell me exactly how to connect it **with a read-only role**. If none exists, tell me which export to provide and how. Record each tool as connected, export-only, or not connected in `context/tools-and-access.md`.
+- **Tools I don't have.** Recommend the default from Step 2 that fits my stage and budget, explain why in one line, and add a setup task to the plan. Don't make tools a blocker. The system must work from exports alone at first.
+
+### Round 5 · Governance and guardrails
+1. What sensitive data do you hold: personal data, payment data, health data, children's data, customer confidential data? [personal data such as names and emails]
+2. Which rules apply to you: GDPR, CCPA/CPRA, HIPAA, SOC 2, data residency, customer contracts? [GDPR-style care]
+3. Who can approve data access and schema or model changes? [you]
+4. Monthly budget for data tools and warehouse spend. [under $200/month]
+5. Anything beyond the default approval gates that must come to you first? [defaults only]
+6. Where should agents deliver work? [files in `outputs/`; pull requests in your repo; alerts and answers in Slack if connected]
+
+**Before creating anything**, show me a one-screen summary of what you learned and what you're assuming. Mark each item *confirmed*, *inferred* or *default*. Ask me to correct it. Then build.
+
+---
+
+## Step 2 — Best-practice defaults (use these unless my answers say otherwise)
+
+**Stack by stage.** Recommend the smallest stack that answers the weekly questions.
+- *Stage 0 (few sources, little data):* spreadsheets, the built-in reports in Stripe and product analytics, and Looker Studio. Write the metric dictionary anyway; it carries forward.
+- *Stage 1 (first warehouse):* BigQuery (the easiest choice for Google Workspace users) or Postgres or MotherDuck on a free or low tier. Load data with Airbyte, dlt or Fivetran's free tier, transform with dbt Core, and use Metabase or Lightdash for BI. Load a read replica of the app database, never the primary.
+- *Stage 2 (about 20+ people, many consumers):* a semantic layer (dbt Semantic Layer/MetricFlow or Cube), reverse ETL to push data back into tools (Hightouch or Census), an experimentation platform (Statsig or GrowthBook), row-level security and a data catalog.
+- *At about 50+ people:* hire a data lead. The agents become that person's leverage.
+
+**Governance and access**
+- Classify every source and column (public / internal / confidential / PII). Mask or exclude PII in the analytics models unless a named use case needs it.
+- Roles: an `agent_readonly` role (SELECT on the analytics models only), an analyst role, an admin role. Use row-level or column-level restrictions on sensitive tables.
+- Every access grant is requested, approved and logged. Review access every quarter.
+- Agree a data contract with engineering: schema changes to critical tables are announced, and critical sources have tests that catch breaking changes.
+- Set retention and deletion rules that support privacy requests.
+
+**Ingestion**
+- One warehouse. Every source has an owner, a freshness target (e.g. billing daily, product events hourly) and a cost estimate.
+- Partition large fact tables by date and cluster them on common filters. Monitor query cost.
+- Raw data lands untouched in a `raw` area; transformations happen downstream.
+
+**Modeling and semantic layer**
+- dbt layers: `staging` (cleaned, renamed, one-to-one with sources) → `intermediate` → `marts` (business-ready facts and dimensions). Every model is documented.
+- `metrics.yml` / the metric dictionary: each metric has a name, plain-English definition, grain (daily / weekly / monthly), owner, filters, and the approved SQL or semantic definition.
+- **No metric exists unless it's in the dictionary.** One definition per metric, shared by all functions. Finance and Data share revenue metrics.
+- Reconciliation checks, e.g. new + expansion − contraction − churn must equal net new MRR or ARR.
+
+**Analyst agent (text-to-SQL, done right)**
+- Context: the metric dictionary, model docs, and a library of verified example queries ("gold queries"). Prefer certified metrics over new SQL.
+- Process for each question: restate the question, then pick the metric or models, write the SQL, run it on a sample, show the **SQL + metric definition + result**, and run the full query.
+- Clearly label any answer that isn't from a certified metric as exploratory. Add verified answers to the gold-query library. Send recurring questions to dashboards.
+
+**Dashboards and insights**
+- One dashboard per role, 5–8 charts each, every chart tied to a named metric.
+- A weekly digest: what moved, by how much, which segments drove it, and correlated events (deploys, campaigns, incidents), with the SQL linked.
+- Retire dashboards with no views in 60 days.
+
+**Data quality and observability**
+- dbt tests: `not_null` and `unique` on primary keys, `relationships` on join keys, `accepted_values` on status fields, plus freshness checks on every source.
+- Nightly anomaly detection on top-line metrics: compare with the 14-day average and alert on swings beyond 3 standard deviations. Each alert tries to explain itself (segment, recent deploy, ticket volume).
+- Failures open a ticket with the suspected upstream cause. Breaking schema changes are treated as incidents.
+- Weekly trust scorecard: tests passing, freshness targets met, open incidents, questions answered from certified metrics, time to answer, dashboard usage, and warehouse cost against budget.
+
+**Approval gates (always on):** granting or changing access, any write or schema change or destructive SQL, new or changed metric definitions, adding sources with personal data, sharing data externally, reverse-ETL writes into other tools, and spend above budget.
+
+---
+
+## Step 3 — Create the files
+
+**Where to write:**
+- If you can write files (Claude Code, or the Claude desktop app with folder access), ask where to create the folder [default: `./data-agents`] and write the files directly. **In Claude Code, put the agent files in `data-agents/.claude/agents/`** instead of `agents/` so they load as subagents. Tell me to start Claude Code from inside `data-agents/`. If my dbt project already lives in a repo, ask whether the folder should sit next to it.
+- If you can't write files but can run code, create the files and give me a single **.zip** to download.
+- Otherwise, output each file in its own code block, headed by its full path, in the order below.
+
+**Folder structure:**
+```
+data-agents/
+├── CLAUDE.md
+├── context/
+│   ├── business-and-kpis.md
+│   ├── data-sources.md
+│   ├── metric-dictionary.md
+│   ├── access-and-privacy.md
+│   ├── stakeholders-and-requests.md
+│   └── tools-and-access.md
+├── agents/                (use .claude/agents/ in Claude Code)
+│   ├── data-orchestrator.md
+│   ├── governance-access.md
+│   ├── ingestion-pipelines.md
+│   ├── modeling-semantic.md
+│   ├── analyst.md
+│   ├── dashboards-insights.md
+│   └── data-quality.md
+├── playbooks/
+│   ├── first-30-days.md
+│   ├── weekly-cadence.md
+│   └── approval-gates.md
+└── outputs/
+    ├── README.md
+    ├── requests/  models/  queries/  dashboards/  incidents/
+    └── reports/
+```
+
+**`CLAUDE.md`** is the system's entry point. It contains:
+- The goal, the trust scorecard metrics with their targets, and current baselines (or TODO).
+- A text diagram of the flow: context → orchestrator → data sources → ingestion and governance → modeling and semantic layer → analyst and dashboards → trusted answers for every team and agent system, with data quality testing every layer and sending a weekly scorecard back to the orchestrator.
+- A roster table: agent, one-line job, when to use it, and its output folder.
+- The rules that every agent reads `context/` before working, **agents are read-only**, **every number ships with its SQL and metric definition**, and personal data is minimized. Also the approval gates.
+- How to run the system, e.g. "Use the analyst agent to answer: how many active accounts did we have last week?" or "Use the data-orchestrator agent to run this week's cycle."
+
+**`context/` files** hold the shared brain, filled with my interview answers and your inspection. Label every section *confirmed*, *inferred* or *TODO*.
+- `business-and-kpis.md`: business model, stage, the weekly leadership questions, the north star and key KPIs, and targets.
+- `data-sources.md`: the source inventory (system, what it holds, source-of-truth subjects, owner, freshness target, sensitivity, connection status) and known data problems.
+- `metric-dictionary.md`: each metric's name, definition, grain, owner, filters, SQL or semantic definition (or TODO), and status (certified / draft). Include the reconciliation rules.
+- `access-and-privacy.md`: data classification, roles, who approves access, applicable regulations, retention rules, and the schema-change contract.
+- `stakeholders-and-requests.md`: who uses which data and for what decision, the reporting rhythm, and how to submit a request (including requests from other agent systems).
+- `tools-and-access.md`: each tool with its status (connected / export-only / recommended / not needed), how to connect it (read-only), and the owner.
+
+**Every agent file** uses this template. The frontmatter keeps the file valid as a Claude Code subagent.
+```
+---
+name: <kebab-case-name>
+description: <one specific sentence on when to delegate to this agent>
+tools: <Claude Code only: list the tools it needs, e.g. Read, Write, Edit, Glob, Grep, Bash. Omit this line to inherit all tools, including connectors.>
+---
+# <Agent name>
+## Mission            (one or two sentences tied to the trusted-answers goal)
+## Reads first        (which context/ files and outputs from other agents)
+## Responsibilities   (bullets, customized to this business)
+## Inputs it needs    (and the default it uses when they're missing)
+## Tools & connections (what it uses now, read-only, and what to connect next)
+## Outputs            (exact file paths in outputs/, with the format)
+## Hand-offs          (who receives its output, and what triggers the hand-off)
+## Approval gates     (actions it must never take without the owner)
+## KPIs it owns
+## Cadence            (what it does daily, weekly and monthly)
+```
+
+Agent-specific requirements. Customize each one with my sources, stage, tools and privacy needs:
+- **data-orchestrator.** Runs the weekly cycle from `playbooks/weekly-cadence.md`. Keeps the request queue in `outputs/requests/` (requester, decision it supports, priority, status), triages one-off requests versus new certified metrics, maintains the metric-owner register, collects everything needing my approval into a single list in `outputs/reports/`, and recommends the next step up in *my stack* when it's justified. It must never bypass an approval gate.
+- **governance-access.** Maintains `context/access-and-privacy.md`, classifies new sources and columns, designs roles including `agent_readonly`, drafts access requests and grants for my approval (it never grants access itself), keeps the access log, and supports privacy requests under *my regulations*.
+- **ingestion-pipelines.** Maintains `context/data-sources.md`, recommends or configures connectors for *my sources* (as pull requests or setup steps), sets freshness targets and partitioning, watches pipeline failures and cost, and never connects to the production primary database.
+- **modeling-semantic.** Proposes dbt models and changes to `metrics.yml` as pull requests (in `outputs/models/` if there's no repo), keeps `context/metric-dictionary.md` in sync, settles conflicting definitions with the metric owner, and maintains the reconciliation checks.
+- **analyst.** Answers questions with the restate → metric → SQL → sample → show → full-run process, saves queries and answers in `outputs/queries/`, labels exploratory answers, grows the gold-query library, and passes recurring questions to dashboards-insights. It is read-only, with no exceptions.
+- **dashboards-insights.** Specifies or builds the role dashboards in *my BI tool* (configs or specs in `outputs/dashboards/`), writes the weekly digest, runs feature-adoption reports for product launches, serves the measurement agents in the Marketing, Sales, Product and Finance systems, and retires unused dashboards.
+- **data-quality.** Proposes dbt tests and freshness checks, runs nightly anomaly detection, opens incident notes in `outputs/incidents/` with the suspected cause, and writes the weekly trust scorecard in `outputs/reports/`.
+
+**`playbooks/`**
+- `first-30-days.md`: Week 1, foundation: confirm context, inventory sources, classify sensitive data, set up the read-only access path, and draft the metric dictionary for the weekly leadership questions. Week 2, collect and model: connect the top 3 sources to the warehouse (or set up the stage-0 setup), write the first staging and mart models, and agree definitions with metric owners. Week 3, serve: the analyst agent answers the weekly questions with SQL shown, the founder KPI dashboard goes live, and the first gold queries are saved. Week 4, trust: tests and freshness checks on critical models, anomaly alerts, the first trust scorecard, and the next 30-day plan. Adapt it to my stage and answers.
+- `weekly-cadence.md`: Daily: quality and freshness checks, anomaly alerts, answering questions. Monday: request triage and priorities. Tuesday and Wednesday: models and metric changes go to me as PRs or proposals. Thursday: dashboards and digest. Friday: trust scorecard, access review items and lessons learned. Fit it to my team's capacity.
+- `approval-gates.md`: the default gates plus mine, who approves each, and how to submit an item for approval.
+
+**`outputs/README.md`** explains what each subfolder holds and the file naming convention (`YYYY-MM-DD-topic.md`, with `.sql` files alongside where useful).
+
+---
+
+## Step 4 — Wrap up
+
+When the files are created, give me:
+1. The folder tree, with a one-line description of each file.
+2. **Assumptions and TODOs.** Everything you defaulted or couldn't confirm, and how to resolve each.
+3. **Connections to set up, in priority order.** The warehouse or database comes first (via a read-only role), then billing and the app-database replica, then the BI tool, then the repo and issue tracker, then Slack for alerts. For each, give the exact steps in this environment, including how to create the read-only role.
+4. **The first-week plan,** with the one thing I should do today (usually: write down the 5 weekly questions and who owns each metric).
+5. **How to use the system day to day:**
+   - *Claude Code:* "Use the analyst agent to tell me last month's net new MRR, and show the SQL," or "Use the data-orchestrator agent to run this week's cycle."
+   - *claude.ai:* Create a Project. Paste `CLAUDE.md` into the project instructions and upload the `context/` and `agents/` files as project knowledge. Then ask, for example, "Acting as the modeling-semantic agent, define 'active account' for our dictionary."
+
+Start now with Round 1. If I've already given you my website URL or connected a data tool, review it first and pre-fill what you can.
+</script>
+<script src="prompt.js"></script>
 </body></html>

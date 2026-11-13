@@ -3,7 +3,8 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Product Design · Stargate</title>
+<title>Design Agent System · Stargate</title>
+<meta name="description" content="A default product design agent system: orchestrator, design system, UX research, UX & UI design, accessibility review, design QA & handoff, and design quality metrics agents, plus a copy-paste setup prompt for Claude." />
 <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -26,154 +27,596 @@
 
 <main>
   <div class="page-header">
-    <div class="kicker">// PRODUCT DESIGN</div>
-    <h1>A design-system agent your engineering agents can call</h1>
-    <p>Startups that let engineers "just build the UI" ship 14 shades of gray, 6 button styles, and an onboarding flow that feels like four different apps. Instead, build a single design agent that owns tokens, components, and brand — and expose it as an MCP server that every engineering agent must route through.</p>
+    <div class="kicker">// DESIGN · AGENT SYSTEM</div>
+    <h1>A design team of agents that makes every screen usable, consistent and accessible</h1>
+    <p>Seven agents that work like a small design org. One owns the design system so the UI stays consistent. One tests with real users. One designs the flows and screens. One checks accessibility and usability before anything ships. One hands off specs and checks the built UI against them. One measures whether users succeed. An orchestrator keeps design aligned with what Product is solving and what Engineering is building. Copy the <a href="#setup">setup prompt</a> into Claude. It will interview you about your product and brand and then write the whole system as a folder of agent files.</p>
   </div>
 
   <div class="tags">
     <span class="tag cyan">design system</span>
     <span class="tag cyan">tokens</span>
-    <span class="tag cyan">Figma MCP</span>
+    <span class="tag cyan">UX research</span>
+    <span class="tag cyan">flows &amp; prototypes</span>
+    <span class="tag cyan">UX copy</span>
     <span class="tag cyan">accessibility</span>
-    <span class="tag cyan">brand</span>
+    <span class="tag cyan">handoff &amp; QA</span>
   </div>
 
-  <h2 class="section-title">Why an agent, not just a style guide</h2>
-  <p>A style guide is a PDF nobody reads. A design-system agent is a program that <em>answers questions</em>, <em>rejects proposals</em>, and <em>emits code</em>. Engineering agents get better outcomes because they can <em>ask</em>, not guess.</p>
+  <!-- ===================== GOAL ===================== -->
+  <h2 class="section-title">The goal the system works toward</h2>
+  <p>Every agent, every task, and every weekly report is judged against one outcome.</p>
 
-  <div class="steps">
+  <div class="goal-panel">
+    <div>
+      <div class="label">// north star</div>
+      <h2>Every screen users touch is usable, accessible and consistent, so users complete key tasks on the first try and engineering ships UI fast without building up design debt.</h2>
+      <p>The system doesn't count polished mockups as wins. Success is users completing tasks in the shipped product. Problems and specs come from the <a href="product.html">Product agent system</a>, and the design system is the shared language the <a href="engineering.html">Engineering</a> agents build with.</p>
+    </div>
+    <div class="metrics">
+      <div class="metric"><div class="k">Primary</div><div class="v">Task success rate on key flows</div></div>
+      <div class="metric"><div class="k">Accessibility</div><div class="v">0 WCAG 2.2 AA violations shipped</div></div>
+      <div class="metric"><div class="k">Consistency</div><div class="v">% of UI built from design-system parts</div></div>
+      <div class="metric"><div class="k">Speed</div><div class="v">Spec → design-ready cycle time</div></div>
+    </div>
+  </div>
 
-    <div class="step">
-      <div class="step-num">01</div>
-      <div class="step-body">
-        <h3>Define tokens before components</h3>
-        <p>Tokens are the atom of your design system. Get these right and everything else cascades.</p>
-        <ul>
-          <li><strong>Color</strong> — semantic (bg, fg, accent, danger) not literal (blue-500).</li>
-          <li><strong>Spacing</strong> — one scale (4, 8, 12, 16, 24, 32, 48, 64). No freelance 13px paddings.</li>
-          <li><strong>Type</strong> — 5 ramps max, named by role (display, heading, body, mono, caption).</li>
-          <li><strong>Radius, shadow, motion</strong> — small enumerated sets. "subtle / medium / dramatic".</li>
-        </ul>
-        <div class="callout">Store tokens in one file (<code class="inline">tokens.json</code> or Style Dictionary). It's the source of truth that feeds Figma variables <em>and</em> your CSS variables <em>and</em> the agent.</div>
-        <div class="callout tip"><strong>Example:</strong> see <a href="examples/design.md"><code class="inline">examples/design.md</code></a> — a filled-in design-system spec for a fictional startup.</div>
-      </div>
+  <!-- ===================== DIAGRAM ===================== -->
+  <h2 class="section-title" id="diagram">How the agents work together</h2>
+  <p>The orchestrator sets the week's design priorities. Work moves from foundations (the design system and user research) to designing flows and screens, and then to review, handoff and shipping. Product problems and specs come in from the Product system. Design Quality &amp; UX Metrics measures the shipped experience and sends a scorecard back, so next week's priorities are based on where users actually struggle. Click any agent to jump to its role.</p>
+
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 1000 595" role="img" aria-labelledby="dg-title dg-desc" xmlns="http://www.w3.org/2000/svg">
+      <title id="dg-title">Design agent system flow</title>
+      <desc id="dg-desc">Shared design context feeds a Design Orchestrator, which you approve. The orchestrator dispatches work to the Design System agent and to UX Research (foundations); UX Research also receives problems and specs from the Product system. Both feed UX and UI Design (design), then Accessibility review, then Design QA and Handoff (review and ship), producing a usable, consistent experience. Design Quality and UX Metrics tracks designs, shipped UI and usability data and sends a weekly scorecard back to the orchestrator.</desc>
+      <defs>
+        <marker id="a-cyan" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#22d3ee"/></marker>
+        <marker id="a-violet" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#7c5cff"/></marker>
+        <marker id="a-pink" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#f472b6"/></marker>
+        <marker id="a-amber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#fbbf24"/></marker>
+        <marker id="a-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#34d399"/></marker>
+      </defs>
+
+      <!-- Shared context band -->
+      <rect x="20" y="10" width="960" height="52" rx="10" fill="rgba(34,211,238,0.06)" stroke="#22d3ee" stroke-opacity="0.5" stroke-dasharray="4 4"/>
+      <text x="500" y="31" text-anchor="middle" class="t-mono">SHARED CONTEXT · READ BY EVERY AGENT</text>
+      <text x="500" y="50" text-anchor="middle" class="t-sub">product &amp; brand · users &amp; key tasks · design principles · design system · platforms &amp; stack · tools</text>
+      <line x1="500" y1="62" x2="500" y2="91" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#a-cyan)"/>
+
+      <!-- Orchestrator -->
+      <a href="#agent-orchestrator">
+        <rect x="370" y="94" width="260" height="64" rx="12" fill="#1c1640" stroke="#7c5cff" stroke-width="1.5"/>
+        <text x="500" y="121" text-anchor="middle" class="t-title">Design Orchestrator</text>
+        <text x="500" y="142" text-anchor="middle" class="t-sub">design priorities · critique · intake</text>
+      </a>
+
+      <!-- You -->
+      <rect x="760" y="100" width="220" height="52" rx="26" fill="#161d2e" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="870" y="122" text-anchor="middle" class="t-title">You (design owner)</text>
+      <text x="870" y="140" text-anchor="middle" class="t-sub">approve system · tests · releases</text>
+      <line x1="633" y1="126" x2="756" y2="126" stroke="#fbbf24" stroke-width="1.5" marker-start="url(#a-amber)" marker-end="url(#a-amber)"/>
+      <text x="694" y="117" text-anchor="middle" class="t-label">approval gates</text>
+
+      <!-- Dispatch bus -->
+      <line x1="500" y1="158" x2="500" y2="180" stroke="#7c5cff" stroke-width="1.5"/>
+      <line x1="120" y1="180" x2="620" y2="180" stroke="#7c5cff" stroke-width="1.5"/>
+      <line x1="120" y1="180" x2="120" y2="202" stroke="#7c5cff" stroke-width="1.5" marker-end="url(#a-violet)"/>
+      <line x1="370" y1="180" x2="370" y2="202" stroke="#7c5cff" stroke-width="1.5" marker-end="url(#a-violet)"/>
+      <line x1="620" y1="180" x2="620" y2="202" stroke="#7c5cff" stroke-width="1.5" marker-end="url(#a-violet)"/>
+      <text x="245" y="174" text-anchor="middle" class="t-label">design briefs &amp; priorities</text>
+
+      <!-- Lanes -->
+      <rect x="20" y="205" width="200" height="265" rx="14" fill="rgba(255,255,255,0.015)" stroke="#2d3748"/>
+      <rect x="260" y="205" width="220" height="265" rx="14" fill="rgba(255,255,255,0.015)" stroke="#2d3748"/>
+      <rect x="520" y="205" width="200" height="265" rx="14" fill="rgba(255,255,255,0.015)" stroke="#2d3748"/>
+      <text x="120" y="226" text-anchor="middle" class="t-mono">01 · FOUNDATIONS</text>
+      <text x="370" y="226" text-anchor="middle" class="t-mono">02 · DESIGN</text>
+      <text x="620" y="226" text-anchor="middle" class="t-mono">03 · REVIEW &amp; SHIP</text>
+      <text x="870" y="226" text-anchor="middle" class="t-mono">04 · GOAL</text>
+
+      <!-- Foundations -->
+      <a href="#agent-system">
+        <rect x="32" y="245" width="176" height="90" rx="12" fill="#111827" stroke="#22d3ee" stroke-width="1.5"/>
+        <text x="120" y="284" text-anchor="middle" class="t-title">Design System</text>
+        <text x="120" y="307" text-anchor="middle" class="t-sub">tokens · components</text>
+      </a>
+      <a href="#agent-research">
+        <rect x="32" y="355" width="176" height="90" rx="12" fill="#111827" stroke="#22d3ee" stroke-width="1.5"/>
+        <text x="120" y="394" text-anchor="middle" class="t-title">UX Research</text>
+        <text x="120" y="417" text-anchor="middle" class="t-sub">usability tests · synthesis</text>
+      </a>
+
+      <!-- Design -->
+      <a href="#agent-ux">
+        <rect x="272" y="300" width="196" height="96" rx="12" fill="#111827" stroke="#22d3ee" stroke-width="1.5"/>
+        <text x="370" y="332" text-anchor="middle" class="t-title">UX &amp; UI</text>
+        <text x="370" y="351" text-anchor="middle" class="t-title">Design</text>
+        <text x="370" y="374" text-anchor="middle" class="t-sub">flows · prototypes · copy</text>
+      </a>
+
+      <!-- Review & ship -->
+      <a href="#agent-a11y">
+        <rect x="532" y="245" width="176" height="80" rx="12" fill="#111827" stroke="#22d3ee" stroke-width="1.5"/>
+        <text x="620" y="278" text-anchor="middle" class="t-title">Accessibility</text>
+        <text x="620" y="300" text-anchor="middle" class="t-sub">WCAG 2.2 AA · critique</text>
+      </a>
+      <line x1="620" y1="325" x2="620" y2="371" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#a-cyan)"/>
+      <text x="628" y="352" class="t-label">approved</text>
+      <a href="#agent-handoff">
+        <rect x="532" y="375" width="176" height="80" rx="12" fill="#111827" stroke="#22d3ee" stroke-width="1.5"/>
+        <text x="620" y="408" text-anchor="middle" class="t-title">Design QA</text>
+        <text x="620" y="427" text-anchor="middle" class="t-title">&amp; Handoff</text>
+        <text x="620" y="446" text-anchor="middle" class="t-sub">specs · states · build QA</text>
+      </a>
+
+      <!-- Goal -->
+      <rect x="770" y="280" width="200" height="116" rx="16" fill="rgba(52,211,153,0.08)" stroke="#34d399" stroke-width="1.5"/>
+      <text x="870" y="308" text-anchor="middle" class="t-mono" style="fill:#34d399">THE GOAL</text>
+      <text x="870" y="334" text-anchor="middle" class="t-title" style="font-size:17px">Users succeed</text>
+      <text x="870" y="356" text-anchor="middle" class="t-sub">key tasks, first try</text>
+      <text x="870" y="374" text-anchor="middle" class="t-sub">consistent &amp; accessible</text>
+
+      <!-- Work flow arrows -->
+      <path d="M208,290 C240,290 238,330 268,330" fill="none" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#a-cyan)"/>
+      <path d="M208,400 C240,400 238,366 268,366" fill="none" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#a-cyan)"/>
+      <path d="M468,348 C500,348 498,285 528,285" fill="none" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#a-cyan)"/>
+      <path d="M708,415 C740,415 738,360 766,360" fill="none" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#a-cyan)"/>
+
+      <!-- Inbound from Product -->
+      <a href="product.html#diagram">
+        <rect x="30" y="492" width="190" height="54" rx="27" fill="rgba(52,211,153,0.06)" stroke="#34d399" stroke-width="1.5" stroke-dasharray="4 3"/>
+        <text x="125" y="515" text-anchor="middle" class="t-title" style="font-size:13px">From Product system</text>
+        <text x="125" y="533" text-anchor="middle" class="t-sub">problems &amp; specs</text>
+      </a>
+      <line x1="120" y1="490" x2="120" y2="449" stroke="#34d399" stroke-width="1.5" marker-end="url(#a-green)"/>
+
+      <!-- Measurement -->
+      <a href="#agent-metrics">
+        <rect x="260" y="500" width="460" height="60" rx="12" fill="#111827" stroke="#f472b6" stroke-width="1.5"/>
+        <text x="490" y="526" text-anchor="middle" class="t-title">Design Quality &amp; UX Metrics</text>
+        <text x="490" y="546" text-anchor="middle" class="t-sub">task success · SUS · system adoption · accessibility debt</text>
+      </a>
+      <line x1="370" y1="470" x2="370" y2="497" stroke="#f472b6" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#a-pink)"/>
+      <line x1="620" y1="470" x2="620" y2="497" stroke="#f472b6" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#a-pink)"/>
+      <text x="378" y="490" class="t-label">designs</text>
+      <text x="628" y="490" class="t-label">shipped UI</text>
+      <path d="M870,396 V530 H724" fill="none" stroke="#f472b6" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#a-pink)"/>
+      <text x="880" y="470" class="t-label">usability &amp;</text>
+      <text x="880" y="484" class="t-label">behavior data</text>
+
+      <!-- Feedback loop to orchestrator -->
+      <path d="M490,560 V580 H8 V126 H366" fill="none" stroke="#f472b6" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#a-pink)"/>
+      <text x="190" y="120" text-anchor="middle" class="t-label">weekly scorecard → re-plan</text>
+    </svg>
+    <div class="diagram-legend">
+      <span class="ctrl">dispatch (orchestrator → agents)</span>
+      <span>work flow (components, insights, designs, specs)</span>
+      <span class="dash">data &amp; feedback loop</span>
+      <span class="gate">human approval</span>
+    </div>
+  </div>
+
+  <!-- ===================== ROSTER ===================== -->
+  <h2 class="section-title" id="roster">The agents and what each one does</h2>
+  <p>Each agent becomes its own markdown file. The defaults below are best practice. The setup interview adjusts them to your product, platforms, brand, team and tools.</p>
+
+  <div class="agent-grid">
+
+    <div class="agent-card lead" id="agent-orchestrator">
+      <div class="stage">// control</div>
+      <h3>Design Orchestrator</h3>
+      <p class="mission">Acts as head of design. Takes in work from Product, decides what gets designed this week and how much finish it needs, runs critiques, and brings you only the decisions that need you.</p>
+      <h5>Does</h5>
+      <ul>
+        <li>Turns product specs and the scorecard into design briefs: the problem, the users, the constraints, and the definition of done.</li>
+        <li>Matches the level of finish to the risk. Small changes go straight to the design system; new flows go through wireframes, a prototype and a usability test.</li>
+        <li>Runs a weekly critique against your design principles and collects everything that needs your approval into one list.</li>
+      </ul>
+      <h5>Asks you</h5>
+      <ul><li>Who designs today (nobody, a part-time designer, a team), the current design goals, and who has the final say on UI and brand.</li></ul>
+      <div class="file">→ agents/design-orchestrator.md</div>
     </div>
 
-    <div class="step">
-      <div class="step-num">02</div>
-      <div class="step-body">
-        <h3>Ship the component library once, reuse forever</h3>
-        <p>Build ~25 primitives in code. Don't recreate per-feature.</p>
-        <ul>
-          <li>Button, Input, Select, Checkbox, Radio, Switch, Textarea, DatePicker.</li>
-          <li>Card, Dialog, Drawer, Popover, Tooltip, Toast, Tabs.</li>
-          <li>Table, Pagination, Skeleton, EmptyState, ErrorBoundary.</li>
-          <li>Layout primitives: Stack, Cluster, Box, Grid.</li>
-        </ul>
-        <div class="callout tip">Use <strong>shadcn/ui</strong> or <strong>Radix + Tailwind</strong> to shortcut this in ~3 days. Skin with your tokens. Done.</div>
-      </div>
+    <div class="agent-card" id="agent-system">
+      <div class="stage">// 01 · foundations</div>
+      <h3>Design System</h3>
+      <p class="mission">Owns the tokens and components every screen is built from, so the product looks and behaves like one app rather than four.</p>
+      <h5>Does</h5>
+      <ul>
+        <li>Defines <strong>semantic tokens</strong> (color, spacing, type, radius, shadow, motion) in one source of truth that syncs to Figma variables and to code (see the <a href="examples/design.md">example design-system.md</a>).</li>
+        <li>Maintains about 25 components, each with every state documented (hover, focus, disabled, loading, error, empty), its API and its keyboard behavior.</li>
+        <li>Answers "is there a component for X?" before anyone builds a one-off. It can optionally run as a tool that <a href="engineering.html">Engineering</a> agents call.</li>
+      </ul>
+      <h5>Asks you</h5>
+      <ul><li>Your brand assets, your front-end stack (e.g. React + Tailwind + shadcn/ui), and whether you have a Figma library or Storybook.</li></ul>
+      <div class="file">→ agents/design-system.md</div>
     </div>
 
-    <div class="step">
-      <div class="step-num">03</div>
-      <div class="step-body">
-        <h3>Build the Design Agent (MCP server)</h3>
-        <p>A tiny TypeScript MCP server exposing three tools every engineering agent calls.</p>
-        <ul>
-          <li><code class="inline">get_token(name)</code> — returns the semantic value for a token.</li>
-          <li><code class="inline">get_component(name)</code> — returns the current component API + a code example.</li>
-          <li><code class="inline">review_ui(diff)</code> — takes a UI diff, returns violations ("used hex color outside tokens", "button not from DS").</li>
-        </ul>
-        <pre class="code"><span class="c-com"># Engineering agent asking the design agent</span>
-&gt; I need to add a destructive confirmation dialog.
-  &gt; <span class="c-kw">tool_use</span>: design.get_component(<span class="c-str">"ConfirmDialog"</span>)
-  &gt; <span class="c-kw">tool_use</span>: design.get_token(<span class="c-str">"color.danger.fg"</span>)
-  &lt;- returns component API + token value + a11y note</pre>
-      </div>
+    <div class="agent-card" id="agent-research">
+      <div class="stage">// 01 · foundations</div>
+      <h3>UX Research</h3>
+      <p class="mission">Grounds design decisions in what users actually do, by testing early and cheaply instead of debating in meetings.</p>
+      <h5>Does</h5>
+      <ul>
+        <li>Writes test plans and task scripts. A round of usability testing with about <strong>5 users</strong> catches most problems in a flow.</li>
+        <li>Synthesizes sessions, recordings and feedback into issues ranked by severity, each with direct quotes and how often it occurred.</li>
+        <li>Handles consent forms and anonymizes notes. Recordings and personal data stay in the research tool.</li>
+      </ul>
+      <h5>Asks you</h5>
+      <ul><li>Your users and key tasks, existing research, where to find participants, and any research tools you use (Maze, Lookback, Dovetail, UserTesting).</li></ul>
+      <div class="file">→ agents/ux-research.md</div>
     </div>
 
-    <div class="step">
-      <div class="step-num">04</div>
-      <div class="step-body">
-        <h3>Figma MCP: close the loop with designers</h3>
-        <p>When you have a part-time designer, connect Figma via MCP so agents can read frame specs and designers can export tokens.</p>
-        <ul>
-          <li>Engineering agents pull frame JSON to understand intent.</li>
-          <li>Figma variables sync to <code class="inline">tokens.json</code> on commit — one source of truth.</li>
-          <li>Optional: a "figma-to-code" agent that produces a first-pass React component from a selected frame, wired to your tokens.</li>
-        </ul>
-      </div>
+    <div class="agent-card" id="agent-ux">
+      <div class="stage">// 02 · design</div>
+      <h3>UX &amp; UI Design</h3>
+      <p class="mission">Designs flows and screens that solve the problem in the brief, using only parts from the design system.</p>
+      <h5>Does</h5>
+      <ul>
+        <li>Starts from the user's task and the flow, then low-fidelity wireframes, before any polished screens. It explores 2–3 options before converging.</li>
+        <li>Designs <strong>every state</strong> (empty, loading, error, partial, success) and every breakpoint, and builds clickable prototypes for testing.</li>
+        <li>Writes the UX copy: sentence case, verb-first buttons, and error messages that say what happened and how to fix it. No "Oops!"</li>
+      </ul>
+      <h5>Asks you</h5>
+      <ul><li>Your platforms and breakpoints, design principles, brand voice, and any reference products you admire.</li></ul>
+      <div class="file">→ agents/ux-ui-design.md</div>
     </div>
 
-    <div class="step">
-      <div class="step-num">05</div>
-      <div class="step-body">
-        <h3>Brand voice is part of design</h3>
-        <p>Microcopy is design. Store it with the system and make the design agent own it too.</p>
-        <ul>
-          <li>Sentence case everywhere unless explicitly brand.</li>
-          <li>Error copy rules: name what happened, what's expected, what to do next. No "Oops!"</li>
-          <li>Empty-state rules: a line about what will appear, a primary action, no illustrations that mean nothing.</li>
-          <li>Confirmation dialogs: verb-first button labels ("Delete draft" beats "OK").</li>
-        </ul>
-      </div>
+    <div class="agent-card" id="agent-a11y">
+      <div class="stage">// 03 · review &amp; ship</div>
+      <h3>Accessibility &amp; Design Review</h3>
+      <p class="mission">Makes sure every design is accessible and usable before it reaches engineering, where fixes cost ten times more.</p>
+      <h5>Does</h5>
+      <ul>
+        <li>Audits designs against <strong>WCAG 2.2 AA</strong>: contrast, focus order and visibility, target size, labels, motion, and not relying on color alone.</li>
+        <li>Critiques designs against usability heuristics and your design principles, with each issue ranked blocking or suggestion.</li>
+        <li>For built UI: automated checks (axe-core) plus manual keyboard and screen-reader passes (VoiceOver, NVDA).</li>
+      </ul>
+      <h5>Asks you</h5>
+      <ul><li>Your accessibility target, whether customers ask for an accessibility conformance report (VPAT), and any known users with accessibility needs.</li></ul>
+      <div class="file">→ agents/accessibility-review.md</div>
     </div>
 
-    <div class="step">
-      <div class="step-num">06</div>
-      <div class="step-body">
-        <h3>Accessibility baked in, not bolted on</h3>
-        <p>Enterprise customers will ask. Ship accessible by default; refuse to expose components that aren't.</p>
-        <ul>
-          <li>Every component renders with a visible focus ring using <code class="inline">--focus</code> token.</li>
-          <li>Contrast: AA by default; AAA for body copy where feasible.</li>
-          <li>CI eval: axe-core runs against every Storybook story; PRs fail on violations.</li>
-          <li>Keyboard map documented per component — agents reading the API see it.</li>
-        </ul>
-      </div>
+    <div class="agent-card" id="agent-handoff">
+      <div class="stage">// 03 · review &amp; ship</div>
+      <h3>Design QA &amp; Handoff</h3>
+      <p class="mission">Makes sure what ships matches what was designed, without endless back-and-forth with engineering.</p>
+      <h5>Does</h5>
+      <ul>
+        <li>Writes handoff specs that <a href="engineering.html">Engineering</a> agents can build from: the components and tokens to use (never raw hex values), every state, responsive behavior, interactions, final copy and edge cases.</li>
+        <li>Reviews UI pull requests. It blocks on token violations, accessibility regressions and one-off components, and only suggests on spacing and copy.</li>
+        <li>Compares the built UI with the design in light and dark mode, and logs drift as design debt.</li>
+      </ul>
+      <h5>Asks you</h5>
+      <ul><li>Your code repository and pull-request process, your issue tracker, and whether design review should block merges.</li></ul>
+      <div class="file">→ agents/design-qa-handoff.md</div>
     </div>
 
-    <div class="step">
-      <div class="step-num">07</div>
-      <div class="step-body">
-        <h3>Review gates for UI PRs</h3>
-        <p>The design agent becomes a required reviewer in CI for any PR touching <code class="inline">*.tsx</code> or <code class="inline">*.css</code>.</p>
-        <ul>
-          <li>Parses the diff, calls <code class="inline">review_ui</code>, comments inline on violations.</li>
-          <li>Blocking only for token violations, accessibility regressions, and new "one-off" components.</li>
-          <li>Non-blocking suggestions for microcopy and spacing rhythm.</li>
-        </ul>
-        <div class="callout warn"><strong>Rule:</strong> if an engineer needs a component that doesn't exist, they open a design-system ticket — they don't ship a one-off. The agent enforces this.</div>
-      </div>
-    </div>
-
-    <div class="step">
-      <div class="step-num">08</div>
-      <div class="step-body">
-        <h3>Marketing &amp; product share the system</h3>
-        <p>Your landing pages and your app should feel like one company.</p>
-        <ul>
-          <li>Marketing site imports the same token package as the product.</li>
-          <li>A subset of components (Button, Card, Section) are shared.</li>
-          <li>The marketing agent (see <a href="marketing.html">Marketing</a>) calls the same <code class="inline">get_token</code> tool so ad creative stays on-brand.</li>
-        </ul>
-      </div>
+    <div class="agent-card measure" id="agent-metrics">
+      <div class="stage">// measure &amp; learn</div>
+      <h3>Design Quality &amp; UX Metrics</h3>
+      <p class="mission">Measures whether design is working for users, and whether the system is holding together, so the next priority is based on evidence.</p>
+      <h5>Does</h5>
+      <ul>
+        <li>Tracks task success, time on task, and ease ratings (SUS, or a single ease question after each task) on key flows.</li>
+        <li>Tracks design-system adoption: the share of UI built from library components, the number of one-offs and hard-coded values, and open accessibility issues.</li>
+        <li>If you have product analytics or session replay (e.g. PostHog), <strong>asks you to connect it</strong> read-only to find where users struggle. It writes a weekly design scorecard.</li>
+      </ul>
+      <h5>Asks you</h5>
+      <ul><li>Your analytics and session-replay tools, the key flows to track, and your current baselines if known.</li></ul>
+      <div class="file">→ agents/design-metrics.md</div>
     </div>
 
   </div>
 
-  <h2 class="section-title">Deliverables checklist</h2>
-  <table class="stack-table">
-    <thead><tr><th>Artifact</th><th>Where it lives</th><th>Consumed by</th></tr></thead>
-    <tbody>
-      <tr><td>tokens.json</td><td>Monorepo <code class="inline">/packages/tokens</code></td><td>Web, iOS, Figma, agents</td></tr>
-      <tr><td>Component library</td><td><code class="inline">/packages/ui</code></td><td>Product + marketing</td></tr>
-      <tr><td>Design MCP server</td><td><code class="inline">/services/design-agent</code></td><td>All engineering agents</td></tr>
-      <tr><td>Microcopy rules</td><td><code class="inline">/brand/copy.md</code></td><td>Design agent, marketing</td></tr>
-      <tr><td>A11y CI</td><td>GitHub Actions</td><td>Blocking gate</td></tr>
-    </tbody>
-  </table>
+  <!-- ===================== FILES ===================== -->
+  <h2 class="section-title" id="files">What Claude will create for you</h2>
+  <p>A folder you own. Plain markdown files are easy to edit, version and reuse. In Claude Code the agent files go in <code class="inline">.claude/agents/</code> so they load as subagents.</p>
+
+<pre class="tree">design-agents/
+├── CLAUDE.md                    <span class="c-com"># entry point: goal, roster, workflow, rules</span>
+├── context/                     <span class="c-com"># shared brain, read by every agent</span>
+│   ├── product-and-brand.md
+│   ├── users-and-key-tasks.md
+│   ├── design-principles.md
+│   ├── design-system-inventory.md
+│   ├── platforms-and-stack.md
+│   └── tools-and-access.md
+├── agents/                      <span class="c-com"># .claude/agents/ in Claude Code</span>
+│   ├── design-orchestrator.md
+│   ├── design-system.md
+│   ├── ux-research.md
+│   ├── ux-ui-design.md
+│   ├── accessibility-review.md
+│   ├── design-qa-handoff.md
+│   └── design-metrics.md
+├── playbooks/
+│   ├── first-30-days.md
+│   ├── weekly-cadence.md
+│   └── approval-gates.md
+└── outputs/                     <span class="c-com"># where agents deliver work</span>
+    ├── system/  research/  designs/  reviews/  handoffs/
+    └── reports/</pre>
+
+  <!-- ===================== SETUP PROMPT ===================== -->
+  <h2 class="section-title" id="setup">Setup prompt: paste it into your Claude</h2>
+  <p>Claude interviews you in five short rounds (product and brand, users, team and goals, tools, guardrails). Every question shows a best-practice default, so you can answer "defaults" and keep going. It then writes the files and gives you a first-week plan.</p>
+
+  <div class="how-to">
+    <div class="mini-card">
+      <h4><span class="n">1</span>Copy or download</h4>
+      <p>Use the buttons below. The download is a <code class="inline">.md</code> file you can keep or share with your team.</p>
+    </div>
+    <div class="mini-card">
+      <h4><span class="n">2</span>Paste into Claude</h4>
+      <p>Claude Code or the Claude desktop app can write the folder directly. On claude.ai, Claude delivers the files as a zip or as copyable blocks.</p>
+    </div>
+    <div class="mini-card">
+      <h4><span class="n">3</span>Answer &amp; connect</h4>
+      <p>Answer the interview questions. Connect Figma, your code repository and your analytics through Claude's connectors. Never paste a password or token into the chat.</p>
+    </div>
+  </div>
+
+  <div class="prompt-box">
+    <div class="prompt-toolbar">
+      <span class="file-name">design-agent-system-setup.md</span>
+      <button class="btn" type="button" data-prompt-copy="prompt-design">Copy prompt</button>
+      <button class="btn secondary" type="button" data-prompt-download="prompt-design" data-filename="design-agent-system-setup.md">Download .md</button>
+    </div>
+    <pre data-prompt-view="prompt-design">Loading prompt… (enable JavaScript to view, copy, or download)</pre>
+  </div>
+
+  <div class="callout tip"><strong>Using it on claude.ai?</strong> After Claude generates the files, create a <strong>Project</strong>. Paste <code class="inline">CLAUDE.md</code> into the project instructions and upload the <code class="inline">context/</code> and <code class="inline">agents/</code> files as project knowledge. Every chat in that project then has the whole team available.</div>
+
+  <div class="two-col">
+    <div class="mini-card">
+      <h4>// always needs your approval</h4>
+      <ul>
+        <li>Publishing the design library or changing tokens</li>
+        <li>Adding, changing or removing shared components</li>
+        <li>Designs moving to "ready for engineering"</li>
+        <li>Recruiting or contacting users, and incentives</li>
+        <li>Brand changes and anything that ships to production</li>
+      </ul>
+    </div>
+    <div class="mini-card">
+      <h4>// red flags to watch</h4>
+      <ul>
+        <li>One-off components multiplying: the system is missing a part, or isn't being used</li>
+        <li>Lots of hard-coded hex values and spacing in code: tokens aren't wired into the build</li>
+        <li>Designs approved but never tested: usability problems surface in production</li>
+        <li>Accessibility found only at the end: it isn't part of design review</li>
+        <li>Built UI drifting from the designs: handoff specs are missing states or edge cases</li>
+      </ul>
+    </div>
+  </div>
 </main>
-<footer><span>Stargate · Product Design</span><span class="mono">/design</span></footer>
+<footer><span>Stargate · Design Agent System</span><span class="mono">/design</span></footer>
+
+<script type="text/plain" id="prompt-design">
+# Design Agent System — Setup Prompt
+
+You are going to set up a **product design agent system** for my product. It is a small team of specialized AI agents, defined as markdown files in a folder, working together toward one goal:
+
+> **Every screen users touch is usable, accessible and consistent, so users complete key tasks on the first try and engineering ships UI fast without building up design debt.**
+
+Your job in this conversation:
+1. **Interview me** so the system fits my product, brand, platforms and team.
+2. **Fill any gaps with best-practice defaults**, and tell me which ones you assumed.
+3. **Create the folder** of context files, agent files and playbooks described below.
+4. **Hand me a first-week plan** and the list of tools I should connect.
+
+---
+
+## Ground rules
+
+- Ask questions in **rounds of no more than 6**, numbered. After each question, put in [brackets] the default you'll use if I skip it. I can reply "defaults" to accept every default in a round.
+- **Don't ask about things you can look up.** If I give you a website, app link or public design or brand pages and you can browse, review them first: brand colors, type, components in use, key flows, and obvious usability or accessibility issues. Use what you find to pre-fill answers, then ask me to confirm.
+- **Never ask me for passwords, API keys, or personal access tokens in the chat.** For tool access (Figma, GitHub, Storybook, analytics), use official connectors or MCP integrations that sign in through the provider. Ask for read-only access first. If no connector exists, ask me for exports instead: screenshots, a Figma frame link or PDF export, a tokens file, or a component list.
+- **Never publish or change shared design assets on your own.** Changes to the design library, tokens, shared components or production UI are proposed for approval, never applied directly.
+- **Protect research participants.** Get informed consent before any session, anonymize notes and quotes (no names, emails or faces in the files), keep recordings in the research tool, and never contact users without my approval.
+- **Don't invent facts about my product, users or brand.** Mark anything unconfirmed as `TODO:` in the files.
+- Write every file so that another Claude session, with no access to this conversation, could act on it. Keep files specific to my product and concise. Use bullet points rather than essays.
+
+---
+
+## Step 1 — Interview me
+
+### Round 1 · Product and brand
+1. Product name, plus a **website or app URL** (and a Figma link if you have one).
+2. What does the product do, and who uses it, in one or two sentences? [inferred from site]
+3. Platforms: web app, marketing site, iOS, Android, desktop, or a mix? Which breakpoints matter most? [web, desktop first plus mobile web]
+4. Front-end stack: e.g. React + Tailwind + shadcn/ui, Vue, SwiftUI, Flutter. [React + Tailwind + shadcn/ui]
+5. Brand assets: a logo, colors, type, a voice guide, or "we don't really have one"? [inferred from site; flagged TODO]
+6. Stage: pre-launch, early (moving fast, inconsistent UI), growing (redesign or scaling the system), or established? [early]
+
+### Round 2 · Users and key tasks
+1. Primary users and the 3 most important tasks they do in the product. [inferred; flagged TODO]
+2. The top UX complaints or drop-off points you know of. [none known; Research and Metrics will find them]
+3. Existing research: interviews, usability tests, survey results, support themes. [none]
+4. Accessibility needs: a compliance requirement (ADA, Section 508, EN 301 549), customers asking for an accessibility conformance report (VPAT), or known users with disabilities? [WCAG 2.2 AA as the target]
+5. Products whose design you admire, and why. [none]
+
+### Round 3 · Team, goals, constraints
+1. Who designs today: nobody (engineers build the UI), a part-time or contract designer, or a design team? [engineers build the UI]
+2. Who builds the UI: engineers, coding agents, or both? [both]
+3. Current design goals: e.g. consistency, onboarding, a redesign, mobile, accessibility compliance, speed. [consistency + onboarding]
+4. Cycle length, and how design work arrives (from Product specs, a backlog, ad hoc). [2-week cycles, from Product specs]
+5. Who has the final say on UI and brand decisions? [the founder]
+
+### Round 4 · Tools and access
+For each item, tell me what you use, or "none":
+1. Figma (a library? variables? Dev Mode?) or another design tool
+2. Component library and docs: Storybook, a UI package in your repo, a design-tokens file
+3. Code repository and pull-request process (GitHub, GitLab) and any CI checks
+4. Research tools: Maze, Lookback, UserTesting, Dovetail, a calendar plus Zoom
+5. Product analytics and session replay: PostHog, Amplitude, Hotjar, Microsoft Clarity
+6. Issue tracker and docs: Linear, Jira, Notion
+
+**After this round:**
+- **Tools I already have.** Check whether a connector or MCP integration for that tool exists in your current environment. In claude.ai and the desktop app, look under Settings → Connectors. In Claude Code, look at `claude mcp`. If one exists, tell me exactly how to connect it, read-only first. If none exists, tell me which export to provide and how. Record each tool as connected, export-only, or not connected in `context/tools-and-access.md`.
+- **Tools I don't have.** Recommend the default from Step 2 that fits my stage and budget, explain why in one line, and add a setup task to the plan. Don't make tools a blocker. The system must work from screenshots, links and exports alone.
+
+### Round 5 · Guardrails and ways of working
+1. Accessibility target. [WCAG 2.2 AA; AAA contrast for body text where feasible]
+2. How strict are brand rules: locked, guided, or flexible? [guided]
+3. Research rules: who may recruit and contact users, the incentive budget, and consent and data-retention requirements. [only you, with your approval of each session; delete recordings after 90 days]
+4. Should design review block pull requests? [only on token violations, accessibility regressions and one-off components]
+5. Anything beyond the default approval gates that must come to you first? [defaults only]
+6. Where should agents deliver work? [files in `outputs/`; optionally Figma comments, pull-request comments, Linear, or Notion if connected]
+
+**Before creating anything**, show me a one-screen summary of what you learned and what you're assuming. Mark each item *confirmed*, *inferred* or *default*. Ask me to correct it. Then build.
+
+---
+
+## Step 2 — Best-practice defaults (use these unless my answers say otherwise)
+
+**Tokens**
+- Semantic names, never literal ones: `color.surface`, `color.ink`, `color.accent`, `color.danger`, not `blue-500`. Use three tiers: primitive → semantic → component.
+- One spacing scale (4/8-point: 4, 8, 12, 16, 24, 32, 48, 64), no more than 5 type roles (display, heading, body, caption, mono), and small fixed sets of radius, shadow and motion values.
+- Light and dark modes defined at the semantic tier.
+- **One source of truth** (`tokens.json` or Style Dictionary) that feeds Figma variables, CSS variables or theme files, and the agents.
+
+**Components**
+- About 25 primitives built once in code. For React, start from shadcn/ui or Radix + Tailwind, styled with the tokens: Button, IconButton, Input, Textarea, Select, Combobox, Checkbox, Radio, Switch, Tabs, Tooltip, Popover, Dialog, Sheet, Toast, Badge, Avatar, Card, Table, Pagination, Skeleton, EmptyState, Banner, Breadcrumbs, and the layout primitives (Stack, Grid).
+- Every component documents its API, variants, **all states** (default, hover, focus-visible, active, disabled, loading, error) and keyboard map, plus do's and don'ts.
+- No new shared component without design review. When engineering needs something missing, they open a design-system request rather than shipping a one-off.
+
+**UX and UI design**
+- Start from the user's task and the flow, then low-fidelity wireframes, then high fidelity. Explore 2–3 options before converging.
+- Design every state: empty, loading, error, partial, and success. Design responsive behavior at each breakpoint.
+- Reuse existing patterns before inventing new ones, and use only design-system components and tokens.
+- UX copy: sentence case; button labels start with a verb ("Delete draft", not "OK"); errors say what happened and what to do next; empty states explain what will appear and offer one main action; no "Oops!"
+
+**UX research**
+- Usability testing: about 5 participants per round, task-based, thinking aloud, moderated or unmoderated.
+- Ask about past behavior, not hypotheticals. Recruit a mix of new users, experienced users and churned users.
+- Synthesis: issues ranked by severity (blocker, major, minor), how often each occurred, direct anonymized quotes, and a recommended fix.
+- Consent before every session. Anonymize notes. Keep recordings in the research tool, with a retention limit.
+
+**Accessibility (WCAG 2.2 AA)**
+- Contrast at least 4.5:1 for body text, and 3:1 for large text, UI components and focus indicators.
+- Everything works with a keyboard, focus order is logical, and the focus ring is always visible and never hidden behind other content.
+- Targets are at least 24×24 CSS px (aim for 44×44 on touch), every form field has a visible label, and errors are announced to screen readers.
+- Never rely on color alone, respect reduced-motion settings, and give images meaningful alt text.
+- Testing: axe-core in CI on every component story or page, plus a manual keyboard pass and a screen-reader pass (VoiceOver or NVDA) on key flows.
+
+**Handoff and design QA**
+- Every handoff spec lists the components and props to use, tokens by name (never raw values), all states, responsive rules, interactions and motion, final copy, edge cases, and the analytics events from the Product spec.
+- UI pull requests include light and dark screenshots. Design review blocks only on token violations, accessibility regressions and new one-off components; everything else is a suggestion.
+- Compare the build with the design before release, and log any drift in a design-debt backlog.
+- Optional, more advanced: expose the design system as an MCP tool (`get_token`, `get_component`, `review_ui`) that coding agents call before writing UI.
+
+**Design quality metrics**
+- Usability: task success rate, time on task, and SUS or a single ease question after each task.
+- System health: the share of UI built from library components, the number of one-off components and hard-coded values, and open accessibility issues.
+- Delivery: time from spec to design-ready, and how many issues are found in QA versus in production.
+- Behavior: drop-off and rage clicks in the key flows, from analytics or session replay when connected.
+
+**Approval gates (always on):** publishing the design library or changing tokens, adding, changing or removing shared components, designs moving to "ready for engineering", recruiting or contacting users and paying incentives, brand changes, and anything that ships to production.
+
+---
+
+## Step 3 — Create the files
+
+**Where to write:**
+- If you can write files (Claude Code, or the Claude desktop app with folder access), ask where to create the folder [default: `./design-agents`] and write the files directly. **In Claude Code, put the agent files in `design-agents/.claude/agents/`** instead of `agents/` so they load as subagents. Tell me to start Claude Code from inside `design-agents/`.
+- If you can't write files but can run code, create the files and give me a single **.zip** to download.
+- Otherwise, output each file in its own code block, headed by its full path, in the order below.
+
+**Folder structure:**
+```
+design-agents/
+├── CLAUDE.md
+├── context/
+│   ├── product-and-brand.md
+│   ├── users-and-key-tasks.md
+│   ├── design-principles.md
+│   ├── design-system-inventory.md
+│   ├── platforms-and-stack.md
+│   └── tools-and-access.md
+├── agents/                (use .claude/agents/ in Claude Code)
+│   ├── design-orchestrator.md
+│   ├── design-system.md
+│   ├── ux-research.md
+│   ├── ux-ui-design.md
+│   ├── accessibility-review.md
+│   ├── design-qa-handoff.md
+│   └── design-metrics.md
+├── playbooks/
+│   ├── first-30-days.md
+│   ├── weekly-cadence.md
+│   └── approval-gates.md
+└── outputs/
+    ├── README.md
+    ├── system/  research/  designs/  reviews/  handoffs/
+    └── reports/
+```
+
+**`CLAUDE.md`** is the system's entry point. It contains:
+- The goal, the scorecard metrics with their targets, and current baselines (or TODO).
+- A text diagram of the flow: context → orchestrator → design system and UX research (which also receives problems and specs from the Product system) → UX and UI design → accessibility and design review → design QA and handoff → engineering builds → users succeed, with design metrics tracking designs, shipped UI and usability data and sending a weekly scorecard back to the orchestrator.
+- A roster table: agent, one-line job, when to use it, and its output folder.
+- The rules that every agent reads `context/` before working, uses only design-system parts, and never publishes shared assets; the approval gates; and the research-participant rules.
+- How to run the system, e.g. "Use the design-orchestrator agent to run this week's design cycle."
+
+**`context/` files** hold the shared brain, filled with my interview answers and your research. Label every section *confirmed*, *inferred* or *TODO*.
+- `product-and-brand.md`: what the product does, the brand attributes, logo and color usage, the voice and microcopy rules, and the products we admire.
+- `users-and-key-tasks.md`: personas, the top tasks with their success criteria, known pain points, accessibility needs, and anonymized research evidence.
+- `design-principles.md`: 3–5 principles specific to this product, each with a "this, not that" example, plus the critique checklist.
+- `design-system-inventory.md`: the current tokens (or a proposed token set), the component list with each one's status (exists / needs work / missing), and known one-offs and inconsistencies.
+- `platforms-and-stack.md`: platforms, breakpoints, front-end stack, component library, where tokens live, and the build and pull-request process.
+- `tools-and-access.md`: each tool with its status (connected / export-only / recommended / not needed), how to connect it, and the owner.
+
+**Every agent file** uses this template. The frontmatter keeps the file valid as a Claude Code subagent.
+```
+---
+name: <kebab-case-name>
+description: <one specific sentence on when to delegate to this agent>
+tools: <Claude Code only: list the tools it needs, e.g. Read, Write, Edit, Glob, Grep, WebSearch, WebFetch. Omit this line to inherit all tools, including connectors.>
+---
+# <Agent name>
+## Mission            (one or two sentences tied to the users-succeed goal)
+## Reads first        (which context/ files and outputs from other agents)
+## Responsibilities   (bullets, customized to this product)
+## Inputs it needs    (and the default it uses when they're missing)
+## Tools & connections (what it uses now, and what to connect next)
+## Outputs            (exact file paths in outputs/, with the format)
+## Hand-offs          (who receives its output, and what triggers the hand-off)
+## Approval gates     (actions it must never take without the owner)
+## KPIs it owns
+## Cadence            (what it does weekly and monthly)
+```
+
+Agent-specific requirements. Customize each one with my product, platforms, stack and tools:
+- **design-orchestrator.** Runs the weekly cycle from `playbooks/weekly-cadence.md`. Takes in problems and specs from Product (or from me), writes design briefs (problem, users, constraints, level of finish needed, definition of done), matches the process to the risk, runs the weekly critique against `context/design-principles.md`, and collects everything that needs my approval into a single list in `outputs/reports/`. It must never bypass an approval gate.
+- **design-system.** Maintains the tokens and components for *my stack*, proposes token and component changes as written change requests (`outputs/system/`) with a migration note, keeps `context/design-system-inventory.md` current, answers "is there a component for X?" questions, and optionally defines the `get_token`, `get_component` and `review_ui` tool contract for coding agents.
+- **ux-research.** Writes test plans, task scripts, consent wording and recruiting criteria; turns sessions and feedback into severity-ranked issues with anonymized quotes in `outputs/research/`; and keeps `context/users-and-key-tasks.md` up to date. It never contacts users without approval.
+- **ux-ui-design.** Produces flows, wireframes, high-fidelity screen specs and prototype plans in `outputs/designs/` (or in Figma, if connected with write access and I approve), covering every state and breakpoint, using only system components and tokens, and with final UX copy.
+- **accessibility-review.** Audits designs and built UI against *my accessibility target*, runs heuristic and principles critiques, and writes findings in `outputs/reviews/`, each ranked blocking or suggestion and paired with a specific fix.
+- **design-qa-handoff.** Writes handoff specs for Engineering in `outputs/handoffs/`, reviews UI pull requests (pull-request comments only with approval), checks builds against the designs, and maintains the design-debt backlog.
+- **design-metrics.** Defines the key flows and the usability and system-health metrics, guides me through connecting analytics and session replay read-only, scans the code or Figma for one-offs and hard-coded values, and writes the weekly design scorecard in `outputs/reports/`.
+
+**`playbooks/`**
+- `first-30-days.md`: Week 1, foundation: confirm context, audit the UI for inconsistencies (an inventory of every button, color and spacing value actually in use), run an accessibility baseline on the key flows, and set baseline metrics. Week 2, system: propose the token set and component gap list, draft design principles, and prioritize fixes. Week 3, design and test: redesign the highest-priority flow with every state, then run a 5-user usability test. Week 4, ship and learn: handoff spec, build QA, the first scorecard, and the next 30-day plan. Adapt it to my stage and answers.
+- `weekly-cadence.md`: Monday: intake and briefs. Tuesday: system requests and research sessions. Wednesday: design critique, with designs sent to me for approval. Thursday: accessibility review and handoff. Friday: build QA, the scorecard and lessons learned. Fit it to my cycle length and review time.
+- `approval-gates.md`: the default gates plus mine, who approves each, and how to submit an item for approval.
+
+**`outputs/README.md`** explains what each subfolder holds and the file naming convention (`YYYY-MM-DD-flow-or-topic.md`).
+
+---
+
+## Step 4 — Wrap up
+
+When the files are created, give me:
+1. The folder tree, with a one-line description of each file.
+2. **Assumptions and TODOs.** Everything you defaulted or couldn't confirm, and how to resolve each.
+3. **Connections to set up, in priority order.** Figma comes first, then the code repository and Storybook, then analytics and session replay, then research tools. For each, give the exact steps in this environment.
+4. **The first-week plan,** with the one thing I should do today (usually: screenshot the 3 key flows so the UI audit can start).
+5. **How to use the system day to day:**
+   - *Claude Code:* "Use the design-orchestrator agent to run this week's design cycle," or call any agent directly, e.g. "Use the accessibility-review agent to audit the signup flow."
+   - *claude.ai:* Create a Project. Paste `CLAUDE.md` into the project instructions and upload the `context/` and `agents/` files as project knowledge. Then ask, for example, "Acting as the ux-ui-design agent, design the empty, loading and error states for the dashboard."
+
+Start now with Round 1. If I've already given you a product URL, review it first and pre-fill what you can.
+</script>
+<script src="prompt.js"></script>
 </body></html>
