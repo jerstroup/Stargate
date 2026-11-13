@@ -3,7 +3,8 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Product Management · Stargate</title>
+<title>Product Agent System · Stargate</title>
+<meta name="description" content="A default product management agent system: orchestrator, customer discovery, market intel, prioritization, spec writer, launch & experiments, and product analytics agents, plus a copy-paste setup prompt for Claude." />
 <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -26,138 +27,599 @@
 
 <main>
   <div class="page-header">
-    <div class="kicker">// PRODUCT MANAGEMENT</div>
-    <h1>From customer signal to executable spec, without the middle layer</h1>
-    <p>Early-stage PM is mostly listening, pattern-matching, and writing. An agentic PM stack compresses the "listen → synthesize → prioritize → spec" loop from weeks to days, and produces specs the engineering planner can execute without ambiguity.</p>
+    <div class="kicker">// PRODUCT · AGENT SYSTEM</div>
+    <h1>A product team of agents that ships what users actually need</h1>
+    <p>Seven agents that work like a small product org. Two listen to users and the market. One decides what to build. One writes specs that engineering can act on without guessing. One ships and runs the experiments. One measures what changed. An orchestrator keeps every bet tied to a measurable outcome. Copy the <a href="#setup">setup prompt</a> into Claude. It will interview you about your product and then write the whole system as a folder of agent files.</p>
   </div>
 
   <div class="tags">
-    <span class="tag cyan">user research</span>
+    <span class="tag cyan">customer discovery</span>
+    <span class="tag cyan">market intel</span>
+    <span class="tag cyan">prioritization</span>
     <span class="tag cyan">roadmap</span>
-    <span class="tag cyan">spec writing</span>
-    <span class="tag cyan">discovery</span>
+    <span class="tag cyan">specs</span>
+    <span class="tag cyan">experiments &amp; launch</span>
+    <span class="tag cyan">product analytics</span>
   </div>
 
-  <div class="steps">
+  <!-- ===================== GOAL ===================== -->
+  <h2 class="section-title">The goal the system works toward</h2>
+  <p>Every agent, every task, and every weekly report is judged against one outcome.</p>
 
-    <div class="step">
-      <div class="step-num">01</div>
-      <div class="step-body">
-        <h3>Research synthesis agent</h3>
-        <p>Record every customer call. Feed transcripts to a synthesis agent that clusters pain points, quotes, and feature asks.</p>
-        <ul>
-          <li>Sources: Fireflies/Granola (calls), Intercom/email, in-product feedback widget.</li>
-          <li>Every 2 weeks, the agent produces a "voice-of-customer" doc with clustered themes, frequency, and direct quotes.</li>
-          <li>It links each theme to the underlying calls so the PM can drill in.</li>
-        </ul>
-        <div class="callout tip">Force the agent to include direct quotes, not summaries. Quotes survive the pattern-match; summaries decay.</div>
-      </div>
+  <div class="goal-panel">
+    <div>
+      <div class="label">// north star</div>
+      <h2>Ship the right things: every release targets a real, evidenced user problem and measurably improves activation, retention, or expansion.</h2>
+      <p>The system counts a feature as a win when users change their behavior, not when it ships. You pick the north-star metric during setup, for example weekly active teams doing the core action, or successful transactions. Every spec states the result it's expected to move, and every launch is checked against that result.</p>
+    </div>
+    <div class="metrics">
+      <div class="metric"><div class="k">Primary</div><div class="v">North-star metric (defined in setup)</div></div>
+      <div class="metric"><div class="k">Leading</div><div class="v">Activation rate · week-4 retention</div></div>
+      <div class="metric"><div class="k">Hit rate</div><div class="v">% of launches that hit their success metric</div></div>
+      <div class="metric"><div class="k">Guardrail</div><div class="v">No spec without evidence · no launch without a metric</div></div>
+    </div>
+  </div>
+
+  <!-- ===================== DIAGRAM ===================== -->
+  <h2 class="section-title" id="diagram">How the agents work together</h2>
+  <p>The orchestrator sets the week's focus. Work moves from discovering problems to deciding which to solve, then defining, building and shipping. Product Analytics measures usage at every step and sends a scorecard back, so the next roadmap decision is based on what changed for users. Click any agent to jump to its role.</p>
+
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 1000 585" role="img" aria-labelledby="dg-title dg-desc" xmlns="http://www.w3.org/2000/svg">
+      <title id="dg-title">Product agent system flow</title>
+      <desc id="dg-desc">Shared product context feeds a Product Orchestrator, which you approve. The orchestrator dispatches work to Customer Discovery and Market and Competitive Intel (discover), then Prioritization and Roadmap (decide), then Spec Writer and Launch and Experiments (define and ship, with engineering and design building in between), producing measurable product outcomes. Product Analytics feeds usage data into prioritization, tracks launches and outcomes, and sends a weekly scorecard back to the orchestrator.</desc>
+      <defs>
+        <marker id="a-cyan" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#22d3ee"/></marker>
+        <marker id="a-violet" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#7c5cff"/></marker>
+        <marker id="a-pink" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#f472b6"/></marker>
+        <marker id="a-amber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#fbbf24"/></marker>
+      </defs>
+
+      <!-- Shared context band -->
+      <rect x="20" y="10" width="960" height="52" rx="10" fill="rgba(34,211,238,0.06)" stroke="#22d3ee" stroke-opacity="0.5" stroke-dasharray="4 4"/>
+      <text x="500" y="31" text-anchor="middle" class="t-mono">SHARED CONTEXT · READ BY EVERY AGENT</text>
+      <text x="500" y="50" text-anchor="middle" class="t-sub">product overview · users &amp; personas · strategy &amp; goals · competitors · metrics &amp; data · tools &amp; access</text>
+      <line x1="500" y1="62" x2="500" y2="91" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#a-cyan)"/>
+
+      <!-- Orchestrator -->
+      <a href="#agent-orchestrator">
+        <rect x="370" y="94" width="260" height="64" rx="12" fill="#1c1640" stroke="#7c5cff" stroke-width="1.5"/>
+        <text x="500" y="121" text-anchor="middle" class="t-title">Product Orchestrator</text>
+        <text x="500" y="142" text-anchor="middle" class="t-sub">sets focus · routes work · decision log</text>
+      </a>
+
+      <!-- You -->
+      <rect x="760" y="100" width="220" height="52" rx="26" fill="#161d2e" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="870" y="122" text-anchor="middle" class="t-title">You (product owner)</text>
+      <text x="870" y="140" text-anchor="middle" class="t-sub">approve roadmap · specs · launches</text>
+      <line x1="633" y1="126" x2="756" y2="126" stroke="#fbbf24" stroke-width="1.5" marker-start="url(#a-amber)" marker-end="url(#a-amber)"/>
+      <text x="694" y="117" text-anchor="middle" class="t-label">approval gates</text>
+
+      <!-- Dispatch bus -->
+      <line x1="500" y1="158" x2="500" y2="180" stroke="#7c5cff" stroke-width="1.5"/>
+      <line x1="120" y1="180" x2="620" y2="180" stroke="#7c5cff" stroke-width="1.5"/>
+      <line x1="120" y1="180" x2="120" y2="202" stroke="#7c5cff" stroke-width="1.5" marker-end="url(#a-violet)"/>
+      <line x1="370" y1="180" x2="370" y2="202" stroke="#7c5cff" stroke-width="1.5" marker-end="url(#a-violet)"/>
+      <line x1="620" y1="180" x2="620" y2="202" stroke="#7c5cff" stroke-width="1.5" marker-end="url(#a-violet)"/>
+      <text x="245" y="174" text-anchor="middle" class="t-label">focus &amp; research asks</text>
+
+      <!-- Lanes -->
+      <rect x="20" y="205" width="200" height="265" rx="14" fill="rgba(255,255,255,0.015)" stroke="#2d3748"/>
+      <rect x="260" y="205" width="220" height="265" rx="14" fill="rgba(255,255,255,0.015)" stroke="#2d3748"/>
+      <rect x="520" y="205" width="200" height="265" rx="14" fill="rgba(255,255,255,0.015)" stroke="#2d3748"/>
+      <text x="120" y="226" text-anchor="middle" class="t-mono">01 · DISCOVER</text>
+      <text x="370" y="226" text-anchor="middle" class="t-mono">02 · DECIDE</text>
+      <text x="620" y="226" text-anchor="middle" class="t-mono">03 · DEFINE &amp; SHIP</text>
+      <text x="870" y="226" text-anchor="middle" class="t-mono">04 · GOAL</text>
+
+      <!-- Discover -->
+      <a href="#agent-discovery">
+        <rect x="32" y="245" width="176" height="90" rx="12" fill="#111827" stroke="#22d3ee" stroke-width="1.5"/>
+        <text x="120" y="276" text-anchor="middle" class="t-title">Customer</text>
+        <text x="120" y="295" text-anchor="middle" class="t-title">Discovery</text>
+        <text x="120" y="317" text-anchor="middle" class="t-sub">interviews · feedback · JTBD</text>
+      </a>
+      <a href="#agent-market">
+        <rect x="32" y="355" width="176" height="90" rx="12" fill="#111827" stroke="#22d3ee" stroke-width="1.5"/>
+        <text x="120" y="386" text-anchor="middle" class="t-title">Market &amp;</text>
+        <text x="120" y="405" text-anchor="middle" class="t-title">Competitive Intel</text>
+        <text x="120" y="427" text-anchor="middle" class="t-sub">changelogs · reviews · gaps</text>
+      </a>
+
+      <!-- Decide -->
+      <a href="#agent-prioritization">
+        <rect x="272" y="300" width="196" height="96" rx="12" fill="#111827" stroke="#22d3ee" stroke-width="1.5"/>
+        <text x="370" y="332" text-anchor="middle" class="t-title">Prioritization</text>
+        <text x="370" y="351" text-anchor="middle" class="t-title">&amp; Roadmap</text>
+        <text x="370" y="374" text-anchor="middle" class="t-sub">scoring · now / next / later</text>
+      </a>
+
+      <!-- Define & ship -->
+      <a href="#agent-spec">
+        <rect x="532" y="245" width="176" height="80" rx="12" fill="#111827" stroke="#22d3ee" stroke-width="1.5"/>
+        <text x="620" y="278" text-anchor="middle" class="t-title">Spec Writer</text>
+        <text x="620" y="300" text-anchor="middle" class="t-sub">PRD · acceptance criteria</text>
+      </a>
+      <line x1="620" y1="325" x2="620" y2="371" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#a-cyan)"/>
+      <text x="628" y="345" class="t-label">eng + design</text>
+      <text x="628" y="358" class="t-label">build</text>
+      <a href="#agent-launch">
+        <rect x="532" y="375" width="176" height="80" rx="12" fill="#111827" stroke="#22d3ee" stroke-width="1.5"/>
+        <text x="620" y="408" text-anchor="middle" class="t-title">Launch &amp;</text>
+        <text x="620" y="427" text-anchor="middle" class="t-title">Experiments</text>
+        <text x="620" y="446" text-anchor="middle" class="t-sub">flags · tests · release notes</text>
+      </a>
+
+      <!-- Goal -->
+      <rect x="770" y="280" width="200" height="116" rx="16" fill="rgba(52,211,153,0.08)" stroke="#34d399" stroke-width="1.5"/>
+      <text x="870" y="308" text-anchor="middle" class="t-mono" style="fill:#34d399">THE GOAL</text>
+      <text x="870" y="334" text-anchor="middle" class="t-title" style="font-size:17px">Product outcomes</text>
+      <text x="870" y="356" text-anchor="middle" class="t-sub">activation · retention ↑</text>
+      <text x="870" y="374" text-anchor="middle" class="t-sub">shipped, measured, learned</text>
+
+      <!-- Work flow arrows -->
+      <path d="M208,290 C240,290 238,330 268,330" fill="none" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#a-cyan)"/>
+      <path d="M208,400 C240,400 238,366 268,366" fill="none" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#a-cyan)"/>
+      <path d="M468,348 C500,348 498,285 528,285" fill="none" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#a-cyan)"/>
+      <path d="M708,415 C740,415 738,360 766,360" fill="none" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#a-cyan)"/>
+
+      <!-- Analytics -->
+      <a href="#agent-analytics">
+        <rect x="260" y="500" width="460" height="60" rx="12" fill="#111827" stroke="#f472b6" stroke-width="1.5"/>
+        <text x="490" y="526" text-anchor="middle" class="t-title">Product Analytics</text>
+        <text x="490" y="546" text-anchor="middle" class="t-sub">event taxonomy · funnels · cohorts · weekly scorecard</text>
+      </a>
+      <line x1="370" y1="497" x2="370" y2="473" stroke="#f472b6" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#a-pink)"/>
+      <line x1="620" y1="470" x2="620" y2="497" stroke="#f472b6" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#a-pink)"/>
+      <text x="378" y="490" class="t-label">usage data</text>
+      <text x="628" y="490" class="t-label">events</text>
+      <path d="M870,396 V530 H724" fill="none" stroke="#f472b6" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#a-pink)"/>
+      <text x="880" y="470" class="t-label">did the metric</text>
+      <text x="880" y="484" class="t-label">move?</text>
+
+      <!-- Feedback loop to orchestrator -->
+      <path d="M260,530 H8 V126 H366" fill="none" stroke="#f472b6" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#a-pink)"/>
+      <text x="190" y="120" text-anchor="middle" class="t-label">weekly scorecard → re-plan</text>
+    </svg>
+    <div class="diagram-legend">
+      <span class="ctrl">dispatch (orchestrator → agents)</span>
+      <span>work flow (insights, decisions, specs, releases)</span>
+      <span class="dash">data &amp; feedback loop</span>
+      <span class="gate">human approval</span>
+    </div>
+  </div>
+
+  <!-- ===================== ROSTER ===================== -->
+  <h2 class="section-title" id="roster">The agents and what each one does</h2>
+  <p>Each agent becomes its own markdown file. The defaults below are best practice. The setup interview adjusts them to your product, stage, team and tools.</p>
+
+  <div class="agent-grid">
+
+    <div class="agent-card lead" id="agent-orchestrator">
+      <div class="stage">// control</div>
+      <h3>Product Orchestrator</h3>
+      <p class="mission">Acts as head of product. Keeps the team focused on one outcome at a time, turns the scorecard into the week's priorities, records every decision and its reasons, and brings you only the calls that need you.</p>
+      <h5>Does</h5>
+      <ul>
+        <li>Runs the weekly product cycle and keeps a decision log with the reasoning, the evidence and the decision that was rejected.</li>
+        <li>Adjusts to your stage. Before product-market fit it favors discovery and short bets. After it, it shifts to funnels, OKRs and experiments.</li>
+        <li>Turns one internal roadmap into three versions: <strong>internal</strong> (with risks), <strong>customer</strong> (outcome-led) and <strong>investor</strong> (focused on metrics).</li>
+      </ul>
+      <h5>Asks you</h5>
+      <ul><li>Company goal this quarter, team size and engineering capacity, how decisions get made today, and what you've already promised customers.</li></ul>
+      <div class="file">→ agents/product-orchestrator.md</div>
     </div>
 
-    <div class="step">
-      <div class="step-num">02</div>
-      <div class="step-body">
-        <h3>Opportunity scoring agent</h3>
-        <p>A scoring function that combines research signal, revenue exposure, and engineering cost estimate.</p>
-        <ul>
-          <li>Pulls account data (ARR, stage) from the CRM for each opportunity.</li>
-          <li>Asks the engineering planner agent for a rough-order-of-magnitude estimate.</li>
-          <li>Emits a ranked list into a Notion database that the team reviews weekly.</li>
-        </ul>
-      </div>
+    <div class="agent-card" id="agent-discovery">
+      <div class="stage">// 01 · discover</div>
+      <h3>Customer Discovery</h3>
+      <p class="mission">Keeps a steady flow of real user evidence coming in, so the roadmap rests on what users do and say rather than on the loudest request.</p>
+      <h5>Does</h5>
+      <ul>
+        <li>Writes interview guides that ask about past behavior, not hypotheticals, plus recruiting lists, with a target of 3–5 conversations a week.</li>
+        <li>Turns call transcripts, support tickets, NPS and reviews into tagged themes, with how often each comes up and <strong>direct quotes, not summaries</strong>.</li>
+        <li>Maintains the jobs-to-be-done and an opportunity tree that links each theme to its evidence.</li>
+      </ul>
+      <h5>Asks you</h5>
+      <ul><li>Who your users are, where feedback lives (calls, support tool, surveys), and whether it can read your call recordings and tickets.</li></ul>
+      <div class="file">→ agents/customer-discovery.md</div>
     </div>
 
-    <div class="step">
-      <div class="step-num">03</div>
-      <div class="step-body">
-        <h3>Spec-writing agent with a hard template</h3>
-        <p>Specs are the handshake between PM and the engineering planner. Enforce a tight template and an agent that checks specs conform to it.</p>
-        <pre class="code"><span class="c-com"># Spec template (enforced)</span>
-1. Problem (3 sentences, cite customer quotes)
-2. Who (persona + pain frequency)
-3. Outcome (what becomes true when shipped)
-4. Acceptance criteria (list, testable)
-5. Non-goals (bulleted, explicit)
-6. Open questions (flag risks early)
-7. Success metric (one, measurable, with baseline)</pre>
-        <ul>
-          <li>The agent refuses to publish a spec missing any section.</li>
-          <li>It cross-links the spec to the VoC doc and the roadmap item.</li>
-          <li>It runs the spec through the planner agent to preview the task DAG.</li>
-        </ul>
-        <div class="callout tip"><strong>Example:</strong> see <a href="examples/product.md"><code class="inline">examples/product.md</code></a> — a filled-in <code class="inline">spec.md</code> for a fictional startup.</div>
-      </div>
+    <div class="agent-card" id="agent-market">
+      <div class="stage">// 01 · discover</div>
+      <h3>Market &amp; Competitive Intel</h3>
+      <p class="mission">Watches the market so you can spot gaps instead of copying competitors' features.</p>
+      <h5>Does</h5>
+      <ul>
+        <li>Tracks competitor changelogs, pricing pages, docs and review sites (G2, Capterra, app stores) every week.</li>
+        <li>Writes a 3-line summary each month: where they're ahead, where we're ahead, and <strong>where nobody is</strong>. The last line goes to the roadmap review.</li>
+        <li>Flags category shifts, new entrants and pricing moves that affect your bets.</li>
+      </ul>
+      <h5>Asks you</h5>
+      <ul><li>Your competitors and alternatives (including spreadsheets and doing nothing), your category, and anything you'd never build.</li></ul>
+      <div class="file">→ agents/market-intel.md</div>
     </div>
 
-    <div class="step">
-      <div class="step-num">04</div>
-      <div class="step-body">
-        <h3>Competitive intelligence (that isn't just copying)</h3>
-        <p>Track competitor changelogs, pricing, and positioning — but use the agent to extract <em>gaps</em>, not just diffs.</p>
-        <ul>
-          <li>Weekly scraper of competitor docs, changelog, pricing pages.</li>
-          <li>Agent compares their stated customer outcomes to ours and produces a 3-bullet "where they're ahead / where we're ahead / where nobody is".</li>
-          <li>The third bullet is the interesting one. Route it to the roadmap review.</li>
-        </ul>
-      </div>
+    <div class="agent-card" id="agent-prioritization">
+      <div class="stage">// 02 · decide</div>
+      <h3>Prioritization &amp; Roadmap</h3>
+      <p class="mission">Decides what <em>not</em> to build, which is the hardest call in product, and makes the reasons visible.</p>
+      <h5>Does</h5>
+      <ul>
+        <li>Scores opportunities with RICE. Confidence is tied to the strength of the evidence, not to gut feel.</li>
+        <li>Adds usage data from Product Analytics and, for B2B, revenue at stake from the CRM.</li>
+        <li>Keeps a Now / Next / Later roadmap linked to goals, plus an explicit <strong>not-doing list</strong>.</li>
+      </ul>
+      <h5>Asks you</h5>
+      <ul><li>Quarterly goals or OKRs, engineering capacity, current roadmap, and customer commitments.</li></ul>
+      <div class="file">→ agents/prioritization-roadmap.md</div>
     </div>
 
-    <div class="step">
-      <div class="step-num">05</div>
-      <div class="step-body">
-        <h3>Release notes &amp; in-app changelog</h3>
-        <p>When an engineering PR merges, an agent drafts customer-facing release notes from the PR description + diff.</p>
-        <ul>
-          <li>Batched weekly into a single changelog post — not spammed per merge.</li>
-          <li>Copy matches the brand voice spec from <a href="marketing.html">Marketing</a>.</li>
-          <li>Humans review + add "why we built this" context before publish.</li>
-        </ul>
-      </div>
+    <div class="agent-card" id="agent-spec">
+      <div class="stage">// 03 · define &amp; ship</div>
+      <h3>Spec Writer</h3>
+      <p class="mission">Turns a chosen opportunity into a spec that engineering and design (people or agents) can build from without guessing.</p>
+      <h5>Does</h5>
+      <ul>
+        <li>Enforces one template: problem with quotes, who it's for, outcome, acceptance criteria, non-goals, open questions, and one success metric with a baseline (see the <a href="examples/product.md">example spec.md</a>).</li>
+        <li>Writes user stories with testable Given / When / Then criteria, edge cases, analytics events and a rollout plan.</li>
+        <li>Refuses to publish a spec that's missing a section. It hands off to the <a href="engineering.html">Engineering</a> planner and the <a href="design.html">Design</a> system.</li>
+      </ul>
+      <h5>Asks you</h5>
+      <ul><li>Your issue tracker (Linear, Jira, GitHub Issues), your design tool, and any spec format your team already uses.</li></ul>
+      <div class="file">→ agents/spec-writer.md</div>
     </div>
 
-    <div class="step">
-      <div class="step-num">06</div>
-      <div class="step-body">
-        <h3>Experiment designer</h3>
-        <p>For any new feature shipped behind a flag, an agent proposes the experiment: hypothesis, metric, guardrails, sample size.</p>
-        <ul>
-          <li>Pulls historical metric baselines from the data warehouse (see <a href="data.html">Data</a>).</li>
-          <li>Computes required sample size for detectable effect.</li>
-          <li>Writes the experiment doc in the same template, ships it to LaunchDarkly/Flagsmith.</li>
-        </ul>
-      </div>
+    <div class="agent-card" id="agent-launch">
+      <div class="stage">// 03 · define &amp; ship</div>
+      <h3>Launch &amp; Experiments</h3>
+      <p class="mission">Ships each feature as an experiment, so every release teaches you something even when it misses.</p>
+      <h5>Does</h5>
+      <ul>
+        <li>Designs the experiment: hypothesis, main metric, a metric that must not get worse, sample size and duration. When traffic is too low for an A/B test, it uses a before/after comparison plus user interviews.</li>
+        <li>Plans a staged rollout behind a feature flag (beta group, then 25%, then 100%) and runs the launch checklist.</li>
+        <li>Drafts release notes and the weekly changelog in your brand voice. It runs reviews at 2 and 6 weeks to decide whether to keep, change or remove the feature.</li>
+      </ul>
+      <h5>Asks you</h5>
+      <ul><li>Feature-flag tool, release process, beta users, and where announcements go (in-app, email, changelog).</li></ul>
+      <div class="file">→ agents/launch-experiments.md</div>
     </div>
 
-    <div class="step">
-      <div class="step-num">07</div>
-      <div class="step-body">
-        <h3>Roadmap storyteller</h3>
-        <p>An agent that can generate three audiences of the same roadmap off one source file:</p>
-        <ul>
-          <li><strong>Internal</strong> — honest, with risks and unknowns.</li>
-          <li><strong>Customer-facing</strong> — outcome-led, soft dates.</li>
-          <li><strong>Investor-facing</strong> — thesis-aligned, metric-forward.</li>
-        </ul>
-        <div class="callout warn"><strong>Source of truth is the internal roadmap.</strong> The others are <em>projections</em>, regenerated weekly. Don't let them drift.</div>
-      </div>
+    <div class="agent-card measure" id="agent-analytics">
+      <div class="stage">// measure &amp; learn</div>
+      <h3>Product Analytics</h3>
+      <p class="mission">Defines what "working" means and proves whether each release moved it.</p>
+      <h5>Does</h5>
+      <ul>
+        <li>Pins down the north-star metric, the activation moment (when users first get value), and the retention definition.</li>
+        <li>If you have no stack yet, recommends one: PostHog as the default (analytics, flags, replays and surveys), with Amplitude or Mixpanel as alternatives. If you already have one, <strong>asks you to connect it</strong> read-only, or works from exports.</li>
+        <li>Owns the event naming scheme (<code class="inline">object_action</code>) and sends a weekly scorecard: funnel, cohorts and results from launches.</li>
+      </ul>
+      <h5>Asks you</h5>
+      <ul><li>Your analytics tool and data warehouse, whether you can connect them read-only, and any privacy or compliance limits (GDPR, HIPAA, SOC 2).</li></ul>
+      <div class="file">→ agents/product-analytics.md</div>
     </div>
 
   </div>
 
-  <h2 class="section-title">How PM hands off to engineering</h2>
-  <p>A clean handoff is the highest ROI workflow on this page.</p>
-  <table class="stack-table">
-    <thead><tr><th>Step</th><th>Artifact</th><th>Owner</th></tr></thead>
-    <tbody>
-      <tr><td>1</td><td>VoC cluster doc</td><td>Research agent</td></tr>
-      <tr><td>2</td><td>Scored opportunity</td><td>PM + scoring agent</td></tr>
-      <tr><td>3</td><td>Spec.md (template-enforced)</td><td>PM + spec agent</td></tr>
-      <tr><td>4</td><td>Planner-reviewed DAG</td><td>Engineering planner</td></tr>
-      <tr><td>5</td><td>Design review (components)</td><td>Design agent</td></tr>
-      <tr><td>6</td><td>Experiment design</td><td>Experiment agent</td></tr>
-      <tr><td>7</td><td>Release notes</td><td>Release-notes agent</td></tr>
-    </tbody>
-  </table>
+  <!-- ===================== FILES ===================== -->
+  <h2 class="section-title" id="files">What Claude will create for you</h2>
+  <p>A folder you own. Plain markdown files are easy to edit, version and reuse. In Claude Code the agent files go in <code class="inline">.claude/agents/</code> so they load as subagents.</p>
+
+<pre class="tree">product-agents/
+├── CLAUDE.md                    <span class="c-com"># entry point: goal, roster, workflow, rules</span>
+├── context/                     <span class="c-com"># shared brain, read by every agent</span>
+│   ├── product-overview.md
+│   ├── users-and-personas.md
+│   ├── strategy-and-goals.md
+│   ├── competitors.md
+│   ├── metrics-and-data.md
+│   └── tools-and-access.md
+├── agents/                      <span class="c-com"># .claude/agents/ in Claude Code</span>
+│   ├── product-orchestrator.md
+│   ├── customer-discovery.md
+│   ├── market-intel.md
+│   ├── prioritization-roadmap.md
+│   ├── spec-writer.md
+│   ├── launch-experiments.md
+│   └── product-analytics.md
+├── playbooks/
+│   ├── first-30-days.md
+│   ├── weekly-cadence.md
+│   └── approval-gates.md
+└── outputs/                     <span class="c-com"># where agents deliver work</span>
+    ├── research/  market/  roadmap/  specs/  launches/
+    └── reports/</pre>
+
+  <!-- ===================== SETUP PROMPT ===================== -->
+  <h2 class="section-title" id="setup">Setup prompt: paste it into your Claude</h2>
+  <p>Claude interviews you in five short rounds (product, users, goals, tools, ways of working). Every question shows a best-practice default, so you can answer "defaults" and keep going. It then writes the files and gives you a first-week plan.</p>
+
+  <div class="how-to">
+    <div class="mini-card">
+      <h4><span class="n">1</span>Copy or download</h4>
+      <p>Use the buttons below. The download is a <code class="inline">.md</code> file you can keep or share with your team.</p>
+    </div>
+    <div class="mini-card">
+      <h4><span class="n">2</span>Paste into Claude</h4>
+      <p>Claude Code or the Claude desktop app can write the folder directly. On claude.ai, Claude delivers the files as a zip or as copyable blocks.</p>
+    </div>
+    <div class="mini-card">
+      <h4><span class="n">3</span>Answer &amp; connect</h4>
+      <p>Answer the interview questions. Connect your analytics, issue tracker, support tool or call recorder through Claude's connectors. Never paste a password into the chat.</p>
+    </div>
+  </div>
+
+  <div class="prompt-box">
+    <div class="prompt-toolbar">
+      <span class="file-name">product-agent-system-setup.md</span>
+      <button class="btn" type="button" data-prompt-copy="prompt-product">Copy prompt</button>
+      <button class="btn secondary" type="button" data-prompt-download="prompt-product" data-filename="product-agent-system-setup.md">Download .md</button>
+    </div>
+    <pre data-prompt-view="prompt-product">Loading prompt… (enable JavaScript to view, copy, or download)</pre>
+  </div>
+
+  <div class="callout tip"><strong>Using it on claude.ai?</strong> After Claude generates the files, create a <strong>Project</strong>. Paste <code class="inline">CLAUDE.md</code> into the project instructions and upload the <code class="inline">context/</code> and <code class="inline">agents/</code> files as project knowledge. Every chat in that project then has the whole team available.</div>
+
+  <div class="two-col">
+    <div class="mini-card">
+      <h4>// always needs your approval</h4>
+      <ul>
+        <li>Roadmap changes and anything promised to customers</li>
+        <li>A spec moving to "ready for engineering"</li>
+        <li>Launching experiments or features to real users</li>
+        <li>Contacting customers (interview outreach, surveys)</li>
+        <li>Pricing or packaging changes, and access to personal data</li>
+      </ul>
+    </div>
+    <div class="mini-card">
+      <h4>// red flags to watch</h4>
+      <ul>
+        <li>Features ship but usage stays flat: the problem wasn't real or wasn't urgent</li>
+        <li>Roadmap driven by your loudest customer: there are too few interviews behind it</li>
+        <li>Specs with no baseline metric: you can't tell whether a release worked</li>
+        <li>Interviewing only fans: recruit churned and lost users too</li>
+      </ul>
+    </div>
+  </div>
 </main>
-<footer><span>Stargate · Product</span><span class="mono">/product</span></footer>
+<footer><span>Stargate · Product Agent System</span><span class="mono">/product</span></footer>
+
+<script type="text/plain" id="prompt-product">
+# Product Agent System — Setup Prompt
+
+You are going to set up a **product management agent system** for my product. It is a small team of specialized AI agents, defined as markdown files in a folder, working together toward one goal:
+
+> **Ship the right things: every release targets a real, evidenced user problem and measurably improves activation, retention, or expansion.**
+
+Your job in this conversation:
+1. **Interview me** so the system fits my product, stage and team.
+2. **Fill any gaps with best-practice defaults**, and tell me which ones you assumed.
+3. **Create the folder** of context files, agent files and playbooks described below.
+4. **Hand me a first-week plan** and the list of tools I should connect.
+
+---
+
+## Ground rules
+
+- Ask questions in **rounds of no more than 6**, numbered. After each question, put in [brackets] the default you'll use if I skip it. I can reply "defaults" to accept every default in a round.
+- **Don't ask about things you can look up.** If I give you a website, app link or public docs and you can browse, read them first (home, pricing, docs, changelog). Use them to pre-fill answers, then ask me to confirm.
+- **Never ask me for passwords, API keys, or login codes in the chat.** For tool access, use official connectors or MCP integrations that sign in through the provider. Ask for read-only access first. If no connector exists, ask me for an export (CSV, PDF, screenshot or pasted transcript).
+- **Treat user data carefully.** Agents work from aggregated or anonymized data where possible. They never copy personal data such as names, emails or account details into the context files, and they quote users without identifying them unless I say otherwise.
+- **Don't invent facts, metrics or user quotes.** Mark anything unconfirmed as `TODO:` in the files.
+- Write every file so that another Claude session, with no access to this conversation, could act on it. Keep files specific to my product and concise. Use bullet points rather than essays.
+
+---
+
+## Step 1 — Interview me
+
+### Round 1 · The product
+1. Product name, plus a **website, app or docs URL**.
+2. What does the product do, in one or two sentences, and what problem does it solve?
+3. Platform: web app, mobile, desktop, API or developer tool, hardware, or a mix? [inferred from site]
+4. Who **uses** it, and who **pays** for it? Are they the same person? B2B, B2C, or both? [inferred]
+5. Business model and pricing: free trial, freemium, subscription, usage-based, transactional, or enterprise contracts? [inferred from pricing page]
+6. Stage: pre-launch, pre-product-market-fit (a few users, still searching), early traction (users are retaining, growth is starting), or scaling? [pre-product-market-fit]
+
+### Round 2 · Users and problems
+1. Your primary user types or personas, and the job each one hires the product to do. [inferred; flagged TODO]
+2. The activation moment: what does a new user do or see when they first get real value? [TODO, to be defined with Product Analytics]
+3. The top 3 user complaints or feature requests you hear today. [none known; Discovery will find them]
+4. Main competitors and alternatives, including spreadsheets, manual work and doing nothing. [I'll research and propose]
+5. Any users you've lost recently, and why they left (if known)? [unknown]
+
+### Round 3 · Goals, team, constraints
+1. The company goal this quarter, e.g. grow signups, improve retention, close enterprise deals, or reach break-even. [improve activation and retention]
+2. The north-star metric, if you have one. [I'll propose one from your business model]
+3. Team: how many engineers and designers, and are they people, agents or both? Sprint or cycle length? [2 engineers, no designer, 2-week cycles]
+4. The current roadmap and any **commitments made to customers or investors**. [none]
+5. How product decisions get made today, and who has the final say. [the founder decides]
+
+### Round 4 · Tools, data and access
+For each item, tell me what you use, or "none":
+1. Product analytics (PostHog, Amplitude, Mixpanel, GA4, Heap) and any data warehouse (BigQuery, Snowflake, Postgres)
+2. Issue tracker and docs (Linear, Jira, GitHub Issues, Notion, Confluence)
+3. Feedback sources: support tool (Intercom, Zendesk, Help Scout), call recorder (Gong, Fireflies, Granola, Zoom), NPS or survey tool, app-store or G2 reviews
+4. Design tool (Figma) and any design system
+5. Feature flags and experimentation (PostHog, LaunchDarkly, Statsig, GrowthBook, none)
+6. CRM, for B2B: deal and account data (HubSpot, Salesforce)
+
+**After this round:**
+- **Tools I already have.** Check whether a connector or MCP integration for that tool exists in your current environment. In claude.ai and the desktop app, look under Settings → Connectors. In Claude Code, look at `claude mcp`. If one exists, tell me exactly how to connect it, read-only first. If none exists, tell me which export to provide and how. Record each tool as connected, export-only, or not connected in `context/tools-and-access.md`.
+- **Tools I don't have.** Recommend the default from Step 2 that fits my stage and budget, explain why in one line, and add a setup task to the plan. Don't make tools a blocker. The system must work from exports and pasted transcripts alone.
+
+### Round 5 · Ways of working and guardrails
+1. Do you have a preferred spec or PRD format, or a team template? [the default template below]
+2. Who may contact users for interviews and surveys, and are there any accounts we must not contact? [only you, with your approval of each outreach]
+3. Compliance or privacy limits: GDPR, HIPAA, SOC 2, data residency, or customer contracts? [GDPR-style care: minimal personal data]
+4. Anything beyond the default approval gates that must come to you first? [defaults only]
+5. Where should agents deliver work? [files in `outputs/`; optionally Linear, Jira, Notion or Slack if connected]
+
+**Before creating anything**, show me a one-screen summary of what you learned and what you're assuming. Mark each item *confirmed*, *inferred* or *default*. Ask me to correct it. Then build.
+
+---
+
+## Step 2 — Best-practice defaults (use these unless my answers say otherwise)
+
+**Adjust to the stage**
+- *Pre-product-market-fit:* discovery comes first. Hold 5+ user conversations a week, make short 1–2 week bets, and do things manually before automating them. Run the "how would you feel if you could no longer use this?" survey once there are 30+ active users; 40% or more answering "very disappointed" is a strong signal. Keep the roadmap light: Now / Next only.
+- *Early traction:* activation and retention funnels, a Now / Next / Later roadmap, and experiments backed by user interviews.
+- *Scaling:* OKRs for each team, properly sized A/B tests, a portfolio of bets (core improvements, expansion, new bets), and quarterly planning.
+
+**North-star metric by model** (propose one, then confirm with me)
+- B2B SaaS: weekly active accounts or teams that perform the core action.
+- Consumer: weekly active users who perform the core action.
+- Marketplace: successful transactions per week.
+- API or developer tool: weekly active API keys making successful calls.
+- Always pair it with a leading metric (activation rate) and a guardrail metric (retention or quality).
+
+**Customer discovery**
+- Interviews ask about past behavior ("tell me about the last time you…"), never "would you use…?".
+- Recruit a mix of power users, new users, churned users and lost prospects, not just fans.
+- Synthesis gives each theme a name, how often it appears (across how many sources) and 2–3 **direct quotes** with a link to the source, plus any contradicting evidence.
+- Keep an opportunity tree: outcome → opportunities (user problems) → candidate solutions → experiments.
+
+**Market and competitive intel**
+- Check competitor changelogs, pricing pages, docs, job posts and review sites weekly or monthly, depending on how busy the market is.
+- Report gaps, not diffs: where they're ahead, where we're ahead, where nobody is.
+- Never recommend a feature just because a competitor shipped it. It must also show up in our own user evidence.
+
+**Prioritization and roadmap**
+- RICE scoring (Reach × Impact × Confidence ÷ Effort). Confidence is high only with strong evidence (behavioral data or 5+ independent user mentions), medium with some evidence, and low for a hunch.
+- Effort estimates come from engineering (or the engineering planner agent), not from product.
+- A Now / Next / Later roadmap linked to goals, with an explicit not-doing list and the reason for each item on it.
+- One internal roadmap, projected into three versions: internal (honest, with risks), customer-facing (outcome-led, soft dates) and investor-facing (focused on metrics). Regenerate the projections; never edit them by hand.
+
+**Spec template (enforced)**
+1. Problem: 3 sentences, citing user quotes and evidence counts
+2. Who it's for: the persona and how often they hit the pain
+3. Outcome: what becomes true for users when this ships
+4. Success metric: one metric, with its baseline, target and measurement window
+5. Scope: user stories with **Given / When / Then** acceptance criteria and edge cases
+6. Non-goals: an explicit bulleted list
+7. Analytics events to add, in `object_action` naming
+8. Rollout plan: flag, beta group, staged percentages, and what would make us roll back
+9. Open questions and risks
+
+A spec missing any section isn't ready for engineering. Keep it to about 2 pages.
+
+**Launch and experiments**
+- Every feature ships behind a flag with a staged rollout and a written rollback trigger.
+- Experiment design: hypothesis, main metric, guardrail metric, minimum detectable effect, required sample size and duration. If traffic can't reach a valid sample in about 4 weeks, don't run an A/B test. Use a before/after comparison plus user interviews instead, and say so.
+- Release notes are batched into a weekly changelog in the company's brand voice. A human adds the "why we built this" context.
+- Review each launch at 2 and 6 weeks: keep, iterate or remove, and record the result in the decision log.
+
+**Product analytics**
+- Default stack for early teams: **PostHog** (product analytics, feature flags, session replay and surveys in one tool, with a generous free tier). Alternatives: Amplitude or Mixpanel. Use a warehouse (BigQuery or Postgres) once there are multiple data sources.
+- Event naming: `object_action` in snake_case (e.g. `project_created`, `invite_sent`), with a tracking plan listing each event, its properties and its owner.
+- Core events: `signed_up`, the activation event, the core action, `invite_sent` or other sharing, `plan_upgraded`, and cancellation or churn.
+- Weekly scorecard: the north-star trend, the activation funnel, retention cohorts (week 1, week 4 and month 3), results from launches still under review, and anomalies.
+
+**Approval gates (always on):** roadmap changes and customer commitments, a spec becoming "ready for engineering", launching experiments or features to real users, contacting users, pricing or packaging changes, and any access to or export of personal data.
+
+---
+
+## Step 3 — Create the files
+
+**Where to write:**
+- If you can write files (Claude Code, or the Claude desktop app with folder access), ask where to create the folder [default: `./product-agents`] and write the files directly. **In Claude Code, put the agent files in `product-agents/.claude/agents/`** instead of `agents/` so they load as subagents. Tell me to start Claude Code from inside `product-agents/`.
+- If you can't write files but can run code, create the files and give me a single **.zip** to download.
+- Otherwise, output each file in its own code block, headed by its full path, in the order below.
+
+**Folder structure:**
+```
+product-agents/
+├── CLAUDE.md
+├── context/
+│   ├── product-overview.md
+│   ├── users-and-personas.md
+│   ├── strategy-and-goals.md
+│   ├── competitors.md
+│   ├── metrics-and-data.md
+│   └── tools-and-access.md
+├── agents/                (use .claude/agents/ in Claude Code)
+│   ├── product-orchestrator.md
+│   ├── customer-discovery.md
+│   ├── market-intel.md
+│   ├── prioritization-roadmap.md
+│   ├── spec-writer.md
+│   ├── launch-experiments.md
+│   └── product-analytics.md
+├── playbooks/
+│   ├── first-30-days.md
+│   ├── weekly-cadence.md
+│   └── approval-gates.md
+└── outputs/
+    ├── README.md
+    ├── research/  market/  roadmap/  specs/  launches/
+    └── reports/
+```
+
+**`CLAUDE.md`** is the system's entry point. It contains:
+- The goal, the north-star metric with its leading and guardrail metrics, and current baselines (or TODO).
+- A text diagram of the flow: context → orchestrator → discovery and market intel → prioritization and roadmap → spec writer → engineering and design build → launch and experiments → product outcomes, with product analytics feeding usage data into prioritization and a weekly scorecard back to the orchestrator.
+- A roster table: agent, one-line job, when to use it, and its output folder.
+- The rule that every agent reads `context/` before working, the approval gates, and the user-data rules.
+- How to run the system, e.g. "Use the product-orchestrator agent to run this week's cycle."
+
+**`context/` files** hold the shared brain, filled with my interview answers and your research. Label every section *confirmed*, *inferred* or *TODO*.
+- `product-overview.md`: what the product does, platform, business model and pricing, stage, key features, and known limitations.
+- `users-and-personas.md`: personas, jobs to be done, activation moment, top pains and requests, reasons users leave, and anonymized evidence.
+- `strategy-and-goals.md`: company goal, product strategy, OKRs, current roadmap, commitments, the not-doing list, team capacity and decision rights.
+- `competitors.md`: competitors and alternatives, with their positioning, pricing, strengths and weaknesses, and the gaps nobody owns.
+- `metrics-and-data.md`: the north-star, activation and retention definitions, baselines, the event naming scheme, and where data lives.
+- `tools-and-access.md`: each tool with its status (connected / export-only / recommended / not needed), how to connect it, and the owner.
+
+**Every agent file** uses this template. The frontmatter keeps the file valid as a Claude Code subagent.
+```
+---
+name: <kebab-case-name>
+description: <one specific sentence on when to delegate to this agent>
+tools: <Claude Code only: list the tools it needs, e.g. Read, Write, Edit, Glob, Grep, WebSearch, WebFetch. Omit this line to inherit all tools, including connectors.>
+---
+# <Agent name>
+## Mission            (one or two sentences tied to the product-outcome goal)
+## Reads first        (which context/ files and outputs from other agents)
+## Responsibilities   (bullets, customized to this product)
+## Inputs it needs    (and the default it uses when they're missing)
+## Tools & connections (what it uses now, and what to connect next)
+## Outputs            (exact file paths in outputs/, with the format)
+## Hand-offs          (who receives its output, and what triggers the hand-off)
+## Approval gates     (actions it must never take without the owner)
+## KPIs it owns
+## Cadence            (what it does weekly and monthly)
+```
+
+Agent-specific requirements. Customize each one with my product, stage, team and tools:
+- **product-orchestrator.** Runs the weekly cycle from `playbooks/weekly-cadence.md`. Reads the latest scorecard and research, chooses the single outcome the team is focused on this cycle, briefs each agent, keeps `outputs/roadmap/decision-log.md` (decision, evidence, rejected options, owner, date), collects everything that needs my approval into a single list, and produces the three roadmap versions on request. It adjusts its behavior to *my stage* and must never bypass an approval gate.
+- **customer-discovery.** Writes interview guides and recruiting lists, and turns transcripts, tickets, surveys and reviews from *my feedback sources* into themes with evidence counts and quotes. It maintains the personas and jobs-to-be-done in context and the opportunity tree in `outputs/research/`.
+- **market-intel.** Tracks *my competitors* and category each week or month, writes the ahead / behind / nobody summary, and flags pricing and positioning moves. It never recommends copying a feature without our own user evidence.
+- **prioritization-roadmap.** Scores opportunities with evidence-weighted RICE using usage data from product-analytics (and CRM revenue at stake for B2B), keeps the Now / Next / Later roadmap and the not-doing list, and proposes changes for my approval.
+- **spec-writer.** Writes specs with the enforced template into `outputs/specs/`, refuses to mark a spec ready if any section is missing, and adds acceptance criteria clear enough for engineering agents to build and test from. It files tickets in *my issue tracker* only after I approve.
+- **launch-experiments.** Designs experiments with sample sizes based on *my traffic*, writes rollout and rollback plans, runs the launch checklist, drafts release notes and the changelog, and runs the 2- and 6-week reviews.
+- **product-analytics.** Defines and maintains the metrics in `context/metrics-and-data.md`, owns the tracking plan, recommends the stack if I don't have one, guides me through connecting existing tools read-only, checks that new events actually fire after a launch, and writes the weekly scorecard in `outputs/reports/`.
+
+**`playbooks/`**
+- `first-30-days.md`: Week 1, foundation: confirm context, define the north-star and activation metrics, audit tracking, gather existing feedback, run a competitor baseline. Week 2, discovery: 5+ user conversations, synthesis, the opportunity tree. Week 3, decide and define: scored opportunities, a Now / Next / Later roadmap, and the first spec built to the template. Week 4, ship and learn: the first flagged release or experiment, the first scorecard, and the next 30-day plan. Adapt it to my stage and answers.
+- `weekly-cadence.md`: Monday: scorecard review and focus. Tuesday: discovery synthesis and market notes. Wednesday: prioritization updates and spec drafts go to me for approval. Thursday: approved specs go to engineering and launches go out. Friday: launch reviews, the decision log and lessons learned. Fit it to my cycle length and review hours.
+- `approval-gates.md`: the default gates plus mine, who approves each, and how to submit an item for approval.
+
+**`outputs/README.md`** explains what each subfolder holds and the file naming convention (`YYYY-MM-DD-topic.md`). Note that `roadmap/decision-log.md` is a single file that keeps growing.
+
+---
+
+## Step 4 — Wrap up
+
+When the files are created, give me:
+1. The folder tree, with a one-line description of each file.
+2. **Assumptions and TODOs.** Everything you defaulted or couldn't confirm, and how to resolve each.
+3. **Connections to set up, in priority order.** Product analytics comes first, then the feedback sources (support tool, call recorder), then the issue tracker, then feature flags. For each, give the exact steps in this environment.
+4. **The first-week plan,** with the one thing I should do today (usually: book three user conversations).
+5. **How to use the system day to day:**
+   - *Claude Code:* "Use the product-orchestrator agent to run this week's cycle," or call any agent directly, e.g. "Use the customer-discovery agent to synthesize these five transcripts."
+   - *claude.ai:* Create a Project. Paste `CLAUDE.md` into the project instructions and upload the `context/` and `agents/` files as project knowledge. Then ask, for example, "Acting as the spec-writer agent, turn the top roadmap item into a spec."
+
+Start now with Round 1. If I've already given you a product URL, review it first and pre-fill what you can.
+</script>
+<script src="prompt.js"></script>
 </body></html>
