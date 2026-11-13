@@ -3,7 +3,8 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Sales · Stargate</title>
+<title>Sales Agent System · Stargate</title>
+<meta name="description" content="A default sales agent system: orchestrator, research & qualification, prospecting & outbound, meeting prep & call coaching, deal desk, customer handoff, and pipeline & forecast agents, plus a copy-paste setup prompt for Claude." />
 <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -26,150 +27,618 @@
 
 <main>
   <div class="page-header">
-    <div class="kicker">// SALES</div>
-    <h1>Shorten the cycle from weeks to days</h1>
-    <p>Founder-led sales is the best kind of sales — and the hardest to scale. Agents let the founder spend all their time on the 3 conversations that matter, while everything upstream (research, outreach, follow-up) runs in the background with human voice and human gates.</p>
+    <div class="kicker">// SALES · AGENT SYSTEM</div>
+    <h1>A sales team of agents that turns pipeline into revenue</h1>
+    <p>Seven agents that work like a small revenue team. Two find and qualify the right accounts. One prepares you for every call and coaches you after it. One handles proposals and pricing. One hands won customers to onboarding cleanly. One keeps the CRM and forecast accurate. An orchestrator decides which deals get your time. You keep the relationships, and every message to a buyer is sent by a person. Copy the <a href="#setup">setup prompt</a> into Claude. It will interview you about your sales motion and then write the whole system as a folder of agent files.</p>
   </div>
 
   <div class="tags">
-    <span class="tag cyan">prospecting</span>
+    <span class="tag cyan">ICP &amp; qualification</span>
     <span class="tag cyan">outbound</span>
+    <span class="tag cyan">meeting prep</span>
     <span class="tag cyan">call coaching</span>
     <span class="tag cyan">deal desk</span>
+    <span class="tag cyan">handoff &amp; expansion</span>
+    <span class="tag cyan">pipeline &amp; forecast</span>
   </div>
 
-  <div class="steps">
+  <!-- ===================== GOAL ===================== -->
+  <h2 class="section-title">The goal the system works toward</h2>
+  <p>Every agent, every task, and every weekly report is judged against one outcome.</p>
 
-    <div class="step">
-      <div class="step-num">01</div>
-      <div class="step-body">
-        <h3>Define your ICP as a scoring rubric (not a paragraph)</h3>
-        <p>An agent can't act on "enterprise SaaS, mid-market". Give it scores.</p>
-        <ul>
-          <li>Firmographics: company size, vertical, tech stack, growth stage — each weighted.</li>
-          <li>Trigger events: new funding, new VP Eng, stack migration, specific job posting.</li>
-          <li>Disqualifiers: regulated industry you can't serve, cloud you don't support.</li>
-        </ul>
-        <pre class="code"><span class="c-com"># icp.yaml</span>
-firmographics:
-  employees: { range: [50, 500], weight: 2 }
-  stack_has: [<span class="c-str">postgres</span>, <span class="c-str">vercel</span>], weight: 3
-triggers:
-  funding_announced_last_90_days: 4
-  hiring_head_of_data: 5
-disqualify:
-  vertical: [<span class="c-str">defense</span>, <span class="c-str">adult</span>]</pre>
-        <div class="callout tip"><strong>Example:</strong> see <a href="examples/sales.md"><code class="inline">examples/sales.md</code></a> — a filled-in <code class="inline">icp.md</code> (the prose companion to <code class="inline">icp.yaml</code>) for a fictional startup.</div>
-      </div>
+  <div class="goal-panel">
+    <div>
+      <div class="label">// north star</div>
+      <h2>Turn qualified leads and target accounts into closed revenue predictably: enough pipeline, shorter cycles, higher win rates, and customers handed off cleanly.</h2>
+      <p>The system doesn't count emails sent or meetings booked as wins. Those numbers only matter when deals move forward. Inbound leads come from the <a href="marketing.html">Marketing agent system</a>, and the Pipeline agent reports back which lead sources actually close, so Marketing knows where to spend.</p>
+    </div>
+    <div class="metrics">
+      <div class="metric"><div class="k">Primary</div><div class="v">New bookings / month (vs. target)</div></div>
+      <div class="metric"><div class="k">Pipeline</div><div class="v">Qualified pipeline ≥ 3× target</div></div>
+      <div class="metric"><div class="k">Efficiency</div><div class="v">Win rate · sales-cycle length</div></div>
+      <div class="metric"><div class="k">Guardrail</div><div class="v">No auto-sent outreach · forecast within ±10%</div></div>
+    </div>
+  </div>
+
+  <!-- ===================== DIAGRAM ===================== -->
+  <h2 class="section-title" id="diagram">How the agents work together</h2>
+  <p>The orchestrator sets the week's account and deal priorities. Work moves from building pipeline to advancing deals and then closing them. Inbound leads arrive from Marketing. Pipeline &amp; Forecast tracks every stage and sends a scorecard back so the next week's plan is based on the deals that actually moved. Click any agent to jump to its role.</p>
+
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 1000 595" role="img" aria-labelledby="dg-title dg-desc" xmlns="http://www.w3.org/2000/svg">
+      <title id="dg-title">Sales agent system flow</title>
+      <desc id="dg-desc">Shared sales context feeds a Sales Orchestrator, which you approve. The orchestrator dispatches work to Prospecting and Outbound and to Research and Qualification (build pipeline), which also receives inbound leads from the Marketing system. Both feed Meeting Prep and Call Coach (advance), then Deal Desk and Proposals, then Customer Handoff and Expansion (close), producing closed-won revenue. Pipeline and Forecast tracks deal activity and bookings and sends a weekly scorecard back to the orchestrator.</desc>
+      <defs>
+        <marker id="a-cyan" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#22d3ee"/></marker>
+        <marker id="a-violet" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#7c5cff"/></marker>
+        <marker id="a-pink" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#f472b6"/></marker>
+        <marker id="a-amber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#fbbf24"/></marker>
+        <marker id="a-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#34d399"/></marker>
+      </defs>
+
+      <!-- Shared context band -->
+      <rect x="20" y="10" width="960" height="52" rx="10" fill="rgba(34,211,238,0.06)" stroke="#22d3ee" stroke-opacity="0.5" stroke-dasharray="4 4"/>
+      <text x="500" y="31" text-anchor="middle" class="t-mono">SHARED CONTEXT · READ BY EVERY AGENT</text>
+      <text x="500" y="50" text-anchor="middle" class="t-sub">company &amp; offer · ICP rubric · buyers · competitors &amp; objections · pricing &amp; terms · sales process · tools</text>
+      <line x1="500" y1="62" x2="500" y2="91" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#a-cyan)"/>
+
+      <!-- Orchestrator -->
+      <a href="#agent-orchestrator">
+        <rect x="370" y="94" width="260" height="64" rx="12" fill="#1c1640" stroke="#7c5cff" stroke-width="1.5"/>
+        <text x="500" y="121" text-anchor="middle" class="t-title">Sales Orchestrator</text>
+        <text x="500" y="142" text-anchor="middle" class="t-sub">deal priorities · pipeline review</text>
+      </a>
+
+      <!-- You -->
+      <rect x="760" y="100" width="220" height="52" rx="26" fill="#161d2e" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="870" y="122" text-anchor="middle" class="t-title">You (seller / founder)</text>
+      <text x="870" y="140" text-anchor="middle" class="t-sub">you send · approve pricing &amp; terms</text>
+      <line x1="633" y1="126" x2="756" y2="126" stroke="#fbbf24" stroke-width="1.5" marker-start="url(#a-amber)" marker-end="url(#a-amber)"/>
+      <text x="694" y="117" text-anchor="middle" class="t-label">approval gates</text>
+
+      <!-- Dispatch bus -->
+      <line x1="500" y1="158" x2="500" y2="180" stroke="#7c5cff" stroke-width="1.5"/>
+      <line x1="120" y1="180" x2="620" y2="180" stroke="#7c5cff" stroke-width="1.5"/>
+      <line x1="120" y1="180" x2="120" y2="202" stroke="#7c5cff" stroke-width="1.5" marker-end="url(#a-violet)"/>
+      <line x1="370" y1="180" x2="370" y2="202" stroke="#7c5cff" stroke-width="1.5" marker-end="url(#a-violet)"/>
+      <line x1="620" y1="180" x2="620" y2="202" stroke="#7c5cff" stroke-width="1.5" marker-end="url(#a-violet)"/>
+      <text x="245" y="174" text-anchor="middle" class="t-label">account &amp; deal priorities</text>
+
+      <!-- Lanes -->
+      <rect x="20" y="205" width="200" height="265" rx="14" fill="rgba(255,255,255,0.015)" stroke="#2d3748"/>
+      <rect x="260" y="205" width="220" height="265" rx="14" fill="rgba(255,255,255,0.015)" stroke="#2d3748"/>
+      <rect x="520" y="205" width="200" height="265" rx="14" fill="rgba(255,255,255,0.015)" stroke="#2d3748"/>
+      <text x="120" y="226" text-anchor="middle" class="t-mono">01 · BUILD PIPELINE</text>
+      <text x="370" y="226" text-anchor="middle" class="t-mono">02 · ADVANCE</text>
+      <text x="620" y="226" text-anchor="middle" class="t-mono">03 · CLOSE</text>
+      <text x="870" y="226" text-anchor="middle" class="t-mono">04 · GOAL</text>
+
+      <!-- Build pipeline -->
+      <a href="#agent-outbound">
+        <rect x="32" y="245" width="176" height="90" rx="12" fill="#111827" stroke="#22d3ee" stroke-width="1.5"/>
+        <text x="120" y="276" text-anchor="middle" class="t-title">Prospecting</text>
+        <text x="120" y="295" text-anchor="middle" class="t-title">&amp; Outbound</text>
+        <text x="120" y="317" text-anchor="middle" class="t-sub">target lists · 1:1 drafts</text>
+      </a>
+      <line x1="120" y1="355" x2="120" y2="339" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#a-cyan)"/>
+      <a href="#agent-research">
+        <rect x="32" y="355" width="176" height="90" rx="12" fill="#111827" stroke="#22d3ee" stroke-width="1.5"/>
+        <text x="120" y="386" text-anchor="middle" class="t-title">Research &amp;</text>
+        <text x="120" y="405" text-anchor="middle" class="t-title">Qualification</text>
+        <text x="120" y="427" text-anchor="middle" class="t-sub">ICP score · why-now brief</text>
+      </a>
+
+      <!-- Advance -->
+      <a href="#agent-coach">
+        <rect x="272" y="300" width="196" height="96" rx="12" fill="#111827" stroke="#22d3ee" stroke-width="1.5"/>
+        <text x="370" y="332" text-anchor="middle" class="t-title">Meeting Prep</text>
+        <text x="370" y="351" text-anchor="middle" class="t-title">&amp; Call Coach</text>
+        <text x="370" y="374" text-anchor="middle" class="t-sub">briefs · notes · follow-ups</text>
+      </a>
+
+      <!-- Close -->
+      <a href="#agent-dealdesk">
+        <rect x="532" y="245" width="176" height="80" rx="12" fill="#111827" stroke="#22d3ee" stroke-width="1.5"/>
+        <text x="620" y="278" text-anchor="middle" class="t-title">Deal Desk</text>
+        <text x="620" y="300" text-anchor="middle" class="t-sub">proposals · pricing · redlines</text>
+      </a>
+      <line x1="620" y1="325" x2="620" y2="371" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#a-cyan)"/>
+      <text x="628" y="352" class="t-label">closed-won</text>
+      <a href="#agent-handoff">
+        <rect x="532" y="375" width="176" height="80" rx="12" fill="#111827" stroke="#22d3ee" stroke-width="1.5"/>
+        <text x="620" y="408" text-anchor="middle" class="t-title">Customer Handoff</text>
+        <text x="620" y="427" text-anchor="middle" class="t-title">&amp; Expansion</text>
+        <text x="620" y="446" text-anchor="middle" class="t-sub">onboarding · renewals</text>
+      </a>
+
+      <!-- Goal -->
+      <rect x="770" y="280" width="200" height="116" rx="16" fill="rgba(52,211,153,0.08)" stroke="#34d399" stroke-width="1.5"/>
+      <text x="870" y="308" text-anchor="middle" class="t-mono" style="fill:#34d399">THE GOAL</text>
+      <text x="870" y="334" text-anchor="middle" class="t-title" style="font-size:17px">Closed revenue</text>
+      <text x="870" y="356" text-anchor="middle" class="t-sub">predictable each quarter</text>
+      <text x="870" y="374" text-anchor="middle" class="t-sub">onboarded &amp; expanding</text>
+
+      <!-- Work flow arrows -->
+      <path d="M208,290 C240,290 238,330 268,330" fill="none" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#a-cyan)"/>
+      <path d="M208,400 C240,400 238,366 268,366" fill="none" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#a-cyan)"/>
+      <path d="M468,348 C500,348 498,285 528,285" fill="none" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#a-cyan)"/>
+      <path d="M708,415 C740,415 738,360 766,360" fill="none" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#a-cyan)"/>
+
+      <!-- Inbound from Marketing -->
+      <a href="marketing.html#diagram">
+        <rect x="30" y="492" width="190" height="54" rx="27" fill="rgba(52,211,153,0.06)" stroke="#34d399" stroke-width="1.5" stroke-dasharray="4 3"/>
+        <text x="125" y="515" text-anchor="middle" class="t-title" style="font-size:13px">From Marketing system</text>
+        <text x="125" y="533" text-anchor="middle" class="t-sub">inbound qualified leads</text>
+      </a>
+      <line x1="120" y1="490" x2="120" y2="449" stroke="#34d399" stroke-width="1.5" marker-end="url(#a-green)"/>
+
+      <!-- Pipeline & Forecast -->
+      <a href="#agent-pipeline">
+        <rect x="260" y="500" width="460" height="60" rx="12" fill="#111827" stroke="#f472b6" stroke-width="1.5"/>
+        <text x="490" y="526" text-anchor="middle" class="t-title">Pipeline &amp; Forecast</text>
+        <text x="490" y="546" text-anchor="middle" class="t-sub">CRM hygiene · stage rules · forecast · weekly scorecard</text>
+      </a>
+      <line x1="370" y1="470" x2="370" y2="497" stroke="#f472b6" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#a-pink)"/>
+      <line x1="620" y1="470" x2="620" y2="497" stroke="#f472b6" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#a-pink)"/>
+      <text x="378" y="490" class="t-label">activity</text>
+      <text x="628" y="490" class="t-label">stages</text>
+      <path d="M870,396 V530 H724" fill="none" stroke="#f472b6" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#a-pink)"/>
+      <text x="880" y="470" class="t-label">bookings &amp;</text>
+      <text x="880" y="484" class="t-label">win/loss reasons</text>
+
+      <!-- Feedback loop to orchestrator -->
+      <path d="M490,560 V580 H8 V126 H366" fill="none" stroke="#f472b6" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#a-pink)"/>
+      <text x="190" y="120" text-anchor="middle" class="t-label">weekly scorecard → re-plan</text>
+    </svg>
+    <div class="diagram-legend">
+      <span class="ctrl">dispatch (orchestrator → agents)</span>
+      <span>work flow (accounts, meetings, deals)</span>
+      <span class="dash">data &amp; feedback loop</span>
+      <span class="gate">human approval</span>
+    </div>
+  </div>
+
+  <!-- ===================== ROSTER ===================== -->
+  <h2 class="section-title" id="roster">The agents and what each one does</h2>
+  <p>Each agent becomes its own markdown file. The defaults below are best practice. The setup interview adjusts them to your deal size, sales motion, team and tools.</p>
+
+  <div class="agent-grid">
+
+    <div class="agent-card lead" id="agent-orchestrator">
+      <div class="stage">// control</div>
+      <h3>Sales Orchestrator</h3>
+      <p class="mission">Acts as head of sales and revenue operations. Decides which accounts and deals get your time this week, enforces the sales process, and brings you only the decisions and messages that need you.</p>
+      <h5>Does</h5>
+      <ul>
+        <li>Runs the weekly pipeline review: what moved, what's stuck, which 3–5 deals matter most, and the next step for each.</li>
+        <li>Chooses a sales method that fits your deal size: <strong>SPICED</strong> for smaller, faster deals and <strong>MEDDICC</strong> for enterprise. It also makes sure each deal stage has clear entry and exit criteria.</li>
+        <li>Collects every draft message, proposal and discount into one approval list, and tells Marketing which lead sources close.</li>
+      </ul>
+      <h5>Asks you</h5>
+      <ul><li>Revenue target, how you sell today (founder-led or a team), typical deal size and cycle length, and how much time you can spend selling each week.</li></ul>
+      <div class="file">→ agents/sales-orchestrator.md</div>
     </div>
 
-    <div class="step">
-      <div class="step-num">02</div>
-      <div class="step-body">
-        <h3>Prospect research agent</h3>
-        <p>Takes an account + contact and returns a one-pager before every outbound message or call.</p>
-        <ul>
-          <li>Public data: company news, funding, recent content by the contact, stack signals.</li>
-          <li>Internal data: prior touches, existing users at the company, NPS of those users.</li>
-          <li>Output: a "why this company now" angle in 1-2 sentences. If it can't produce one, skip the account.</li>
-        </ul>
-      </div>
+    <div class="agent-card" id="agent-research">
+      <div class="stage">// 01 · build pipeline</div>
+      <h3>Research &amp; Qualification</h3>
+      <p class="mission">Makes sure you only spend time on accounts that fit and have a reason to buy now.</p>
+      <h5>Does</h5>
+      <ul>
+        <li>Turns your ICP into a <strong>scoring rubric</strong>: company traits, trigger events and disqualifiers, each with a weight (see the <a href="examples/sales.md">example icp.md</a>).</li>
+        <li>Scores inbound leads from Marketing within minutes and sends good ones on to a meeting.</li>
+        <li>Writes a one-page account brief with a "why this company, why now" angle. If it can't find one, it recommends skipping the account.</li>
+      </ul>
+      <h5>Asks you</h5>
+      <ul><li>Your best 3–5 customers and why they bought, the deals you'd walk away from, and any data tools you use (Apollo, Clay, Sales Navigator, ZoomInfo).</li></ul>
+      <div class="file">→ agents/research-qualification.md</div>
     </div>
 
-    <div class="step">
-      <div class="step-num">03</div>
-      <div class="step-body">
-        <h3>Outbound drafting agent (never auto-send)</h3>
-        <p>Drafts one-to-one outbound off the research brief. The word "personalized" means something here.</p>
-        <ul>
-          <li>Opens with a specific, recent fact about the prospect (not "I've been following your work").</li>
-          <li>Ties that fact to your wedge in one sentence.</li>
-          <li>Asks one small question; no meeting ask in the first message.</li>
-          <li>Every draft stays in the SDR's inbox as a draft. Human sends.</li>
-        </ul>
-        <div class="callout warn">Auto-sent AI outbound is burning the brand of every startup using it. Don't. Draft + human-in-the-loop is the only acceptable pattern.</div>
-      </div>
+    <div class="agent-card" id="agent-outbound">
+      <div class="stage">// 01 · build pipeline</div>
+      <h3>Prospecting &amp; Outbound</h3>
+      <p class="mission">Builds target lists from trigger events and drafts outreach that reads like you wrote it.</p>
+      <h5>Does</h5>
+      <ul>
+        <li>Drafts one-to-one messages that open with a specific, recent fact about the prospect and end with one small question.</li>
+        <li>Plans sequences of 4–6 touches over 2–3 weeks across email, LinkedIn and phone.</li>
+        <li><strong>Never sends automatically.</strong> Every message waits as a draft until a person sends it. It also handles email deliverability and anti-spam rules (CAN-SPAM, GDPR, opt-outs).</li>
+      </ul>
+      <h5>Asks you</h5>
+      <ul><li>How much outbound you want, who sends, your email or sequencing tool, and which regions you sell into.</li></ul>
+      <div class="file">→ agents/prospecting-outbound.md</div>
     </div>
 
-    <div class="step">
-      <div class="step-num">04</div>
-      <div class="step-body">
-        <h3>Meeting prep agent</h3>
-        <p>30 minutes before every call, Slack DM from the agent:</p>
-        <ul>
-          <li>Who's on the call + their LinkedIn highlights.</li>
-          <li>Deal context: stage, amount, last exchange, commitments open.</li>
-          <li>Three goals for this call + three objections likely to surface.</li>
-          <li>One fresh data point that wasn't in the last call.</li>
-        </ul>
-      </div>
+    <div class="agent-card" id="agent-coach">
+      <div class="stage">// 02 · advance</div>
+      <h3>Meeting Prep &amp; Call Coach</h3>
+      <p class="mission">Makes every call count. You walk in prepared and walk out with a clear next step.</p>
+      <h5>Does</h5>
+      <ul>
+        <li>Sends a brief 30 minutes before each call: who's attending, the deal's history, 3 goals for the call, the objections likely to come up, and one new fact.</li>
+        <li>After the call: a summary, the qualification details captured for the CRM, and a <strong>follow-up email drafted the same day</strong> with a dated next step.</li>
+        <li>Weekly coaching: did you quantify the pain, find the economic buyer, and agree a next step with a date?</li>
+      </ul>
+      <h5>Asks you</h5>
+      <ul><li>Your call recorder (Gong, Fireflies, Granola, Zoom), calendar access, and your discovery questions.</li></ul>
+      <div class="file">→ agents/meeting-coach.md</div>
     </div>
 
-    <div class="step">
-      <div class="step-num">05</div>
-      <div class="step-body">
-        <h3>Call-coaching agent</h3>
-        <p>Post-call, the agent transcribes, extracts MEDDIC/SPICED signals, and scores the rep against the playbook.</p>
-        <ul>
-          <li>Did we identify the economic buyer?</li>
-          <li>Did we quantify the pain (dollars, hours, %)?</li>
-          <li>Did we get a specific next step with a date?</li>
-          <li>Weekly: the agent produces a rep-level coaching digest — strengths + one concrete thing to work on.</li>
-        </ul>
-      </div>
+    <div class="agent-card" id="agent-dealdesk">
+      <div class="stage">// 03 · close</div>
+      <h3>Deal Desk &amp; Proposals</h3>
+      <p class="mission">Takes the friction out of closing: fast proposals, consistent pricing, and no surprises in the contract.</p>
+      <h5>Does</h5>
+      <ul>
+        <li>Drafts proposals, ROI and business cases, and <strong>mutual action plans</strong> (dated steps both sides agree to) from your templates.</li>
+        <li>Applies pricing guardrails and logs every discount with a reason, so it can spot a pattern such as "we give 30% off every Q4 deal".</li>
+        <li>Summarizes customer redlines and flags non-standard terms for <a href="legal.html">Legal</a>. It drafts security questionnaire answers from approved responses.</li>
+      </ul>
+      <h5>Asks you</h5>
+      <ul><li>Pricing and packaging, who can approve discounts, contract templates, and your e-signature tool.</li></ul>
+      <div class="file">→ agents/deal-desk.md</div>
     </div>
 
-    <div class="step">
-      <div class="step-num">06</div>
-      <div class="step-body">
-        <h3>Deal-desk &amp; proposal agent</h3>
-        <p>Generates customized proposals, redlines back, and tracks every pricing exception.</p>
-        <ul>
-          <li>Pulls the template + account data; produces a draft in Google Docs.</li>
-          <li>When the prospect redlines, the agent summarizes the changes and flags non-standard terms for legal (see <a href="legal.html">Legal</a>).</li>
-          <li>Every pricing discount is logged with reason; used later to detect drift ("we gave away 30% on every Q4 deal").</li>
-        </ul>
-      </div>
+    <div class="agent-card" id="agent-handoff">
+      <div class="stage">// 03 · close</div>
+      <h3>Customer Handoff &amp; Expansion</h3>
+      <p class="mission">Makes the move from sales to onboarding to support feel like one company, and spots chances to grow the account.</p>
+      <h5>Does</h5>
+      <ul>
+        <li>Within 24 hours of a win, writes a handoff document from the calls and the contract: goals, success criteria, stakeholders, and <strong>every promise made</strong>.</li>
+        <li>Drafts the kickoff agenda and the 30/60/90-day check-ins, and passes context to <a href="support.html">Support</a>.</li>
+        <li>Watches for expansion signals (usage, new teams) and flags renewals 90 days ahead. It asks for referrals and case studies once customers are succeeding.</li>
+      </ul>
+      <h5>Asks you</h5>
+      <ul><li>Who onboards customers, your customer-success or support tool, and your renewal terms.</li></ul>
+      <div class="file">→ agents/handoff-expansion.md</div>
     </div>
 
-    <div class="step">
-      <div class="step-num">07</div>
-      <div class="step-body">
-        <h3>Pipeline hygiene agent</h3>
-        <p>The most boring, highest-ROI agent. Keeps your CRM honest.</p>
-        <ul>
-          <li>Stale-deal sweep: any opportunity with no activity in 14 days gets a pinged-rep reminder + a suggested next step.</li>
-          <li>Auto-logs: email threads, call summaries, doc views. No one types into the CRM.</li>
-          <li>Forecast call: Wed afternoon the agent produces a draft pipeline report. Rep adjusts. No more Friday panic.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="step">
-      <div class="step-num">08</div>
-      <div class="step-body">
-        <h3>Customer-lifecycle continuity</h3>
-        <p>Sales → onboarding → support should feel like one company. Shared agents across stages.</p>
-        <ul>
-          <li>Win-to-onboarding handoff doc is agent-generated from call transcripts + contract.</li>
-          <li>CSM sees the full history without having to read 40 emails.</li>
-          <li>QBR prep pulls from the data warehouse (usage, feature adoption, support volume) — no manual slides.</li>
-        </ul>
-      </div>
+    <div class="agent-card measure" id="agent-pipeline">
+      <div class="stage">// measure &amp; learn</div>
+      <h3>Pipeline &amp; Forecast</h3>
+      <p class="mission">Keeps the CRM accurate so the forecast holds up. It also does the CRM data entry, so nobody has to type into it.</p>
+      <h5>Does</h5>
+      <ul>
+        <li>If you have no CRM, recommends one: HubSpot's free CRM as the default, with Attio or Pipedrive as lighter alternatives and Salesforce for enterprise. If you already have one, <strong>asks you to connect it</strong>.</li>
+        <li>Logs emails, calls and notes automatically, and flags any deal with no activity for 14 days along with a suggested next step.</li>
+        <li>Produces a weekly forecast split into commit, best case and pipeline, plus a scorecard: pipeline coverage, win rate, cycle length, and which lead sources close.</li>
+      </ul>
+      <h5>Asks you</h5>
+      <ul><li>Your CRM, your current pipeline and win rate if known, and whether it may write to the CRM (after an approved read-only period).</li></ul>
+      <div class="file">→ agents/pipeline-forecast.md</div>
     </div>
 
   </div>
 
-  <table class="stack-table">
-    <thead><tr><th>Task</th><th>AI time</th><th>Human time saved</th></tr></thead>
-    <tbody>
-      <tr><td>Research 20 accounts</td><td>10 min</td><td>~2.5 hrs</td></tr>
-      <tr><td>Draft 20 one-to-one emails</td><td>15 min</td><td>~3 hrs</td></tr>
-      <tr><td>Meeting prep per call</td><td>1 min</td><td>15 min</td></tr>
-      <tr><td>Post-call notes + next steps</td><td>2 min</td><td>20 min</td></tr>
-      <tr><td>Weekly forecast prep</td><td>5 min</td><td>~1 hr</td></tr>
-    </tbody>
-  </table>
+  <!-- ===================== FILES ===================== -->
+  <h2 class="section-title" id="files">What Claude will create for you</h2>
+  <p>A folder you own. Plain markdown files are easy to edit, version and reuse. In Claude Code the agent files go in <code class="inline">.claude/agents/</code> so they load as subagents.</p>
+
+<pre class="tree">sales-agents/
+├── CLAUDE.md                    <span class="c-com"># entry point: goal, roster, workflow, rules</span>
+├── context/                     <span class="c-com"># shared brain, read by every agent</span>
+│   ├── company-and-offer.md
+│   ├── icp-rubric.md
+│   ├── buyers-and-personas.md
+│   ├── competitors-and-objections.md
+│   ├── pricing-and-terms.md
+│   ├── sales-process.md
+│   └── tools-and-access.md
+├── agents/                      <span class="c-com"># .claude/agents/ in Claude Code</span>
+│   ├── sales-orchestrator.md
+│   ├── research-qualification.md
+│   ├── prospecting-outbound.md
+│   ├── meeting-coach.md
+│   ├── deal-desk.md
+│   ├── handoff-expansion.md
+│   └── pipeline-forecast.md
+├── playbooks/
+│   ├── first-30-days.md
+│   ├── weekly-cadence.md
+│   └── approval-gates.md
+└── outputs/                     <span class="c-com"># where agents deliver work</span>
+    ├── accounts/  outreach/  calls/  deals/  handoffs/
+    └── reports/</pre>
+
+  <!-- ===================== SETUP PROMPT ===================== -->
+  <h2 class="section-title" id="setup">Setup prompt: paste it into your Claude</h2>
+  <p>Claude interviews you in five short rounds (offer, customers, goals, tools, process). Every question shows a best-practice default, so you can answer "defaults" and keep going. It then writes the files and gives you a first-week plan.</p>
+
+  <div class="how-to">
+    <div class="mini-card">
+      <h4><span class="n">1</span>Copy or download</h4>
+      <p>Use the buttons below. The download is a <code class="inline">.md</code> file you can keep or share with your team.</p>
+    </div>
+    <div class="mini-card">
+      <h4><span class="n">2</span>Paste into Claude</h4>
+      <p>Claude Code or the Claude desktop app can write the folder directly. On claude.ai, Claude delivers the files as a zip or as copyable blocks.</p>
+    </div>
+    <div class="mini-card">
+      <h4><span class="n">3</span>Answer &amp; connect</h4>
+      <p>Answer the interview questions. Connect your CRM, email and calendar, and call recorder through Claude's connectors. Never paste a password into the chat.</p>
+    </div>
+  </div>
+
+  <div class="prompt-box">
+    <div class="prompt-toolbar">
+      <span class="file-name">sales-agent-system-setup.md</span>
+      <button class="btn" type="button" data-prompt-copy="prompt-sales">Copy prompt</button>
+      <button class="btn secondary" type="button" data-prompt-download="prompt-sales" data-filename="sales-agent-system-setup.md">Download .md</button>
+    </div>
+    <pre data-prompt-view="prompt-sales">Loading prompt… (enable JavaScript to view, copy, or download)</pre>
+  </div>
+
+  <div class="callout tip"><strong>Using it on claude.ai?</strong> After Claude generates the files, create a <strong>Project</strong>. Paste <code class="inline">CLAUDE.md</code> into the project instructions and upload the <code class="inline">context/</code> and <code class="inline">agents/</code> files as project knowledge. Every chat in that project then has the whole team available.</div>
+
+  <div class="callout warn"><strong>Never let agents send outbound on their own.</strong> Automated, AI-written outreach is damaging the reputation of the startups that use it, and the email domains they send from. In this system agents research and draft, and a person reads and sends every message to a buyer.</div>
+
+  <div class="two-col">
+    <div class="mini-card">
+      <h4>// always needs your approval</h4>
+      <ul>
+        <li>Any message, email or sequence step sent to a prospect or customer</li>
+        <li>Proposals, pricing, discounts and quotes</li>
+        <li>Contract terms, redlines and security answers</li>
+        <li>Commitments to customers (features, timelines, SLAs)</li>
+        <li>Buying contact data or bulk-changing the CRM</li>
+      </ul>
+    </div>
+    <div class="mini-card">
+      <h4>// red flags to watch</h4>
+      <ul>
+        <li>Lots of first meetings but few second ones: qualification is too loose</li>
+        <li>Deals stuck in one stage: no champion or economic buyer</li>
+        <li>Average discount creeping up: weak value case or no pricing guardrails</li>
+        <li>Reply rates falling: too much automation or a deliverability problem</li>
+        <li>Forecast misses: stage exit criteria aren't enforced</li>
+      </ul>
+    </div>
+  </div>
 </main>
-<footer><span>Stargate · Sales</span><span class="mono">/sales</span></footer>
+<footer><span>Stargate · Sales Agent System</span><span class="mono">/sales</span></footer>
+
+<script type="text/plain" id="prompt-sales">
+# Sales Agent System — Setup Prompt
+
+You are going to set up a **sales agent system** for my business. It is a small team of specialized AI agents, defined as markdown files in a folder, working together toward one goal:
+
+> **Turn qualified leads and target accounts into closed revenue predictably: enough pipeline, shorter cycles, higher win rates, and customers handed off cleanly.**
+
+Your job in this conversation:
+1. **Interview me** so the system fits my offer, deal size and sales motion.
+2. **Fill any gaps with best-practice defaults**, and tell me which ones you assumed.
+3. **Create the folder** of context files, agent files and playbooks described below.
+4. **Hand me a first-week plan** and the list of tools I should connect.
+
+---
+
+## Ground rules
+
+- Ask questions in **rounds of no more than 6**, numbered. After each question, put in [brackets] the default you'll use if I skip it. I can reply "defaults" to accept every default in a round.
+- **Don't ask about things you can look up.** If I give you a website and you can browse, read the home, pricing, customers or case-study, and about pages first. Use them to pre-fill answers, then ask me to confirm.
+- **Never ask me for passwords, API keys, or login codes in the chat.** For tool access, use official connectors or MCP integrations that sign in through the provider. Ask for read-only access first. If no connector exists, ask me for an export (CSV, PDF or pasted text).
+- **Agents never send messages to prospects or customers on their own.** They draft, and a person sends. This rule can't be overridden by a default.
+- **Handle contact data carefully.** Only use lawfully sourced contact data, honor opt-outs, and follow the anti-spam and privacy rules for my regions (CAN-SPAM, GDPR, CASL). Don't copy personal contact details into the context files. Keep them in the CRM.
+- **Don't invent facts about my business, customers or deals.** Mark anything unconfirmed as `TODO:` in the files.
+- Write every file so that another Claude session, with no access to this conversation, could act on it. Keep files specific to my business and concise. Use bullet points rather than essays.
+
+---
+
+## Step 1 — Interview me
+
+### Round 1 · The offer and the motion
+1. Business name and **website URL**.
+2. What do you sell, and to whom, in one or two sentences? [inferred from site]
+3. How do customers buy: self-serve with optional sales help, inside sales (calls and demos), or field and enterprise sales (multiple stakeholders, security reviews)? [inferred from pricing page]
+4. Typical deal size (annual contract value or one-time price) and pricing model. [inferred]
+5. Typical sales cycle from first conversation to signature. [30–60 days]
+6. Who sells today: the founder, a small team, or nobody yet? [founder-led]
+
+### Round 2 · Customers and the ICP
+1. Your 3–5 best customers (names or descriptions) and why they bought. [inferred from case studies; flagged TODO]
+2. Who's involved in a purchase: the user, the champion, the economic buyer (who signs), and any blockers such as IT, security, legal or procurement? [user + economic buyer]
+3. Events that make an account ready to buy now, e.g. new funding, a new leader, hiring for a role, a tool migration, a regulation or a season. [I'll propose based on your industry]
+4. Disqualifiers: customers you can't or shouldn't serve. [none]
+5. Top competitors and alternatives, and the main reasons you win and lose. [I'll research and propose]
+
+### Round 3 · Goals and pipeline
+1. Revenue target for this quarter (new bookings), and for expansion if relevant. [TODO]
+2. Current pipeline: number of open deals, total value, and win rate if known. [unknown; Pipeline agent will baseline]
+3. Where deals come from today: inbound from marketing, outbound, referrals, partners, events. [inbound + referrals]
+4. Appetite for outbound: none, light (founder-sent, 10–20 personal messages a week), or a steady program. [light]
+5. Hours per week you can spend selling, and how many of those on reviewing agent work. [10 selling, 2 reviewing]
+
+### Round 4 · Tools and access
+For each item, tell me what you use, or "none":
+1. CRM (HubSpot, Salesforce, Pipedrive, Attio, a spreadsheet)
+2. Email and calendar (Google Workspace or Microsoft 365) and any scheduling link (Calendly, HubSpot Meetings)
+3. Call recorder or notetaker (Gong, Fireflies, Granola, Zoom AI, Otter)
+4. Prospecting data and sequencing (Apollo, Clay, LinkedIn Sales Navigator, ZoomInfo, Outreach, Salesloft)
+5. Proposals and e-signature (Google Docs, PandaDoc, DocuSign, Dropbox Sign)
+6. Team chat (Slack or Teams) and the customer-success or support tool, for handoffs
+
+**After this round:**
+- **Tools I already have.** Check whether a connector or MCP integration for that tool exists in your current environment. In claude.ai and the desktop app, look under Settings → Connectors. In Claude Code, look at `claude mcp`. If one exists, tell me exactly how to connect it, read-only first. If none exists, tell me which export to provide and how. Record each tool as connected, export-only, or not connected in `context/tools-and-access.md`.
+- **Tools I don't have.** Recommend the default from Step 2 that fits my stage and budget, explain why in one line, and add a setup task to the plan. Don't make tools a blocker. The system must work from exports and pasted notes alone.
+
+### Round 5 · Process and guardrails
+1. Do you use a qualification method? [SPICED if the deal size is under ~$25k, MEDDICC above that]
+2. Pricing guardrails: list price, standard discounts, and who can approve exceptions. [every discount needs your approval]
+3. Regions you sell into, and any regulated industries or compliance needs (GDPR, CASL, HIPAA, government buyers). [US only]
+4. Contract basics: standard terms, payment terms, and whether you have a security packet or questionnaire answers. [none yet]
+5. Anything beyond the default approval gates that must come to you first? [defaults only]
+6. Where should agents deliver work? [files in `outputs/`; drafts in your email drafts folder or CRM if connected; optionally Slack]
+
+**Before creating anything**, show me a one-screen summary of what you learned and what you're assuming. Mark each item *confirmed*, *inferred* or *default*. Ask me to correct it. Then build.
+
+---
+
+## Step 2 — Best-practice defaults (use these unless my answers say otherwise)
+
+**Sales motion by deal size**
+- *Under ~$5k a year:* low-touch. Self-serve plus sales help, a fast inbound response, little outbound, and short cycles (days to 2 weeks).
+- *~$5k–$50k:* inside sales. Discovery, then a demo, then a proposal, over a 30–60 day cycle, qualified with SPICED (Situation, Pain, Impact, Critical event, Decision).
+- *Above ~$50k:* enterprise. Engage several people at the account, qualify with MEDDICC (Metrics, Economic buyer, Decision criteria, Decision process, Paper process, Identify pain, Champion, Competition), use mutual action plans and security reviews, over a 3–9 month cycle.
+
+**ICP as a scoring rubric, not a paragraph**
+- Company traits (size, industry, region, tech stack, growth stage), each with a weight.
+- Trigger events (funding, new leader, hiring, migration, regulation), each with a weight.
+- Hard disqualifiers.
+- A tier from the score: A (pursue now), B (nurture), C (don't pursue). Review the rubric every quarter against actual wins and losses.
+
+**Inbound**
+- Respond within 5 minutes during business hours. Score for fit and intent, send A-tier leads to a scheduling link, and send B-tier leads to Marketing's nurture sequence.
+- Write a short account brief before the first call.
+
+**Outbound**
+- Research before writing: every message needs a "why this company, why now" angle. If there's no angle, skip the account.
+- One-to-one, plain text, under 120 words. Open with a specific, recent fact about the prospect, link it to our value in one sentence, and end with one small question.
+- Sequences of 4–6 touches over 2–3 weeks across email, LinkedIn and phone, each touch adding something new. No "just bumping this".
+- **A person sends every message.** Agents create drafts only.
+- Deliverability: send from a separate sending domain, set up SPF, DKIM and DMARC, warm up new inboxes, keep to about 50 or fewer cold emails per inbox per day, and include a clear opt-out.
+- Compliance: follow CAN-SPAM, GDPR (legitimate interest, documented) and CASL as they apply, and honor opt-outs immediately.
+
+**Meetings**
+- A pre-call brief 30 minutes before: attendees, deal history, 3 goals, likely objections, and one new fact.
+- Share an agenda at the start of the call. Discovery should quantify the pain in money, hours or risk.
+- The same day: a CRM update with the qualification fields, plus a follow-up email draft with a recap and a **dated next step**.
+- Weekly coaching on talk-to-listen ratio, whether the pain was quantified, whether the economic buyer was found, and whether a next step was set with a date.
+
+**Deal stages (each with exit criteria)**
+1. Qualified: ICP fit, and the pain is confirmed.
+2. Discovery complete: the pain is quantified and the decision process is known.
+3. Solution or demo: a champion is identified and the decision criteria are known.
+4. Proposal: the economic buyer is engaged and a mutual action plan is agreed.
+5. Negotiation or legal: the paper process is known.
+6. Closed won, or closed lost with a recorded reason.
+
+A deal doesn't advance until its exit criteria are met. The Pipeline agent flags any deal that skipped a stage.
+
+**Deal desk**
+- Proposals built from templates, plus a business case that ties price to the customer's quantified pain.
+- Pricing guardrails and an approval matrix. Every discount is logged with its reason, and drift is reviewed monthly.
+- Redlines are summarized, and non-standard terms are flagged to legal or a human.
+- Security questionnaires are answered only from an approved answer bank.
+
+**Handoff and expansion**
+- A handoff document within 24 hours of a win, kickoff within 1 week, and a list of every promise made during the sale.
+- Check-ins at 30, 60 and 90 days. Renewal flagged 90 days out. Expansion signals come from usage and new stakeholders.
+- Ask for referrals and case studies only after the customer has a documented success.
+
+**Pipeline and forecast**
+- Default CRM: **HubSpot's free CRM** for early teams. Attio or Pipedrive if you want something lighter, Salesforce for enterprise motions.
+- Log email, calls and meetings automatically, and flag any deal with no activity for 14 days.
+- Weekly forecast in three categories (commit, best case, pipeline), compared with the previous week.
+- Scorecard: new bookings against target, pipeline coverage (aim for 3× or more of target), win rate, cycle length, average deal size, conversion at each stage, and closed-won by lead source. Share the lead-source data with the Marketing system.
+
+**Approval gates (always on):** any message to a prospect or customer, proposals, pricing and discounts, contract terms and security answers, commitments to customers, buying contact data, and bulk CRM changes.
+
+---
+
+## Step 3 — Create the files
+
+**Where to write:**
+- If you can write files (Claude Code, or the Claude desktop app with folder access), ask where to create the folder [default: `./sales-agents`] and write the files directly. **In Claude Code, put the agent files in `sales-agents/.claude/agents/`** instead of `agents/` so they load as subagents. Tell me to start Claude Code from inside `sales-agents/`.
+- If you can't write files but can run code, create the files and give me a single **.zip** to download.
+- Otherwise, output each file in its own code block, headed by its full path, in the order below.
+
+**Folder structure:**
+```
+sales-agents/
+├── CLAUDE.md
+├── context/
+│   ├── company-and-offer.md
+│   ├── icp-rubric.md
+│   ├── buyers-and-personas.md
+│   ├── competitors-and-objections.md
+│   ├── pricing-and-terms.md
+│   ├── sales-process.md
+│   └── tools-and-access.md
+├── agents/                (use .claude/agents/ in Claude Code)
+│   ├── sales-orchestrator.md
+│   ├── research-qualification.md
+│   ├── prospecting-outbound.md
+│   ├── meeting-coach.md
+│   ├── deal-desk.md
+│   ├── handoff-expansion.md
+│   └── pipeline-forecast.md
+├── playbooks/
+│   ├── first-30-days.md
+│   ├── weekly-cadence.md
+│   └── approval-gates.md
+└── outputs/
+    ├── README.md
+    ├── accounts/  outreach/  calls/  deals/  handoffs/
+    └── reports/
+```
+
+**`CLAUDE.md`** is the system's entry point. It contains:
+- The goal, the revenue target, the scorecard metrics with their targets, and current baselines (or TODO).
+- A text diagram of the flow: context → orchestrator → prospecting and outbound, plus research and qualification (which also receives inbound leads from marketing) → meeting prep and call coach → deal desk → closed won → handoff and expansion → revenue, with pipeline and forecast tracking every stage and sending a weekly scorecard back to the orchestrator.
+- A roster table: agent, one-line job, when to use it, and its output folder.
+- The rules that every agent reads `context/` before working and **no agent ever sends a message**, the approval gates, and the contact-data rules.
+- How to run the system, e.g. "Use the sales-orchestrator agent to run this week's pipeline review."
+
+**`context/` files** hold the shared brain, filled with my interview answers and your research. Label every section *confirmed*, *inferred* or *TODO*.
+- `company-and-offer.md`: what we sell, the value proposition, proof points (customers and results), and the sales motion.
+- `icp-rubric.md`: the scoring rubric (company traits, triggers, disqualifiers, weights and tiers) as a readable table **and** as a YAML block agents can apply. Include why each criterion matters.
+- `buyers-and-personas.md`: buying-committee roles, each role's pains and goals, the language they use, and the discovery questions for each.
+- `competitors-and-objections.md`: competitors and alternatives, why we win and lose, and the top objections with suggested responses and supporting evidence.
+- `pricing-and-terms.md`: price list and packaging, discount guardrails, the approval matrix, standard contract and payment terms, and the security packet status.
+- `sales-process.md`: the qualification method, deal stages with exit criteria, inbound response rules, outbound rules, and the meeting standards.
+- `tools-and-access.md`: each tool with its status (connected / export-only / recommended / not needed), how to connect it, and the owner.
+
+**Every agent file** uses this template. The frontmatter keeps the file valid as a Claude Code subagent.
+```
+---
+name: <kebab-case-name>
+description: <one specific sentence on when to delegate to this agent>
+tools: <Claude Code only: list the tools it needs, e.g. Read, Write, Edit, Glob, Grep, WebSearch, WebFetch. Omit this line to inherit all tools, including connectors.>
+---
+# <Agent name>
+## Mission            (one or two sentences tied to the closed-revenue goal)
+## Reads first        (which context/ files and outputs from other agents)
+## Responsibilities   (bullets, customized to this business)
+## Inputs it needs    (and the default it uses when they're missing)
+## Tools & connections (what it uses now, and what to connect next)
+## Outputs            (exact file paths in outputs/, with the format)
+## Hand-offs          (who receives its output, and what triggers the hand-off)
+## Approval gates     (actions it must never take without the owner)
+## KPIs it owns
+## Cadence            (what it does daily, weekly and monthly)
+```
+
+Agent-specific requirements. Customize each one with my offer, deal size, motion and tools:
+- **sales-orchestrator.** Runs the weekly cycle from `playbooks/weekly-cadence.md`. Reads the pipeline scorecard, picks the 3–5 deals and the account list that get attention this week, sets the next step for each, enforces stage exit criteria, collects every draft and pricing request into a single approval list in `outputs/reports/`, and sends lead-source results back to the Marketing system (or to me if Marketing isn't set up). It must never bypass an approval gate.
+- **research-qualification.** Applies `context/icp-rubric.md` to inbound leads and target accounts, writes account briefs in `outputs/accounts/` with a "why now" angle (or a recommendation to skip), builds target lists from *my trigger events*, and recommends updates to the rubric each quarter based on wins and losses.
+- **prospecting-outbound.** Drafts one-to-one messages and sequences in `outputs/outreach/` (or as email or CRM drafts if connected) following the outbound rules for *my regions*. It never sends, enrolls contacts or buys data without approval, and it tracks reply rates and deliverability health.
+- **meeting-coach.** Writes pre-call briefs and, after calls, summaries, CRM field updates (proposed for approval until write access is granted) and same-day follow-up drafts in `outputs/calls/`. It produces the weekly coaching digest using *my qualification method*.
+- **deal-desk.** Drafts proposals, business cases and mutual action plans in `outputs/deals/`, applies the pricing guardrails, logs every discount, summarizes redlines, flags non-standard terms, and answers security questionnaires only from the approved answer bank.
+- **handoff-expansion.** Writes handoff documents in `outputs/handoffs/` within 24 hours of a win, drafts the kickoff and 30/60/90 check-ins, flags renewals 90 days out and expansion signals, and asks for referrals or case studies only after a documented success.
+- **pipeline-forecast.** Recommends and sets up the CRM structure if I don't have one, guides me through connecting existing tools (read-only first), keeps CRM data clean, flags deals with no activity for 14 days, and writes the weekly forecast and scorecard in `outputs/reports/`.
+
+**`playbooks/`**
+- `first-30-days.md`: Week 1, foundation: confirm context, build the ICP rubric from the best customers, set up or audit the CRM and deal stages, and baseline the pipeline. Week 2, pipeline: score existing leads and accounts, write briefs for the top 20 accounts, prepare drafts for the first outbound batch (if outbound is wanted), and set the inbound response rules. Week 3, advance: pre-call briefs and follow-ups on every meeting, mutual action plans on late-stage deals, and proposal templates. Week 4, learn: the first forecast and scorecard, a win/loss review, rubric updates, and the next 30-day plan. Adapt it to my motion and answers.
+- `weekly-cadence.md`: Daily: inbound lead triage, pre-call briefs, follow-up drafts. Monday: pipeline review and priorities. Tuesday and Wednesday: outbound drafts and proposals go to me for approval. Thursday: deal-desk items and handoffs. Friday: forecast, scorecard, coaching digest and lessons learned. Fit it to my selling hours.
+- `approval-gates.md`: the default gates plus mine, who approves each, and how to submit an item for approval.
+
+**`outputs/README.md`** explains what each subfolder holds and the file naming convention (`YYYY-MM-DD-account-or-topic.md`).
+
+---
+
+## Step 4 — Wrap up
+
+When the files are created, give me:
+1. The folder tree, with a one-line description of each file.
+2. **Assumptions and TODOs.** Everything you defaulted or couldn't confirm, and how to resolve each.
+3. **Connections to set up, in priority order.** CRM comes first, then email and calendar, then the call recorder, then prospecting data and e-signature. For each, give the exact steps in this environment.
+4. **The first-week plan,** with the one thing I should do today (usually: list my 5 best customers and why they bought, so the ICP rubric is built on real wins).
+5. **How to use the system day to day:**
+   - *Claude Code:* "Use the sales-orchestrator agent to run this week's pipeline review," or call any agent directly, e.g. "Use the meeting-coach agent to prep my 2pm call with Acme."
+   - *claude.ai:* Create a Project. Paste `CLAUDE.md` into the project instructions and upload the `context/` and `agents/` files as project knowledge. Then ask, for example, "Acting as the deal-desk agent, draft a proposal for this opportunity."
+
+Start now with Round 1. If I've already given you my website URL, review it first and pre-fill what you can.
+</script>
+<script src="prompt.js"></script>
 </body></html>
