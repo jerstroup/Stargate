@@ -13,7 +13,7 @@ Nimbus: a meeting agent for professional services firms. Captures meetings, writ
 - **API:** FastAPI, Pydantic v2, SQLAlchemy 2.0
 - **Workers:** Temporal — every long-running agent workflow lives here, never in the API
 - **DB:** Postgres 16 + pgvector on Neon
-- **Agents:** Claude Agent SDK (Python + TS), Opus 4.8 for planning, Sonnet 5 for most loops, Haiku 4.5 for classify/extract
+- **Agents:** Claude Agent SDK (Python + TS), Opus 5.5 for planning, Sonnet 5.5 for most loops, Haiku 5.5 for classify/extract
 - **Infra:** Pulumi → Render + Neon + Temporal Cloud
 
 ## Repo layout
